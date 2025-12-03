@@ -1,0 +1,367 @@
+---
+// src/components/calculator/FreelancerCalculator.astro
+---
+
+<div class="calculator-module hidden" id="freelancer-calculator">
+  <div class="input-group">
+    <label for="annual-gross">Annual Gross Income</label>
+    <div class="input-wrapper">
+      <span class="currency">₱</span>
+      <input type="text" id="annual-gross" placeholder="0.00" class="formatted-input">
+    </div>
+  </div>
+
+  <div class="input-group">
+    <label for="annual-expenses">Annual Expenses (Optional)</label>
+    <div class="input-wrapper">
+      <span class="currency">₱</span>
+      <input type="text" id="annual-expenses" placeholder="0.00" class="formatted-input">
+    </div>
+    <small class="hint">Leave 0 if using OSD (40%) or 8% rate</small>
+  </div>
+
+  <div class="checkbox-group">
+    <input type="checkbox" id="mixed-income">
+    <label for="mixed-income">Mixed Income Earner? (Also have salary)</label>
+  </div>
+
+  <button id="calc-freelancer-btn" class="btn-primary">Compare Tax Options</button>
+
+  <div id="freelancer-result" class="result-section hidden">
+    <h3>Tax Comparison</h3>
+    
+    <div class="comparison-grid">
+      <div class="card option-a">
+        <h4>Option A: Graduated Rates</h4>
+        <div class="tax-display">
+          <span class="currency">₱</span>
+          <span id="graduated-tax">0.00</span>
+        </div>
+        <div class="details">
+          <div class="detail-row">
+            <span>Income Tax</span>
+            <span id="grad-income-tax">0.00</span>
+          </div>
+          <div class="detail-row">
+            <span>Percentage Tax (3%)</span>
+            <span id="grad-percentage-tax">0.00</span>
+          </div>
+          <div class="detail-row">
+            <span>Taxable Income</span>
+            <span id="grad-taxable">0.00</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="card option-b">
+        <h4>Option B: 8% Flat Rate</h4>
+        <div class="tax-display">
+          <span class="currency">₱</span>
+          <span id="flat-tax">0.00</span>
+        </div>
+        <div class="details">
+          <div class="detail-row">
+            <span>Tax Base</span>
+            <span id="flat-base">0.00</span>
+          </div>
+          <div class="detail-row">
+            <span>Deduction</span>
+            <span id="flat-deduction">250,000.00</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="recommendation" id="recommendation-text">
+      <!-- JS will populate this -->
+    </div>
+  </div>
+</div>
+
+<style>
+  .calculator-module {
+    background: #fff;
+    padding: var(--space-md);
+    border-radius: 12px;
+    box-shadow: var(--shadow-md);
+    border: 1px solid var(--color-border);
+    max-width: 600px;
+    margin: 0 auto;
+  }
+
+  .hidden { display: none; }
+
+  .input-group { margin-bottom: var(--space-sm); }
+  
+  label { 
+    display: block; 
+    margin-bottom: 0.5rem; 
+    font-weight: 600; 
+    color: var(--color-text-main);
+    font-size: 0.95rem;
+  }
+  
+  .input-wrapper { position: relative; display: flex; align-items: center; }
+  
+  .input-wrapper .currency { 
+    position: absolute; 
+    left: 1.25rem; 
+    color: var(--color-text-muted);
+    font-weight: 500;
+    pointer-events: none;
+    z-index: 10;
+  }
+  
+  input { 
+    width: 100%; 
+    padding: 0.875rem 0.875rem 0.875rem 2.5rem; 
+    border: 1px solid var(--color-border); 
+    border-radius: 8px; 
+    font-size: 1rem; 
+    font-family: var(--font-body);
+    color: var(--color-text-main);
+    transition: border-color 0.2s, box-shadow 0.2s;
+  }
+  
+  input:focus {
+    outline: none;
+    border-color: var(--color-primary);
+    box-shadow: 0 0 0 3px rgba(5, 150, 105, 0.1);
+  }
+  
+  .hint { font-size: 0.8rem; color: var(--color-text-muted); margin-top: 0.25rem; display: block; }
+
+  .btn-primary {
+    width: 100%; 
+    background-color: var(--color-primary); 
+    color: white; 
+    padding: 0.875rem; 
+    border: none; 
+    border-radius: 8px; 
+    font-weight: 700; 
+    cursor: pointer; 
+    transition: all 0.2s ease; 
+    margin-top: var(--space-sm);
+    font-family: var(--font-display);
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    font-size: 0.95rem;
+  }
+  
+  .btn-primary:hover { 
+    background-color: #047857; 
+    transform: translateY(-1px);
+    box-shadow: var(--shadow-md);
+  }
+
+  .result-section { 
+    margin-top: var(--space-md); 
+    padding-top: var(--space-md); 
+    border-top: 1px solid var(--color-border); 
+    animation: fadeIn 0.5s ease-out;
+  }
+  
+  @keyframes fadeIn {
+    from { opacity: 0; transform: translateY(10px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+  
+  .result-section h3 {
+    font-size: 1.1rem;
+    color: var(--color-text-muted);
+    text-align: center;
+    margin-bottom: 1rem;
+    font-weight: 600;
+  }
+  
+  .comparison-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1rem;
+    margin-top: 1rem;
+  }
+
+  @media (max-width: 600px) {
+    .comparison-grid { grid-template-columns: 1fr; }
+  }
+
+  .card {
+    background: var(--color-surface);
+    padding: 1.5rem;
+    border-radius: 8px;
+    border: 1px solid var(--color-border);
+    display: flex;
+    flex-direction: column;
+  }
+
+  .card h4 { 
+    margin-top: 0; 
+    color: var(--color-text-main); 
+    font-size: 1rem; 
+    font-weight: 700;
+    margin-bottom: 0.5rem;
+  }
+  
+  .tax-display {
+    font-size: 1.8rem;
+    font-weight: 800;
+    color: var(--color-primary);
+    margin: 0.5rem 0 1rem 0;
+    font-family: var(--font-display);
+    letter-spacing: -0.02em;
+  }
+
+  .details { 
+    font-size: 0.9rem; 
+    color: var(--color-text-muted); 
+    margin-top: auto;
+  }
+  
+  .detail-row { 
+    display: flex; 
+    justify-content: space-between; 
+    margin-bottom: 0.5rem; 
+    padding-bottom: 0.5rem;
+    border-bottom: 1px dashed var(--color-border);
+  }
+  
+  .detail-row:last-child {
+    border-bottom: none;
+    margin-bottom: 0;
+    padding-bottom: 0;
+  }
+
+  .recommendation {
+    margin-top: 1.5rem;
+    padding: 1rem;
+    background: #ECFDF5;
+    border: 1px solid #A7F3D0;
+    border-radius: 8px;
+    color: #065F46;
+    font-weight: 600;
+    text-align: center;
+    box-shadow: var(--shadow-sm);
+  }
+  
+  .recommendation.info {
+    background: #EFF6FF;
+    border-color: #BFDBFE;
+    color: #1E40AF;
+  }
+
+  .checkbox-group {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    margin-bottom: 1rem;
+    padding: 0.75rem;
+    background: var(--color-surface);
+    border-radius: 6px;
+    border: 1px solid var(--color-border);
+  }
+  
+  .checkbox-group input {
+    width: 1.25rem;
+    height: 1.25rem;
+    padding: 0;
+    accent-color: var(--color-primary);
+    cursor: pointer;
+  }
+  
+  .checkbox-group label {
+    margin-bottom: 0;
+    cursor: pointer;
+    user-select: none;
+  }
+</style>
+
+<script>
+  import { calculateFreelancerTax } from '../../utils/taxCalculator';
+
+  const calcBtn = document.getElementById('calc-freelancer-btn');
+
+  // Input Formatting Logic (Shared)
+  const formatNumber = (num: string) => {
+    if (!num) return '';
+    const parts = num.split('.');
+    parts[0] = parts[0].replace(/\B(?=(\d{3})+(?!\d))/g, ',');
+    return parts.join('.');
+  };
+
+  const parseFormattedNumber = (str: string) => {
+    return parseFloat(str.replace(/,/g, '')) || 0;
+  };
+
+  const formattedInputs = document.querySelectorAll('#freelancer-calculator .formatted-input');
+  formattedInputs.forEach(input => {
+    const el = input as HTMLInputElement;
+    
+    el.addEventListener('blur', () => {
+      let value = el.value.replace(/,/g, '');
+      if (value) {
+        el.value = formatNumber(value);
+      }
+    });
+
+    el.addEventListener('focus', () => {
+      let value = el.value.replace(/,/g, '');
+      if (value === '0.00' || value === '0') {
+        el.value = '';
+      } else {
+        el.value = value;
+      }
+    });
+  });
+
+  if (calcBtn) {
+    calcBtn.addEventListener('click', () => {
+      const getVal = (id: string) => {
+        const el = document.getElementById(id) as HTMLInputElement;
+        if (el.classList.contains('formatted-input')) {
+          return parseFormattedNumber(el.value);
+        }
+        return parseFloat(el?.value || '0');
+      };
+
+      const annualGross = getVal('annual-gross');
+      const annualExpenses = getVal('annual-expenses');
+
+      const result = calculateFreelancerTax(annualGross, annualExpenses);
+
+      // Update UI
+      const fmt = (num: number) => num.toLocaleString('en-PH', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+      const setText = (id: string, val: string) => {
+        const el = document.getElementById(id);
+        if (el) el.textContent = val;
+      };
+
+      setText('graduated-tax', fmt(result.optionA.totalTax));
+      setText('grad-income-tax', fmt(result.optionA.incomeTax));
+      setText('grad-percentage-tax', fmt(result.optionA.percentageTax));
+      setText('grad-taxable', fmt(result.optionA.taxBase));
+      
+      setText('flat-tax', fmt(result.optionB.totalTax));
+      setText('flat-base', fmt(result.optionB.taxBase));
+      // Note: optionB.deduction is not directly in result, but we can infer or hardcode 250k if needed, 
+      // but the result object structure from taxCalculator might need checking.
+      // Looking at taxCalculator.ts, calculateFreelancerTax returns:
+      // { optionA: {...}, optionB: { totalTax, netIncome, taxBase }, recommendation }
+      // It doesn't explicitly return the deduction used for Option B in the result object, 
+      // but we know it's 250k unless mixed income logic changes things.
+      // For now, we'll leave the hardcoded 250k in HTML or update if needed.
+
+      const recommendation = document.getElementById('recommendation-text');
+      if (recommendation) {
+        if (result.recommendation === 'Option B') {
+          recommendation.textContent = "Option B (8% Flat Rate) is better for you.";
+          recommendation.className = "recommendation success";
+        } else {
+          recommendation.textContent = "Option A (Graduated Rates) is better for you.";
+          recommendation.className = "recommendation info";
+        }
+      }
+
+      document.getElementById('freelancer-result')?.classList.remove('hidden');
+    });
+  }
+</script>

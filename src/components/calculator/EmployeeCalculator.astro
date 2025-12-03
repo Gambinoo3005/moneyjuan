@@ -1,0 +1,421 @@
+---
+// src/components/calculator/EmployeeCalculator.astro
+---
+
+<div class="calculator-module" id="employee-calculator">
+  <div class="input-group">
+    <label for="pay-period">Pay Period</label>
+    <select id="pay-period">
+      <option value="monthly" selected>Monthly</option>
+      <option value="semi-monthly">Semi-Monthly</option>
+      <option value="weekly">Weekly</option>
+      <option value="daily">Daily</option>
+    </select>
+  </div>
+
+  <div class="input-group">
+    <label for="basic-pay">Basic Pay (per period)</label>
+    <div class="input-wrapper">
+      <span class="currency">₱</span>
+      <input type="text" id="basic-pay" placeholder="0.00" class="formatted-input">
+    </div>
+  </div>
+
+  <div class="advanced-toggle">
+    <button type="button" id="toggle-advanced">Show Advanced Options</button>
+  </div>
+
+  <div class="advanced-options hidden" id="advanced-options">
+    <div class="input-group">
+      <label for="overtime-pay">Overtime Pay</label>
+      <div class="input-wrapper">
+        <span class="currency">₱</span>
+        <input type="text" id="overtime-pay" placeholder="0.00" class="formatted-input">
+      </div>
+    </div>
+
+    <div class="input-group">
+      <label for="night-shift-hours">Night Shift Hours</label>
+      <div class="input-wrapper">
+        <input type="number" id="night-shift-hours" placeholder="0" min="0" step="1">
+      </div>
+    </div>
+
+    <div class="input-group">
+      <label for="allowances-taxable">Taxable Allowances</label>
+      <div class="input-wrapper">
+        <span class="currency">₱</span>
+        <input type="text" id="allowances-taxable" placeholder="0.00" class="formatted-input">
+      </div>
+    </div>
+
+    <div class="input-group">
+      <label for="allowances-nontaxable">Non-Taxable Allowances</label>
+      <div class="input-wrapper">
+        <span class="currency">₱</span>
+        <input type="text" id="allowances-nontaxable" placeholder="0.00" class="formatted-input">
+      </div>
+    </div>
+    
+    <div class="checkbox-group">
+      <input type="checkbox" id="is-mwe">
+      <label for="is-mwe">Minimum Wage Earner?</label>
+    </div>
+  </div>
+
+  <button id="calculate-btn" class="btn-primary">Calculate Net Pay</button>
+
+  <div id="result-section" class="result-section hidden">
+    <h3>Estimated Net Pay</h3>
+    <div class="net-pay-display">
+      <span class="currency">₱</span>
+      <span id="net-pay-value">0.00</span>
+    </div>
+
+    <div class="breakdown">
+      <div class="breakdown-item">
+        <span>Gross Pay</span>
+        <span id="gross-pay-value">0.00</span>
+      </div>
+      <div class="breakdown-item" id="night-diff-row" style="display: none;">
+        <span>Night Differential</span>
+        <span id="night-diff-value">0.00</span>
+      </div>
+      <div class="breakdown-item deduction">
+        <span>SSS Contribution</span>
+        <span id="sss-deduction">0.00</span>
+      </div>
+      <div class="breakdown-item deduction">
+        <span>PhilHealth Contribution</span>
+        <span id="philhealth-deduction">0.00</span>
+      </div>
+      <div class="breakdown-item deduction">
+        <span>Pag-IBIG Contribution</span>
+        <span id="pagibig-deduction">0.00</span>
+      </div>
+      <div class="breakdown-item deduction">
+        <span>Withholding Tax</span>
+        <span id="tax-deduction">0.00</span>
+      </div>
+      <div class="breakdown-item total-deduction">
+        <span>Total Deductions</span>
+        <span id="total-deduction">0.00</span>
+      </div>
+    </div>
+  </div>
+</div>
+
+<style>
+  .calculator-module {
+    background: #fff;
+    padding: var(--space-md);
+    border-radius: 12px;
+    box-shadow: var(--shadow-md);
+    border: 1px solid var(--color-border);
+    max-width: 500px;
+    margin: 0 auto;
+  }
+
+  .input-group {
+    margin-bottom: var(--space-sm);
+  }
+
+  label {
+    display: block;
+    margin-bottom: 0.5rem;
+    font-weight: 600;
+    color: var(--color-text-main);
+    font-size: 0.95rem;
+  }
+
+  .input-wrapper {
+    position: relative;
+    display: flex;
+    align-items: center;
+  }
+
+  .input-wrapper .currency {
+    position: absolute;
+    left: 1.25rem;
+    color: var(--color-text-muted);
+    font-weight: 500;
+    pointer-events: none;
+    z-index: 10;
+  }
+
+  input, select {
+    width: 100%;
+    padding: 0.875rem;
+    padding-left: 2.5rem; /* Space for currency symbol */
+    border: 1px solid var(--color-border);
+    border-radius: 8px;
+    font-size: 1rem;
+    font-family: var(--font-body);
+    color: var(--color-text-main);
+    transition: border-color 0.2s, box-shadow 0.2s;
+    background: var(--color-bg);
+  }
+  
+  select {
+    padding-left: 0.75rem;
+    cursor: pointer;
+  }
+
+  input:focus, select:focus {
+    outline: none;
+    border-color: var(--color-primary);
+    box-shadow: 0 0 0 3px rgba(5, 150, 105, 0.1);
+  }
+
+  .btn-primary {
+    width: 100%;
+    background-color: var(--color-primary);
+    color: white;
+    padding: 0.875rem;
+    border: none;
+    border-radius: 8px;
+    font-weight: 700;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    margin-top: var(--space-sm);
+    font-family: var(--font-display);
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    font-size: 0.95rem;
+  }
+
+  .btn-primary:hover {
+    background-color: #047857;
+    transform: translateY(-1px);
+    box-shadow: var(--shadow-md);
+  }
+
+  .advanced-toggle {
+    margin-bottom: var(--space-sm);
+    text-align: center;
+    margin-top: var(--space-sm);
+  }
+
+  #toggle-advanced {
+    background: none;
+    border: none;
+    color: var(--color-primary);
+    cursor: pointer;
+    font-size: 0.9rem;
+    font-weight: 600;
+    padding: 0.5rem;
+    border-radius: 4px;
+    transition: background 0.2s;
+  }
+  
+  #toggle-advanced:hover {
+    background: var(--color-surface-hover);
+  }
+
+  .hidden {
+    display: none;
+  }
+
+  .result-section {
+    margin-top: var(--space-md);
+    padding-top: var(--space-md);
+    border-top: 1px solid var(--color-border);
+    animation: fadeIn 0.5s ease-out;
+  }
+  
+  @keyframes fadeIn {
+    from { opacity: 0; transform: translateY(10px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+  
+  .result-section h3 {
+    font-size: 1.1rem;
+    color: var(--color-text-muted);
+    text-align: center;
+    margin-bottom: 0.5rem;
+    font-weight: 600;
+  }
+
+  .net-pay-display {
+    font-size: 2.5rem;
+    font-weight: 800;
+    color: var(--color-primary);
+    text-align: center;
+    margin-bottom: var(--space-md);
+    font-family: var(--font-display);
+    letter-spacing: -0.02em;
+  }
+
+  .breakdown {
+    background: var(--color-surface);
+    padding: 1.5rem;
+    border-radius: 8px;
+    border: 1px solid var(--color-border);
+  }
+
+  .breakdown-item {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 0.75rem;
+    font-size: 0.95rem;
+    color: var(--color-text-main);
+  }
+
+  .deduction {
+    color: #EF4444;
+  }
+
+  .total-deduction {
+    border-top: 1px dashed var(--color-border);
+    padding-top: 0.75rem;
+    margin-top: 0.75rem;
+    font-weight: 700;
+    color: var(--color-text-main);
+  }
+  
+  .checkbox-group {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    margin-top: 1rem;
+    padding: 0.75rem;
+    background: var(--color-surface);
+    border-radius: 6px;
+    border: 1px solid var(--color-border);
+  }
+  
+  .checkbox-group input {
+    width: 1.25rem;
+    height: 1.25rem;
+    padding: 0;
+    margin: 0;
+    cursor: pointer;
+    accent-color: var(--color-primary);
+  }
+  
+  .checkbox-group label {
+    margin-bottom: 0;
+    cursor: pointer;
+    user-select: none;
+  }
+</style>
+
+<script>
+  import { calculateEmployeeNetPay } from '../../utils/taxCalculator';
+
+  const calculateBtn = document.getElementById('calculate-btn');
+  const advancedToggle = document.getElementById('toggle-advanced');
+  const advancedOptions = document.getElementById('advanced-options');
+
+  // Input Formatting Logic
+  const formatNumber = (num: string) => {
+    if (!num) return '';
+    const parts = num.split('.');
+    parts[0] = parts[0].replace(/\B(?=(\d{3})+(?!\d))/g, ',');
+    return parts.join('.');
+  };
+
+  const parseFormattedNumber = (str: string) => {
+    return parseFloat(str.replace(/,/g, '')) || 0;
+  };
+
+  const formattedInputs = document.querySelectorAll('.formatted-input');
+  formattedInputs.forEach(input => {
+    const el = input as HTMLInputElement;
+    
+    el.addEventListener('input', (e) => {
+      // Allow only numbers, commas, and dots
+      let value = el.value.replace(/[^0-9.]/g, '');
+      
+      // Prevent multiple dots
+      const parts = value.split('.');
+      if (parts.length > 2) {
+        value = parts[0] + '.' + parts.slice(1).join('');
+      }
+      
+      // Store cursor position
+      // This is a simple implementation; for perfect cursor handling with commas, more complex logic is needed.
+      // For now, we'll format on blur to avoid cursor jumping issues, or simple formatting.
+      // Let's try formatting on input but handling cursor is tricky.
+      // Alternative: Format on blur, unformat on focus.
+    });
+
+    el.addEventListener('blur', () => {
+      let value = el.value.replace(/,/g, '');
+      if (value) {
+        el.value = formatNumber(value);
+      }
+    });
+
+    el.addEventListener('focus', () => {
+      let value = el.value.replace(/,/g, '');
+      if (value === '0.00' || value === '0') {
+        el.value = '';
+      } else {
+        el.value = value;
+      }
+    });
+  });
+
+  if (advancedToggle && advancedOptions) {
+    advancedToggle.addEventListener('click', () => {
+      advancedOptions.classList.toggle('hidden');
+      advancedToggle.textContent = advancedOptions.classList.contains('hidden') 
+        ? 'Show Advanced Options' 
+        : 'Hide Advanced Options';
+    });
+  }
+
+  if (calculateBtn) {
+    calculateBtn.addEventListener('click', () => {
+      const getVal = (id: string) => {
+        const el = document.getElementById(id) as HTMLInputElement;
+        if (el.classList.contains('formatted-input')) {
+          return parseFormattedNumber(el.value);
+        }
+        return parseFloat(el?.value || '0');
+      };
+      
+      const input = {
+        period: (document.getElementById('pay-period') as HTMLSelectElement).value as any,
+        basicPay: getVal('basic-pay'),
+        overtimePay: getVal('overtime-pay'),
+        nightShiftHours: getVal('night-shift-hours'),
+        allowancesTaxable: getVal('allowances-taxable'),
+        allowancesNonTaxable: getVal('allowances-nontaxable'),
+        bonusThisPay: 0, 
+        bonusYTDExclThisPay: 0, 
+        isMinimumWageEarner: (document.getElementById('is-mwe') as HTMLInputElement).checked
+      };
+
+      const result = calculateEmployeeNetPay(input);
+
+      // Update UI
+      const fmt = (num: number) => num.toLocaleString('en-PH', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+
+      const setText = (id: string, val: string) => {
+        const el = document.getElementById(id);
+        if (el) el.textContent = val;
+      };
+
+      setText('net-pay-value', fmt(result.netPay));
+      setText('gross-pay-value', fmt(result.grossPay));
+      setText('sss-deduction', `-${fmt(result.deductions.sss)}`);
+      setText('philhealth-deduction', `-${fmt(result.deductions.philhealth)}`);
+      setText('pagibig-deduction', `-${fmt(result.deductions.pagibig)}`);
+      setText('tax-deduction', `-${fmt(result.deductions.tax)}`);
+      setText('total-deduction', `-${fmt(result.deductions.total)}`);
+
+      // Show/Hide Night Diff Row
+      const ndRow = document.getElementById('night-diff-row');
+      if (result.nightDifferentialPay > 0 && ndRow) {
+        ndRow.style.display = 'flex';
+        setText('night-diff-value', fmt(result.nightDifferentialPay));
+      } else if (ndRow) {
+        ndRow.style.display = 'none';
+      }
+
+      document.getElementById('result-section')?.classList.remove('hidden');
+    });
+  }
+</script>

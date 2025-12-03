@@ -1,0 +1,316 @@
+```
+---
+// src/components/calculator/BusinessCalculator.astro
+---
+
+<div class="calculator-module hidden" id="business-calculator">
+  <div class="input-group">
+    <label for="biz-gross">Annual Gross Sales / Receipts</label>
+    <div class="input-wrapper">
+      <span class="currency">₱</span>
+      <input type="text" id="biz-gross" placeholder="0.00" class="formatted-input">
+    </div>
+  </div>
+
+  <div class="input-group">
+    <label for="input-vat">Input VAT (Expenses VAT)</label>
+    <div class="input-wrapper">
+      <span class="currency">₱</span>
+      <input type="text" id="input-vat" placeholder="0.00" min="0" step="0.01" class="formatted-input">
+    </div>
+    <small class="hint">Only applicable if VAT registered</small>
+  </div>
+
+  <div class="checkbox-group">
+    <input type="checkbox" id="is-vat-reg">
+    <label for="is-vat-reg">Are you VAT Registered?</label>
+  </div>
+
+  <button id="calc-biz-btn" class="btn-primary">Calculate Tax</button>
+
+  <div id="biz-result" class="result-section hidden">
+    <h3>Business Tax Result</h3>
+    
+    <div class="result-card">
+      <div class="tax-type" id="biz-tax-type">Percentage Tax</div>
+      <div class="tax-amount">
+        <span class="currency">₱</span>
+        <span id="biz-tax-amount">0.00</span>
+      </div>
+      
+      <div class="details-list">
+        <div class="detail-row">
+          <span>Gross Sales</span>
+          <span id="biz-gross-display">0.00</span>
+        </div>
+        <div class="detail-row" id="vat-output-row">
+          <span>Output VAT (12%)</span>
+          <span id="output-vat">0.00</span>
+        </div>
+        <div class="detail-row" id="vat-input-row">
+          <span>Input VAT</span>
+          <span id="input-vat">0.00</span>
+        </div>
+        <div class="detail-row" id="pt-rate-row">
+          <span>Tax Rate</span>
+          <span id="biz-tax-rate">3%</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<style>
+  .calculator-module {
+    background: #fff;
+    padding: var(--space-md);
+    border-radius: 12px;
+    box-shadow: var(--shadow-md);
+    border: 1px solid var(--color-border);
+    max-width: 500px;
+    margin: 0 auto;
+  }
+
+  .hidden { display: none; }
+  
+  .input-group { margin-bottom: var(--space-sm); }
+  
+  label { 
+    display: block; 
+    margin-bottom: 0.5rem; 
+    font-weight: 600; 
+    color: var(--color-text-main);
+    font-size: 0.95rem;
+  }
+  
+  .input-wrapper { position: relative; display: flex; align-items: center; }
+  
+  .input-wrapper .currency { 
+    position: absolute; 
+    left: 1.25rem; 
+    color: var(--color-text-muted);
+    font-weight: 500;
+    pointer-events: none;
+    z-index: 10;
+  }
+  
+  input { 
+    width: 100%; 
+    padding: 0.875rem 0.875rem 0.875rem 2.5rem; 
+    border: 1px solid var(--color-border); 
+    border-radius: 8px; 
+    font-size: 1rem; 
+    font-family: var(--font-body);
+    color: var(--color-text-main);
+    transition: border-color 0.2s, box-shadow 0.2s;
+  }
+  
+  input:focus {
+    outline: none;
+    border-color: var(--color-primary);
+    box-shadow: 0 0 0 3px rgba(5, 150, 105, 0.1);
+  }
+  
+  .hint { font-size: 0.8rem; color: var(--color-text-muted); margin-top: 0.25rem; display: block; }
+
+  .btn-primary {
+    width: 100%; 
+    background-color: var(--color-primary); 
+    color: white; 
+    padding: 0.875rem; 
+    border: none; 
+    border-radius: 8px; 
+    font-weight: 700; 
+    cursor: pointer; 
+    transition: all 0.2s ease; 
+    margin-top: var(--space-sm);
+    font-family: var(--font-display);
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    font-size: 0.95rem;
+  }
+  
+  .btn-primary:hover { 
+    background-color: #047857; 
+    transform: translateY(-1px);
+    box-shadow: var(--shadow-md);
+  }
+
+  .result-section { 
+    margin-top: var(--space-md); 
+    padding-top: var(--space-md); 
+    border-top: 1px solid var(--color-border); 
+    animation: fadeIn 0.5s ease-out;
+  }
+  
+  @keyframes fadeIn {
+    from { opacity: 0; transform: translateY(10px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+  
+  .result-section h3 {
+    font-size: 1.1rem;
+    color: var(--color-text-muted);
+    text-align: center;
+    margin-bottom: 1rem;
+    font-weight: 600;
+  }
+  
+  .result-card {
+    background: var(--color-surface);
+    padding: 2rem;
+    border-radius: 12px;
+    border: 1px solid var(--color-border);
+    text-align: center;
+    box-shadow: var(--shadow-sm);
+  }
+
+  .tax-type {
+    text-transform: uppercase;
+    font-size: 0.85rem;
+    font-weight: 700;
+    color: var(--color-text-muted);
+    margin-bottom: 0.5rem;
+    letter-spacing: 0.05em;
+  }
+
+  .tax-amount {
+    font-size: 2.5rem;
+    font-weight: 800;
+    color: var(--color-primary);
+    margin-bottom: 1.5rem;
+    font-family: var(--font-display);
+    letter-spacing: -0.02em;
+  }
+
+  .details-list { text-align: left; font-size: 0.95rem; color: var(--color-text-main); }
+  
+  .detail-row { 
+    display: flex; 
+    justify-content: space-between; 
+    margin-bottom: 0.75rem; 
+    padding-bottom: 0.75rem;
+    border-bottom: 1px dashed var(--color-border);
+  }
+  
+  .detail-row:last-child {
+    border-bottom: none;
+    margin-bottom: 0;
+    padding-bottom: 0;
+  }
+  
+  .checkbox-group {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    margin-bottom: 1rem;
+    padding: 0.75rem;
+    background: var(--color-surface);
+    border-radius: 6px;
+    border: 1px solid var(--color-border);
+  }
+  
+  .checkbox-group input {
+    width: 1.25rem;
+    height: 1.25rem;
+    padding: 0;
+    accent-color: var(--color-primary);
+    cursor: pointer;
+  }
+  
+  .checkbox-group label {
+    margin-bottom: 0;
+    cursor: pointer;
+    user-select: none;
+  }
+</style>
+
+<script>
+  import { calculateBusinessTax } from '../../utils/taxCalculator';
+
+  const calcBtn = document.getElementById('calc-biz-btn');
+  
+  // Input Formatting Logic (Shared)
+  const formatNumber = (num: string) => {
+    if (!num) return '';
+    const parts = num.split('.');
+    parts[0] = parts[0].replace(/\B(?=(\d{3})+(?!\d))/g, ',');
+    return parts.join('.');
+  };
+
+  const parseFormattedNumber = (str: string) => {
+    return parseFloat(str.replace(/,/g, '')) || 0;
+  };
+
+  const formattedInputs = document.querySelectorAll('#business-calculator .formatted-input');
+  formattedInputs.forEach(input => {
+    const el = input as HTMLInputElement;
+    
+    el.addEventListener('blur', () => {
+      let value = el.value.replace(/,/g, '');
+      if (value) {
+        el.value = formatNumber(value);
+      }
+    });
+
+    el.addEventListener('focus', () => {
+      let value = el.value.replace(/,/g, '');
+      if (value === '0.00' || value === '0') {
+        el.value = '';
+      } else {
+        el.value = value;
+      }
+    });
+  });
+
+  if (calcBtn) {
+    calcBtn.addEventListener('click', () => {
+      const getVal = (id: string) => {
+        const el = document.getElementById(id) as HTMLInputElement;
+        if (el.classList.contains('formatted-input')) {
+          return parseFormattedNumber(el.value);
+        }
+        return parseFloat(el?.value || '0');
+      };
+      
+      const grossSales = getVal('biz-gross');
+      const inputVat = getVal('input-vat');
+      const isVatRegistered = (document.getElementById('is-vat-reg') as HTMLInputElement).checked;
+
+      const result = calculateBusinessTax(grossSales, inputVat, isVatRegistered);
+
+      // Update UI
+      const fmt = (num: number) => num.toLocaleString('en-PH', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+      const setText = (id: string, val: string) => {
+        const el = document.getElementById(id);
+        if (el) el.textContent = val;
+      };
+
+      setText('biz-tax-amount', fmt(result.taxDue));
+      setText('biz-gross-display', fmt(grossSales));
+      setText('biz-tax-type', result.taxType);
+
+      const vatOutputRow = document.getElementById('vat-output-row');
+      const vatInputRow = document.getElementById('vat-input-row');
+      const ptRateRow = document.getElementById('pt-rate-row');
+
+      if (result.taxType === 'Value Added Tax (VAT)') {
+        if (vatOutputRow) vatOutputRow.style.display = 'flex';
+        if (vatInputRow) vatInputRow.style.display = 'flex';
+        if (ptRateRow) ptRateRow.style.display = 'none';
+        
+        setText('output-vat', fmt(result.outputVat || 0));
+        setText('input-vat', fmt(result.inputVat || 0));
+      } else {
+        if (vatOutputRow) vatOutputRow.style.display = 'none';
+        if (vatInputRow) vatInputRow.style.display = 'none';
+        if (ptRateRow) ptRateRow.style.display = 'flex';
+        
+        setText('biz-tax-rate', result.taxRate);
+      }
+
+      document.getElementById('biz-result')?.classList.remove('hidden');
+    });
+  }
+</script>
+```
