@@ -1,0 +1,215 @@
+---
+import { getCollection } from 'astro:content';
+import { Image } from 'astro:assets';
+import FormattedDate from '../../components/FormattedDate.astro';
+import Layout from '../../layouts/Layout.astro';
+import { AUTHORS, getAuthorBySlug } from '../../data/authors';
+
+export async function getStaticPaths() {
+	return AUTHORS.map((author) => ({
+		params: { authorname: author.slug },
+		props: { authorSlug: author.slug },
+	}));
+}
+
+const { authorSlug } = Astro.props as { authorSlug: string };
+const author = getAuthorBySlug(authorSlug);
+
+if (!author) {
+	throw new Error(`Author not found for slug: ${authorSlug}`);
+}
+
+const authorPosts = (await getCollection('blog'))
+	.filter((post) => (post.data.author || '').trim().toLowerCase() === author.name.toLowerCase())
+	.sort((a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf());
+---
+
+<Layout title={`${author.name} | MoneyJuan`} description={author.bio}>
+	<div class="container author-page">
+		<section class="profile-card">
+			<div class="profile-image-wrap">
+				<img src={author.image} alt={author.name} class="profile-image" loading="eager" />
+			</div>
+			<div class="profile-content">
+				<p class="profile-eyebrow">Author</p>
+				<h1 class="profile-name">{author.name}</h1>
+				<p class="profile-role">{author.role}</p>
+				<p class="profile-bio">{author.bio}</p>
+			</div>
+		</section>
+
+		<section class="posts-section">
+			<h2 class="posts-title">Articles by {author.name}</h2>
+			{authorPosts.length === 0 ? (
+				<p class="no-posts">No published articles yet.</p>
+			) : (
+				<div class="grid posts-grid">
+					{authorPosts.map((post) => (
+						<a href={`/blog/${post.id}/`} class="card post-card">
+							<div class="image-container">
+								{post.data.heroImage && <Image width={720} height={360} src={post.data.heroImage} alt="" />}
+							</div>
+							<div class="post-content">
+								<div class="category-small">{post.data.category ? post.data.category.replace('-', ' ') : 'Article'}</div>
+								<h3 class="title">{post.data.title}</h3>
+								<div class="meta-small">
+									<FormattedDate date={post.data.pubDate} />
+								</div>
+							</div>
+						</a>
+					))}
+				</div>
+			)}
+		</section>
+	</div>
+</Layout>
+
+<style>
+	.author-page {
+		padding-top: var(--space-md);
+		padding-bottom: var(--space-lg);
+		max-width: 980px;
+	}
+
+	.profile-card {
+		display: grid;
+		grid-template-columns: 220px 1fr;
+		gap: var(--space-md);
+	}
+
+	.profile-image-wrap {
+		align-self: start;
+	}
+
+	.profile-image {
+		width: 100%;
+		aspect-ratio: 1 / 1;
+		object-fit: cover;
+		border-radius: 14px;
+		border: 1px solid var(--color-border);
+	}
+
+	.profile-eyebrow {
+		font-size: 0.8rem;
+		text-transform: uppercase;
+		letter-spacing: 0.08em;
+		font-weight: 700;
+		color: var(--color-primary);
+		margin-bottom: 0.25rem;
+	}
+
+	.profile-name {
+		font-size: clamp(1.9rem, 4vw, 2.5rem);
+		font-weight: 800;
+		line-height: 1.15;
+		margin-bottom: 0.35rem;
+	}
+
+	.profile-role {
+		font-size: 1rem;
+		font-weight: 700;
+		color: var(--color-text-muted);
+		margin-bottom: 0.8rem;
+	}
+
+	.profile-bio {
+		font-size: 1rem;
+		line-height: 1.7;
+		color: var(--color-text-main);
+		max-width: 75ch;
+	}
+
+	.posts-section {
+		margin-top: var(--space-md);
+	}
+
+	.posts-title {
+		font-size: clamp(1.4rem, 3vw, 2rem);
+		margin-bottom: var(--space-sm);
+	}
+
+	.no-posts {
+		color: var(--color-text-muted);
+	}
+
+	.posts-grid {
+		grid-template-columns: repeat(auto-fill, minmax(min(250px, 100%), 1fr));
+		gap: var(--space-md);
+	}
+
+	.post-card {
+		background: #FFFFFF;
+		border-radius: 12px;
+		border: 1px solid var(--color-border);
+		overflow: hidden;
+		transition: all 0.3s ease;
+		text-decoration: none;
+		display: flex;
+		flex-direction: column;
+		color: inherit;
+	}
+
+	.post-card:hover {
+		transform: translateY(-3px);
+		box-shadow: var(--shadow-md);
+		border-color: var(--color-primary);
+	}
+
+	.image-container {
+		width: 100%;
+		aspect-ratio: 16 / 9;
+		overflow: hidden;
+		background: var(--color-surface);
+		border-bottom: 1px solid var(--color-border);
+	}
+
+	.image-container img {
+		width: 100%;
+		height: 100%;
+		object-fit: cover;
+		transition: transform 0.3s ease;
+	}
+
+	.post-card:hover .image-container img {
+		transform: scale(1.04);
+	}
+
+	.post-content {
+		padding: var(--space-sm);
+		display: flex;
+		flex-direction: column;
+		flex: 1;
+	}
+
+	.category-small {
+		font-size: 0.75rem;
+		font-weight: 700;
+		text-transform: uppercase;
+		color: var(--color-primary);
+		margin-bottom: 0.3rem;
+		letter-spacing: 0.05em;
+	}
+
+	.title {
+		font-size: 1.15rem;
+		line-height: 1.35;
+		margin-bottom: var(--space-xs);
+	}
+
+	.meta-small {
+		font-size: 0.85rem;
+		color: var(--color-text-muted);
+		margin-top: auto;
+	}
+
+	@media (max-width: 800px) {
+		.profile-card {
+			grid-template-columns: 1fr;
+			gap: var(--space-sm);
+		}
+
+		.profile-image-wrap {
+			max-width: 160px;
+		}
+	}
+</style>

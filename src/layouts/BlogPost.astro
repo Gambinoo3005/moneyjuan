@@ -3,10 +3,13 @@ import type { CollectionEntry } from 'astro:content';
 import Layout from './Layout.astro';
 import FormattedDate from '../components/FormattedDate.astro';
 import { Image } from 'astro:assets';
+import { getAuthorByName } from '../data/authors';
 
 type Props = CollectionEntry<'blog'>['data'];
 
-const { title, description, pubDate, updatedDate, heroImage, category, author } = Astro.props;
+const { title, description, pubDate, updatedDate, category, author } = Astro.props;
+const displayAuthor = author || 'MoneyJuan Team';
+const authorProfile = getAuthorByName(displayAuthor);
 ---
 
 <Layout title={title} description={description}>
@@ -15,7 +18,13 @@ const { title, description, pubDate, updatedDate, heroImage, category, author } 
 			<div class="header-meta">
 				<div class="author-block">
 					<span class="by-text">by</span>
-					<span class="author-name">{author || 'MoneyJuan Team'}</span>
+					{
+						authorProfile ? (
+							<a href={`/author/${authorProfile.slug}/`} class="author-name author-link">{displayAuthor}</a>
+						) : (
+							<span class="author-name">{displayAuthor}</span>
+						)
+					}
 				</div>
 				<div class="date-block">
 					<FormattedDate date={pubDate} />
@@ -43,10 +52,6 @@ const { title, description, pubDate, updatedDate, heroImage, category, author } 
 				<h1 class="main-title">{title}</h1>
 				{description && <p class="subtitle">{description}</p>}
 			</div>
-		</div>
-
-		<div class="hero-image">
-			{heroImage && <Image width={1020} height={510} src={heroImage} alt="" />}
 		</div>
 		
 		<div class="post-grid">
@@ -102,17 +107,17 @@ const { title, description, pubDate, updatedDate, heroImage, category, author } 
 
 <style>
 	.blog-post {
-		padding-top: var(--space-lg);
-		padding-bottom: var(--space-xl);
+		padding-top: var(--space-md);
+		padding-bottom: var(--space-lg);
 	}
 
 	/* Header Layout */
 	.header-grid {
 		display: grid;
 		grid-template-columns: 250px 1fr;
-		gap: var(--space-lg);
-		margin-bottom: var(--space-md);
-		padding-bottom: var(--space-md);
+		gap: var(--space-md);
+		margin-bottom: var(--space-sm);
+		padding-bottom: var(--space-sm);
 		border-bottom: 1px solid var(--color-border);
 	}
 
@@ -140,6 +145,11 @@ const { title, description, pubDate, updatedDate, heroImage, category, author } 
 		color: var(--color-primary);
 	}
 
+	.author-link:hover {
+		text-decoration: underline;
+		text-underline-offset: 3px;
+	}
+
 	.date-block {
 		font-size: 0.9rem;
 		color: var(--color-text-muted);
@@ -155,8 +165,9 @@ const { title, description, pubDate, updatedDate, heroImage, category, author } 
 	/* Social Share */
 	.social-share {
 		display: flex;
+		flex-wrap: wrap;
 		gap: 0.5rem;
-		margin-top: var(--space-md);
+		margin-top: var(--space-sm);
 	}
 
 	.share-btn {
@@ -187,7 +198,7 @@ const { title, description, pubDate, updatedDate, heroImage, category, author } 
 	}
 
 	.header-content {
-		padding-left: var(--space-md);
+		padding-left: var(--space-sm);
 	}
 
 	.category-label {
@@ -202,37 +213,21 @@ const { title, description, pubDate, updatedDate, heroImage, category, author } 
 
 	.main-title {
 		font-family: var(--font-display);
-		font-size: clamp(2.5rem, 5vw, 4rem);
-		line-height: 1.3;
+		font-size: clamp(2rem, 4.2vw, 3.1rem);
+		line-height: 1.2;
 		font-weight: 800;
-		margin-bottom: var(--space-sm);
+		margin-bottom: var(--space-xs);
 		padding-bottom: 0.1em;
 		letter-spacing: -0.02em;
 		color: var(--color-text-main);
 	}
 
 	.subtitle {
-		font-size: 1.5rem;
-		line-height: 1.4;
+		font-size: clamp(1rem, 2.1vw, 1.2rem);
+		line-height: 1.45;
 		color: var(--color-text-muted);
 		max-width: 65ch;
 		font-weight: 400;
-	}
-
-	.hero-image {
-		width: 100%;
-		margin-bottom: var(--space-lg);
-	}
-
-	.hero-image img {
-		display: block;
-		margin: 0 auto;
-		border-radius: 12px;
-		box-shadow: var(--shadow-md);
-		width: 100%;
-		max-width: 100%;
-		aspect-ratio: 21/9;
-		object-fit: cover;
 	}
 
 
@@ -421,6 +416,7 @@ const { title, description, pubDate, updatedDate, heroImage, category, author } 
 		font-size: 0.85rem;
 		color: var(--color-text-muted);
 		display: flex;
+		flex-wrap: wrap;
 		align-items: center;
 		gap: 0.4rem;
 		margin-top: auto;
@@ -444,8 +440,17 @@ const { title, description, pubDate, updatedDate, heroImage, category, author } 
 	}
 
 	.prose :global(h3) {
-		font-size: clamp(1.5rem, 2.5vw, 2rem);
-		margin-top: var(--space-md);
+		font-size: clamp(1.35rem, 2.15vw, 1.75rem);
+		margin-top: calc(var(--space-md) * 0.9);
+		margin-bottom: calc(var(--space-sm) * 0.75);
+		scroll-margin-top: 100px;
+	}
+
+	.prose :global(h4) {
+		font-size: clamp(1.2rem, 1.75vw, 1.4rem);
+		font-weight: 700;
+		margin-top: calc(var(--space-sm) * 1.1);
+		margin-bottom: calc(var(--space-sm) * 0.55);
 		scroll-margin-top: 100px;
 	}
 
@@ -481,6 +486,18 @@ const { title, description, pubDate, updatedDate, heroImage, category, author } 
 		color: var(--color-text-muted);
 	}
 
+	.prose :global(pre),
+	.prose :global(code) {
+		max-width: 100%;
+		overflow-x: auto;
+	}
+
+	.prose :global(table) {
+		display: block;
+		max-width: 100%;
+		overflow-x: auto;
+	}
+
 	/* Responsive */
 	@media (max-width: 1024px) {
 		.post-grid {
@@ -506,10 +523,42 @@ const { title, description, pubDate, updatedDate, heroImage, category, author } 
 			border-right: none;
 			border-bottom: 1px solid var(--color-border);
 			padding-right: 0;
-			padding-bottom: var(--space-md);
-			display: flex;
-			justify-content: space-between;
-			align-items: center;
+			padding-bottom: var(--space-sm);
+			display: grid;
+			grid-template-columns: 1fr auto;
+			grid-template-areas:
+				'author share'
+				'date share';
+			column-gap: 0.75rem;
+			row-gap: 0.25rem;
+			align-items: start;
+		}
+
+		.author-block {
+			grid-area: author;
+			margin-bottom: 0;
+		}
+
+		.date-block {
+			grid-area: date;
+		}
+
+		.social-share {
+			grid-area: share;
+			margin-top: 0;
+			justify-self: end;
+			align-self: start;
+			gap: 0.35rem;
+		}
+
+		.share-btn {
+			width: 32px;
+			height: 32px;
+		}
+
+		.share-btn svg {
+			width: 16px;
+			height: 16px;
 		}
 
 		.header-content {
@@ -517,7 +566,25 @@ const { title, description, pubDate, updatedDate, heroImage, category, author } 
 		}
 
 		.main-title {
-			font-size: 2.5rem;
+			font-size: 2.1rem;
+		}
+	}
+
+	@media (max-width: 640px) {
+		.blog-post {
+			padding-top: var(--space-md);
+		}
+
+		.header-meta {
+			column-gap: 0.5rem;
+		}
+
+		.main-title {
+			font-size: clamp(1.7rem, 9vw, 2.1rem);
+		}
+
+		.section-title {
+			font-size: 1.4rem;
 		}
 	}
 

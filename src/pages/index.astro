@@ -10,8 +10,8 @@ const allPosts = (await getCollection('blog')).sort(
 
 const featurePost = allPosts[0];
 const sidePosts = allPosts.slice(1, 4);
-const latestArticles = allPosts.slice(4, 10); // 6 articles for 3x2 grid
-const financialEvents = allPosts.slice(10, 16); // 6 more for events section
+const latestArticles = allPosts.slice(0, 6);
+const financialEvents = allPosts.slice(6, 12);
 ---
 
 <Layout>
@@ -41,15 +41,9 @@ const financialEvents = allPosts.slice(10, 16); // 6 more for events section
 
 			{/* Side Stories List */}
 			<div class="side-stories">
-				<div class="search-container">
-					<button class="search-btn">
-						<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
-						<span>Search Articles</span>
-					</button>
-				</div>
 				<h2 class="side-heading">Top Stories</h2>
 				<div class="side-list">
-					{sidePosts.map((post, index) => (
+					{sidePosts.map((post) => (
 						<a href={`/blog/${post.id}/`} class="side-item">
 							<div class="side-content">
 								<div class="category-small">{post.data.category ? post.data.category.replace('-', ' ') : 'Article'}</div>
@@ -165,7 +159,7 @@ const financialEvents = allPosts.slice(10, 16); // 6 more for events section
 	/* Hero Grid Layout */
 	.hero-grid {
 		display: grid;
-		grid-template-columns: 2fr 1fr;
+		grid-template-columns: 1.45fr 1fr;
 		gap: var(--space-md);
 		margin-bottom: var(--space-lg);
 	}
@@ -184,7 +178,8 @@ const financialEvents = allPosts.slice(10, 16); // 6 more for events section
 
 	.feature-image {
 		width: 100%;
-		aspect-ratio: 16/9;
+		aspect-ratio: 16/8;
+		max-height: clamp(230px, 32vw, 360px);
 		overflow: hidden;
 		border-radius: 12px;
 		margin-bottom: var(--space-sm);
@@ -244,6 +239,7 @@ const financialEvents = allPosts.slice(10, 16); // 6 more for events section
 		color: var(--color-text-muted);
 		font-weight: 600;
 		display: flex;
+		flex-wrap: wrap;
 		align-items: center;
 		gap: 0.5rem;
 	}
@@ -258,34 +254,6 @@ const financialEvents = allPosts.slice(10, 16); // 6 more for events section
 		border-left: 1px solid var(--color-border);
 		display: flex;
 		flex-direction: column;
-	}
-
-	.search-container {
-		margin-bottom: var(--space-md);
-	}
-
-	.search-btn {
-		width: 100%;
-		display: flex;
-		align-items: center;
-		justify-content: center;
-		gap: 0.5rem;
-		background: var(--color-surface);
-		border: 1px solid var(--color-border);
-		padding: 0.75rem 1rem;
-		border-radius: 8px;
-		cursor: pointer;
-		font-family: var(--font-body);
-		font-weight: 600;
-		color: var(--color-text-muted);
-		transition: all 0.2s ease;
-	}
-
-	.search-btn:hover {
-		background: var(--color-surface-hover);
-		color: var(--color-primary);
-		border-color: var(--color-primary);
-		box-shadow: var(--shadow-sm);
 	}
 
 	.side-heading {
@@ -311,6 +279,7 @@ const financialEvents = allPosts.slice(10, 16); // 6 more for events section
 		display: flex;
 		justify-content: space-between;
 		gap: var(--space-sm);
+		align-items: flex-start;
 		text-decoration: none;
 		color: inherit;
 		group: side-item;
@@ -621,8 +590,57 @@ const financialEvents = allPosts.slice(10, 16); // 6 more for events section
 	}
 
 	@media (max-width: 600px) {
+		.verge-wrapper {
+			padding-top: var(--space-sm);
+		}
+
+		.feature-title {
+			font-size: clamp(1.75rem, 8vw, 2.35rem);
+		}
+
+		.feature-excerpt {
+			font-size: 1rem;
+		}
+
+		.section-title {
+			font-size: 1.4rem;
+		}
+
+		.newsletter-cta {
+			border-radius: 16px;
+			padding: var(--space-md);
+		}
+
+		.newsletter-title {
+			font-size: clamp(1.9rem, 10vw, 2.4rem);
+		}
+
+		.newsletter-desc {
+			font-size: 1rem;
+		}
+
+		.feature-item {
+			font-size: 0.95rem;
+		}
+
 		.articles-grid {
 			grid-template-columns: 1fr;
+		}
+	}
+
+	@media (max-width: 480px) {
+		.side-item {
+			flex-direction: column-reverse;
+		}
+
+		.side-image {
+			width: 100%;
+			height: auto;
+			aspect-ratio: 16 / 9;
+		}
+
+		.side-title {
+			font-size: 1.05rem;
 		}
 	}
 </style>

@@ -80,7 +80,7 @@ const title = categoryNames[category as keyof typeof categoryNames];
 	}
 
 	.posts-grid {
-		grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+		grid-template-columns: repeat(auto-fill, minmax(min(240px, 100%), 1fr));
 		gap: var(--space-md);
 	}
 
@@ -155,6 +155,7 @@ const title = categoryNames[category as keyof typeof categoryNames];
 		font-size: 0.85rem;
 		color: var(--color-text-muted);
 		display: flex;
+		flex-wrap: wrap;
 		align-items: center;
 		gap: 0.4rem;
 		margin-top: auto;
@@ -168,5 +169,24 @@ const title = categoryNames[category as keyof typeof categoryNames];
 
 	.separator-small {
 		color: var(--color-border);
+	}
+
+	@media (max-width: 600px) {
+		.page-content {
+			padding: var(--space-md) var(--space-sm);
+		}
+
+		.page-title {
+			font-size: clamp(1.9rem, 9vw, 2.3rem);
+			margin-bottom: var(--space-md);
+		}
+
+		.no-posts {
+			font-size: 1rem;
+		}
+
+		.post-content {
+			padding: var(--space-sm);
+		}
 	}
 </style>

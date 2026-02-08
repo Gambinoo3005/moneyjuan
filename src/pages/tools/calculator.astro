@@ -1,11 +1,15 @@
 ---
-import Layout from '../../layouts/Layout.astro';
-import EmployeeCalculator from '../../components/calculator/EmployeeCalculator.astro';
-import FreelancerCalculator from '../../components/calculator/FreelancerCalculator.astro';
-import BusinessCalculator from '../../components/calculator/BusinessCalculator.astro';
+import Layout from "../../layouts/Layout.astro";
+import EmployeeCalculator from "../../components/calculator/EmployeeCalculator.astro";
+import FreelancerCalculator from "../../components/calculator/FreelancerCalculator.astro";
+import BusinessCalculator from "../../components/calculator/BusinessCalculator.astro";
+import BonusCalculator from "../../components/calculator/BonusCalculator.astro";
+import ReverseCalculator from "../../components/calculator/ReverseCalculator.astro";
+import HistoryPanel from "../../components/calculator/HistoryPanel.astro";
 
 const title = "Philippine Tax & Salary Calculator 2025";
-const description = "Calculate your net pay, income tax, and government contributions (SSS, PhilHealth, Pag-IBIG) with our updated 2025 calculator.";
+const description =
+  "Calculate your net pay, income tax, and government contributions (SSS, PhilHealth, Pag-IBIG) with our updated 2025 calculator.";
 ---
 
 <Layout title={title} description={description}>
@@ -16,19 +20,40 @@ const description = "Calculate your net pay, income tax, and government contribu
     </div>
 
     <div class="tabs">
-      <button class="tab-btn active" data-target="employee-calculator">Employee</button>
-      <button class="tab-btn" data-target="freelancer-calculator">Freelancer / Self-Employed</button>
-      <button class="tab-btn" data-target="business-calculator">Small Business</button>
+      <button class="tab-btn active" data-target="employee-calculator"
+        >Employee</button
+      >
+      <button class="tab-btn" data-target="freelancer-calculator"
+        >Freelancer / Self-Employed</button
+      >
+      <button class="tab-btn" data-target="business-calculator"
+        >Small Business</button
+      >
+      <button class="tab-btn" data-target="bonus-calculator"
+        >13th Month / Bonus</button
+      >
+      <button class="tab-btn" data-target="reverse-calculator"
+        >Reverse Calc</button
+      >
     </div>
 
     <div class="calculator-wrapper">
       <EmployeeCalculator />
       <FreelancerCalculator />
       <BusinessCalculator />
+      <BonusCalculator />
+      <ReverseCalculator />
     </div>
-    
+
+    <HistoryPanel />
+
     <div class="disclaimer">
-      <p><strong>Disclaimer:</strong> This tool is for estimation purposes only. It uses the latest available tax rates and contribution tables for 2025 (TRAIN Law, SSS, PhilHealth, Pag-IBIG). Actual deductions may vary based on your employer's specific payroll policies.</p>
+      <p>
+        <strong>Disclaimer:</strong> This tool is for estimation purposes only. It
+        uses the latest available tax rates and contribution tables for 2025 (TRAIN
+        Law, SSS, PhilHealth, Pag-IBIG). Actual deductions may vary based on your
+        employer's specific payroll policies.
+      </p>
     </div>
   </div>
 </Layout>
@@ -78,6 +103,7 @@ const description = "Calculate your net pay, income tax, and government contribu
     cursor: pointer;
     transition: all 0.2s ease;
     font-size: 0.95rem;
+    white-space: nowrap;
   }
 
   .tab-btn:hover {
@@ -116,27 +142,146 @@ const description = "Calculate your net pay, income tax, and government contribu
     margin-left: auto;
     margin-right: auto;
   }
+
+  @media (max-width: 900px) {
+    .tabs {
+      justify-content: flex-start;
+      flex-wrap: nowrap;
+      overflow-x: auto;
+      padding-bottom: 0.25rem;
+      margin-left: -0.25rem;
+      margin-right: -0.25rem;
+      padding-left: 0.25rem;
+      padding-right: 0.25rem;
+    }
+
+    .tab-btn {
+      flex: 0 0 auto;
+      padding: 0.7rem 1rem;
+      font-size: 0.9rem;
+    }
+  }
+
+  @media (max-width: 600px) {
+    .calculator-page {
+      padding-top: var(--space-md);
+      padding-bottom: var(--space-lg);
+    }
+
+    .header p {
+      font-size: 1rem;
+    }
+
+    .tabs {
+      display: grid;
+      grid-template-columns: 1fr;
+      overflow: visible;
+      margin: 0 0 var(--space-sm);
+      padding: 0;
+      gap: 0.5rem;
+    }
+
+    .tab-btn {
+      width: 100%;
+      text-align: left;
+      border-radius: 10px;
+      white-space: normal;
+    }
+
+    .disclaimer {
+      padding: var(--space-sm);
+    }
+  }
+
+  :global(.calculator-module),
+  :global(.history-container) {
+    max-width: 100%;
+  }
+
+  :global(.export-buttons) {
+    flex-wrap: wrap;
+  }
+
+  :global(.btn-secondary) {
+    min-width: 0;
+  }
+
+  :global(.breakdown-item),
+  :global(.detail-row) {
+    gap: 0.75rem;
+  }
+
+  :global(.breakdown-item span:first-child),
+  :global(.detail-row span:first-child) {
+    max-width: 65%;
+  }
+
+  @media (max-width: 480px) {
+    :global(.net-pay-display),
+    :global(.tax-amount),
+    :global(.tax-display) {
+      font-size: 2rem;
+    }
+
+    :global(.breakdown-item),
+    :global(.detail-row) {
+      flex-direction: column;
+      align-items: flex-start;
+    }
+
+    :global(.breakdown-item span:first-child),
+    :global(.detail-row span:first-child) {
+      max-width: 100%;
+    }
+
+    :global(.history-header) {
+      flex-direction: column;
+      align-items: flex-start;
+      gap: 0.5rem;
+    }
+  }
 </style>
 
 <script>
-  const tabs = document.querySelectorAll('.tab-btn');
-  const modules = document.querySelectorAll('.calculator-module');
+  const tabs = document.querySelectorAll(".tab-btn");
+  const modules = document.querySelectorAll(".calculator-module");
 
-  tabs.forEach(tab => {
-    tab.addEventListener('click', () => {
+  tabs.forEach((tab) => {
+    tab.addEventListener("click", () => {
       // Remove active class from all tabs
-      tabs.forEach(t => t.classList.remove('active'));
+      tabs.forEach((t) => t.classList.remove("active"));
       // Add active class to clicked tab
-      tab.classList.add('active');
+      tab.classList.add("active");
 
       // Hide all modules
-      modules.forEach(m => m.classList.add('hidden'));
-      
+      modules.forEach((m) => m.classList.add("hidden"));
+
       // Show target module
-      const targetId = tab.getAttribute('data-target');
+      const targetId = tab.getAttribute("data-target");
       if (targetId) {
-        document.getElementById(targetId)?.classList.remove('hidden');
+        document.getElementById(targetId)?.classList.remove("hidden");
       }
     });
+  });
+
+  // Handle automatic tab switching on restore
+  window.addEventListener("restore-calc", (e: any) => {
+    const typeToId: Record<string, string> = {
+      Employee: "employee-calculator",
+      Freelancer: "freelancer-calculator",
+      Business: "business-calculator",
+      Bonus: "bonus-calculator",
+      Reverse: "reverse-calculator",
+    };
+
+    const targetId = typeToId[e.detail.type];
+    if (targetId) {
+      const tabBtn = document.querySelector(
+        `.tab-btn[data-target="${targetId}"]`,
+      ) as HTMLButtonElement;
+      if (tabBtn && !tabBtn.classList.contains("active")) {
+        tabBtn.click();
+      }
+    }
   });
 </script>

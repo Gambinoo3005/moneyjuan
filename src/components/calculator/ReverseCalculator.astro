@@ -1,0 +1,553 @@
+---
+// src/components/calculator/ReverseCalculator.astro
+---
+
+<div class="calculator-module hidden" id="reverse-calculator">
+    <div class="input-group">
+        <label for="target-net-pay">Target Net Pay (Take Home)</label>
+        <div class="input-wrapper">
+            <span class="currency">₱</span>
+            <input
+                type="text"
+                id="target-net-pay"
+                placeholder="0.00"
+                class="formatted-input"
+            />
+        </div>
+        <small class="hint"
+            >The amount you want to receive in your bank account.</small
+        >
+    </div>
+
+    <button id="calc-reverse-btn" class="btn-primary"
+        >Calculate Required Gross</button
+    >
+
+    <div id="reverse-result" class="result-section hidden">
+        <h3>Required Salary Estimation</h3>
+
+        <div class="result-card">
+            <div class="net-pay-label">Required Monthly Gross Pay</div>
+            <div class="net-pay-display">
+                <span class="currency">₱</span>
+                <span id="required-gross-result">0.00</span>
+            </div>
+        </div>
+
+        <div class="result-breakdown">
+            <div class="breakdown-item">
+                <span>Target Net Pay</span>
+                <span id="target-net-display">0.00</span>
+            </div>
+            <div class="breakdown-item warning">
+                <span>Estimated Tax</span>
+                <span id="estimated-tax-display">0.00</span>
+            </div>
+            <div class="breakdown-item warning">
+                <span>Total Contributions (SSS/PhilHealth/Pag-IBIG)</span>
+                <span id="estimated-contrib-display">0.00</span>
+            </div>
+        </div>
+
+        <div class="recommendation info">
+            To take home this net amount, you should negotiate for a gross
+            salary of approximately the amount shown above.
+        </div>
+
+        <div class="export-buttons" data-html2canvas-ignore="true">
+            <button id="rev-save-image-btn" class="btn-secondary">
+                <svg
+                    width="16"
+                    height="16"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    stroke-width="2"
+                >
+                    <rect x="3" y="3" width="18" height="18" rx="2" ry="2"
+                    ></rect>
+                    <circle cx="8.5" cy="8.5" r="1.5"></circle>
+                    <polyline points="21 15 16 10 5 21"></polyline>
+                </svg>
+                Save as Image
+            </button>
+            <button id="rev-save-pdf-btn" class="btn-secondary">
+                <svg
+                    width="16"
+                    height="16"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    stroke-width="2"
+                >
+                    <path
+                        d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"
+                    ></path>
+                    <polyline points="14 2 14 8 20 8"></polyline>
+                    <line x1="16" y1="13" x2="8" y2="13"></line>
+                    <line x1="16" y1="17" x2="8" y2="17"></line>
+                    <polyline points="10 9 9 9 8 9"></polyline>
+                </svg>
+                Save as PDF
+            </button>
+        </div>
+    </div>
+</div>
+
+<style>
+    /* Sharing similar styles for consistency */
+    .calculator-module {
+        background: #fff;
+        padding: var(--space-md);
+        border-radius: 12px;
+        box-shadow: var(--shadow-md);
+        border: 1px solid var(--color-border);
+        max-width: 600px;
+        margin: 0 auto;
+    }
+
+    .hidden {
+        display: none !important;
+    }
+
+    .input-group {
+        margin-bottom: var(--space-sm);
+    }
+
+    label {
+        display: block;
+        margin-bottom: 0.5rem;
+        font-weight: 600;
+        color: var(--color-text-main);
+        font-size: 0.95rem;
+    }
+
+    .input-wrapper {
+        position: relative;
+        display: flex;
+        align-items: center;
+    }
+
+    .input-wrapper .currency {
+        position: absolute;
+        left: 1.25rem;
+        color: var(--color-text-muted);
+        font-weight: 500;
+        pointer-events: none;
+        z-index: 10;
+    }
+
+    input[type="text"] {
+        width: 100%;
+        padding: 0.875rem 0.875rem 0.875rem 2.5rem;
+        border: 1px solid var(--color-border);
+        border-radius: 8px;
+        font-size: 1rem;
+        font-family: var(--font-body);
+        color: var(--color-text-main);
+        transition: var(--transition-base);
+    }
+
+    input:focus {
+        outline: none;
+        border-color: var(--color-primary);
+        box-shadow: 0 0 0 3px rgba(5, 150, 105, 0.1);
+    }
+
+    .btn-primary {
+        width: 100%;
+        background-color: var(--color-primary);
+        color: white;
+        padding: 0.875rem;
+        border: none;
+        border-radius: 8px;
+        font-weight: 700;
+        cursor: pointer;
+        transition: all 0.2s ease;
+        margin-top: var(--space-sm);
+        font-family: var(--font-display);
+        text-transform: uppercase;
+        letter-spacing: 0.05em;
+        font-size: 0.95rem;
+    }
+
+    .btn-primary:hover {
+        background-color: #047857;
+        transform: translateY(-1px);
+        box-shadow: var(--shadow-md);
+    }
+
+    .hint {
+        font-size: 0.8rem;
+        color: var(--color-text-muted);
+        margin-top: 0.25rem;
+        display: block;
+    }
+
+    .result-section {
+        margin-top: var(--space-md);
+        padding-top: var(--space-md);
+        border-top: 1px solid var(--color-border);
+        animation: fadeIn 0.5s ease-out;
+    }
+
+    .result-section h3 {
+        font-size: 0.9rem;
+        text-transform: uppercase;
+        letter-spacing: 0.05em;
+        color: var(--color-text-muted);
+        text-align: center;
+        margin-bottom: 1rem;
+    }
+
+    .result-card {
+        background: linear-gradient(135deg, #ecfdf5 0%, #d1fae5 100%);
+        padding: 2rem;
+        border-radius: 16px;
+        text-align: center;
+        margin-bottom: 1.5rem;
+        box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.05);
+        border: 1px solid #a7f3d0;
+    }
+
+    .net-pay-label {
+        font-size: 1rem;
+        font-weight: 600;
+        color: #065f46;
+        margin-bottom: 0.5rem;
+    }
+
+    .net-pay-display {
+        font-size: 2.5rem;
+        font-weight: 800;
+        color: #059669;
+        font-family: var(--font-display);
+        letter-spacing: -0.02em;
+    }
+
+    .result-breakdown {
+        background: var(--color-surface);
+        border-radius: 12px;
+        padding: 1rem;
+        border: 1px solid var(--color-border);
+    }
+
+    .breakdown-item {
+        display: flex;
+        justify-content: space-between;
+        padding: 0.75rem 0;
+        border-bottom: 1px dashed var(--color-border);
+        font-size: 0.95rem;
+        color: var(--color-text-main);
+    }
+
+    .breakdown-item:last-child {
+        border-bottom: none;
+    }
+
+    .breakdown-item.warning {
+        color: #d97706;
+    }
+
+    .recommendation {
+        margin-top: 1rem;
+        padding: 0.75rem;
+        border-radius: 8px;
+        font-size: 0.85rem;
+        text-align: center;
+    }
+
+    .recommendation.info {
+        background: #eff6ff;
+        color: #1e40af;
+        border: 1px solid #bfdbfe;
+    }
+
+    .export-buttons {
+        display: flex;
+        gap: 0.75rem;
+        margin-top: 1.5rem;
+        justify-content: center;
+    }
+
+    .btn-secondary {
+        flex: 1;
+        background-color: #fff;
+        color: var(--color-primary);
+        border: 2px solid var(--color-primary);
+        padding: 0.75rem 1rem;
+        border-radius: 8px;
+        font-weight: 600;
+        cursor: pointer;
+        transition: all 0.2s ease;
+        font-family: var(--font-body);
+        font-size: 0.9rem;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 0.5rem;
+    }
+
+    .btn-secondary:hover {
+        background-color: var(--color-primary);
+        color: white;
+        transform: translateY(-1px);
+        box-shadow: var(--shadow-sm);
+    }
+
+    .btn-secondary svg {
+        flex-shrink: 0;
+    }
+</style>
+
+<!-- Export Libraries -->
+<script
+    src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"
+></script>
+<script
+    src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"
+></script>
+
+<script>
+    import { calculateEmployeeNetPay } from "../../utils/taxCalculator";
+    import { addToHistory } from "../../utils/historyManager";
+
+    const calcBtn = document.getElementById("calc-reverse-btn");
+    const saveImageBtn = document.getElementById("rev-save-image-btn");
+    const savePdfBtn = document.getElementById("rev-save-pdf-btn");
+    const resultSection = document.getElementById("reverse-result");
+
+    // Input Formatting
+    const formatNumber = (num: string) => {
+        if (!num) return "";
+        const parts = num.split(".");
+        parts[0] = parts[0].replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+        return parts.join(".");
+    };
+
+    const parseFormattedNumber = (str: string) => {
+        return parseFloat(str.replace(/,/g, "")) || 0;
+    };
+
+    const formattedInputs = document.querySelectorAll(
+        "#reverse-calculator .formatted-input",
+    );
+    formattedInputs.forEach((input) => {
+        const el = input as HTMLInputElement;
+        el.addEventListener("input", (e) => {
+            const target = e.target as HTMLInputElement;
+            const cursorPosition = target.selectionStart || 0;
+            const oldValue = target.value;
+            let value = target.value.replace(/[^\d.]/g, "");
+            const parts = value.split(".");
+            if (parts.length > 2)
+                value = parts[0] + "." + parts.slice(1).join("");
+            if (parts.length === 2 && parts[1].length > 2)
+                value = parts[0] + "." + parts[1].substring(0, 2);
+            const formatted = formatNumber(value);
+            target.value = formatted;
+            const addedCommas =
+                (formatted.match(/,/g) || []).length -
+                (oldValue.match(/,/g) || []).length;
+            const newPosition = cursorPosition + addedCommas;
+            target.setSelectionRange(newPosition, newPosition);
+        });
+    });
+
+    const solveGross = (targetNet: number): any => {
+        let low = targetNet; // Gross must be at least Net
+        let high = targetNet * 2; // Initial upper bound
+        let result = null;
+        let iterations = 0;
+
+        // Find loose upper bound
+        while (
+            calculateEmployeeNetPay(createInput(high)).netPay < targetNet &&
+            iterations < 20
+        ) {
+            low = high;
+            high *= 2;
+            iterations++;
+        }
+
+        // Binary Search
+        for (let i = 0; i < 50; i++) {
+            const mid = (low + high) / 2;
+            const res = calculateEmployeeNetPay(createInput(mid));
+
+            if (Math.abs(res.netPay - targetNet) < 1) {
+                // 1 peso tolerance
+                return { gross: mid, details: res };
+            }
+
+            if (res.netPay < targetNet) {
+                low = mid;
+            } else {
+                high = mid;
+            }
+        }
+
+        // Return best guess
+        return {
+            gross: low,
+            details: calculateEmployeeNetPay(createInput(low)),
+        };
+    };
+
+    const createInput = (basicPay: number) => ({
+        period: "monthly" as any,
+        basicPay: basicPay,
+        overtimePay: 0,
+        nightShiftHours: 0,
+        allowancesTaxable: 0,
+        allowancesNonTaxable: 0,
+        bonusThisPay: 0,
+        bonusYTDExclThisPay: 0,
+        isMinimumWageEarner: false,
+    });
+
+    if (calcBtn) {
+        const runCalculation = (saveToHistory = true) => {
+            const getVal = (id: string) => {
+                const el = document.getElementById(id) as HTMLInputElement;
+                if (el.classList.contains("formatted-input"))
+                    return parseFormattedNumber(el.value);
+                return parseFloat(el?.value || "0");
+            };
+
+            const targetNet = getVal("target-net-pay");
+            if (targetNet <= 0) return;
+
+            const { gross, details } = solveGross(targetNet);
+
+            // UI
+            const fmt = (num: number) =>
+                num.toLocaleString("en-PH", {
+                    minimumFractionDigits: 2,
+                    maximumFractionDigits: 2,
+                });
+            const setText = (id: string, val: string) => {
+                const el = document.getElementById(id);
+                if (el) el.textContent = val;
+            };
+
+            setText("required-gross-result", fmt(gross));
+            setText("target-net-display", fmt(targetNet));
+            setText("estimated-tax-display", fmt(details.deductions.tax));
+            setText(
+                "estimated-contrib-display",
+                fmt(
+                    details.deductions.sss +
+                        details.deductions.philhealth +
+                        details.deductions.pagibig,
+                ),
+            );
+
+            resultSection?.classList.remove("hidden");
+
+            if (saveToHistory) {
+                addToHistory({
+                    type: "Reverse",
+                    summary: `Target Net: ₱${fmt(targetNet)}`,
+                    result: `Gross: ₱${fmt(gross)}`,
+                    inputData: { targetNet },
+                });
+            }
+
+            resultSection?.scrollIntoView({
+                behavior: "smooth",
+                block: "center",
+            });
+        };
+
+        calcBtn.addEventListener("click", () => runCalculation(true));
+
+        // Listen for Restore
+        window.addEventListener("restore-calc", (e: any) => {
+            if (e.detail.type !== "Reverse") return;
+
+            // Small delay
+            setTimeout(() => {
+                const data = e.detail.inputData;
+
+                // Populate fields
+                const targetInput = document.getElementById(
+                    "target-net-pay",
+                ) as HTMLInputElement;
+                if (targetInput) {
+                    targetInput.value = formatNumber(data.targetNet.toString());
+                }
+
+                runCalculation(false);
+            }, 100);
+        });
+    }
+
+    // Export Logic with Fixes
+    const handleExport = async (type: "image" | "pdf") => {
+        if (!resultSection) return;
+        try {
+            const rootStyles = getComputedStyle(document.documentElement);
+            resultSection.style.setProperty(
+                "--color-primary",
+                rootStyles.getPropertyValue("--color-primary"),
+            );
+            resultSection.style.setProperty(
+                "--color-text-main",
+                rootStyles.getPropertyValue("--color-text-main"),
+            );
+            resultSection.style.setProperty(
+                "--color-text-muted",
+                rootStyles.getPropertyValue("--color-text-muted"),
+            );
+
+            // @ts-ignore
+            const canvas = await html2canvas(resultSection, {
+                backgroundColor: "#ffffff",
+                scale: 2,
+                logging: false,
+                useCORS: true,
+                onclone: (clonedDoc: any) => {
+                    const el = clonedDoc.getElementById("reverse-result");
+                    if (el) {
+                        el.style.animation = "none";
+                        el.style.opacity = "1";
+                        el.style.transform = "none";
+                    }
+                },
+            });
+
+            if (type === "image") {
+                canvas.toBlob((blob: any) => {
+                    if (!blob) return;
+                    const url = URL.createObjectURL(blob);
+                    const link = document.createElement("a");
+                    link.download = `reverse-calc-${Date.now()}.png`;
+                    link.href = url;
+                    link.click();
+                });
+            } else {
+                const imgData = canvas.toDataURL("image/png");
+                // @ts-ignore
+                const { jsPDF } = window.jspdf;
+                const pdf = new jsPDF({
+                    orientation: "portrait",
+                    unit: "mm",
+                    format: "a4",
+                });
+                const imgWidth = 190;
+                const imgHeight = (canvas.height * imgWidth) / canvas.width;
+                pdf.addImage(imgData, "PNG", 10, 10, imgWidth, imgHeight);
+                pdf.save(`reverse-calc-${Date.now()}.pdf`);
+            }
+        } catch (e) {
+            console.error(e);
+            alert("Export failed");
+        }
+    };
+
+    if (saveImageBtn)
+        saveImageBtn.addEventListener("click", () => handleExport("image"));
+    if (savePdfBtn)
+        savePdfBtn.addEventListener("click", () => handleExport("pdf"));
+</script>

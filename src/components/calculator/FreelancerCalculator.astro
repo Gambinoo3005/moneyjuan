@@ -7,7 +7,12 @@
     <label for="annual-gross">Annual Gross Income</label>
     <div class="input-wrapper">
       <span class="currency">₱</span>
-      <input type="text" id="annual-gross" placeholder="0.00" class="formatted-input">
+      <input
+        type="text"
+        id="annual-gross"
+        placeholder="0.00"
+        class="formatted-input"
+      />
     </div>
   </div>
 
@@ -15,21 +20,28 @@
     <label for="annual-expenses">Annual Expenses (Optional)</label>
     <div class="input-wrapper">
       <span class="currency">₱</span>
-      <input type="text" id="annual-expenses" placeholder="0.00" class="formatted-input">
+      <input
+        type="text"
+        id="annual-expenses"
+        placeholder="0.00"
+        class="formatted-input"
+      />
     </div>
     <small class="hint">Leave 0 if using OSD (40%) or 8% rate</small>
   </div>
 
   <div class="checkbox-group">
-    <input type="checkbox" id="mixed-income">
+    <input type="checkbox" id="mixed-income" />
     <label for="mixed-income">Mixed Income Earner? (Also have salary)</label>
   </div>
 
-  <button id="calc-freelancer-btn" class="btn-primary">Compare Tax Options</button>
+  <button id="calc-freelancer-btn" class="btn-primary"
+    >Compare Tax Options</button
+  >
 
   <div id="freelancer-result" class="result-section hidden">
     <h3>Tax Comparison</h3>
-    
+
     <div class="comparison-grid">
       <div class="card option-a">
         <h4>Option A: Graduated Rates</h4>
@@ -75,6 +87,42 @@
     <div class="recommendation" id="recommendation-text">
       <!-- JS will populate this -->
     </div>
+
+    <div class="export-buttons" data-html2canvas-ignore="true">
+      <button id="free-save-image-btn" class="btn-secondary">
+        <svg
+          width="16"
+          height="16"
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+          stroke-width="2"
+        >
+          <rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect>
+          <circle cx="8.5" cy="8.5" r="1.5"></circle>
+          <polyline points="21 15 16 10 5 21"></polyline>
+        </svg>
+        Save as Image
+      </button>
+      <button id="free-save-pdf-btn" class="btn-secondary">
+        <svg
+          width="16"
+          height="16"
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+          stroke-width="2"
+        >
+          <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"
+          ></path>
+          <polyline points="14 2 14 8 20 8"></polyline>
+          <line x1="16" y1="13" x2="8" y2="13"></line>
+          <line x1="16" y1="17" x2="8" y2="17"></line>
+          <polyline points="10 9 9 9 8 9"></polyline>
+        </svg>
+        Save as PDF
+      </button>
+    </div>
   </div>
 </div>
 
@@ -89,83 +137,104 @@
     margin: 0 auto;
   }
 
-  .hidden { display: none; }
+  .hidden {
+    display: none;
+  }
 
-  .input-group { margin-bottom: var(--space-sm); }
-  
-  label { 
-    display: block; 
-    margin-bottom: 0.5rem; 
-    font-weight: 600; 
+  .input-group {
+    margin-bottom: var(--space-sm);
+  }
+
+  label {
+    display: block;
+    margin-bottom: 0.5rem;
+    font-weight: 600;
     color: var(--color-text-main);
     font-size: 0.95rem;
   }
-  
-  .input-wrapper { position: relative; display: flex; align-items: center; }
-  
-  .input-wrapper .currency { 
-    position: absolute; 
-    left: 1.25rem; 
+
+  .input-wrapper {
+    position: relative;
+    display: flex;
+    align-items: center;
+  }
+
+  .input-wrapper .currency {
+    position: absolute;
+    left: 1.25rem;
     color: var(--color-text-muted);
     font-weight: 500;
     pointer-events: none;
     z-index: 10;
   }
-  
-  input { 
-    width: 100%; 
-    padding: 0.875rem 0.875rem 0.875rem 2.5rem; 
-    border: 1px solid var(--color-border); 
-    border-radius: 8px; 
-    font-size: 1rem; 
+
+  input {
+    width: 100%;
+    padding: 0.875rem 0.875rem 0.875rem 2.5rem;
+    border: 1px solid var(--color-border);
+    border-radius: 8px;
+    font-size: 1rem;
     font-family: var(--font-body);
     color: var(--color-text-main);
-    transition: border-color 0.2s, box-shadow 0.2s;
+    transition:
+      border-color 0.2s,
+      box-shadow 0.2s;
   }
-  
+
   input:focus {
     outline: none;
     border-color: var(--color-primary);
     box-shadow: 0 0 0 3px rgba(5, 150, 105, 0.1);
   }
-  
-  .hint { font-size: 0.8rem; color: var(--color-text-muted); margin-top: 0.25rem; display: block; }
+
+  .hint {
+    font-size: 0.8rem;
+    color: var(--color-text-muted);
+    margin-top: 0.25rem;
+    display: block;
+  }
 
   .btn-primary {
-    width: 100%; 
-    background-color: var(--color-primary); 
-    color: white; 
-    padding: 0.875rem; 
-    border: none; 
-    border-radius: 8px; 
-    font-weight: 700; 
-    cursor: pointer; 
-    transition: all 0.2s ease; 
+    width: 100%;
+    background-color: var(--color-primary);
+    color: white;
+    padding: 0.875rem;
+    border: none;
+    border-radius: 8px;
+    font-weight: 700;
+    cursor: pointer;
+    transition: all 0.2s ease;
     margin-top: var(--space-sm);
     font-family: var(--font-display);
     text-transform: uppercase;
     letter-spacing: 0.05em;
     font-size: 0.95rem;
   }
-  
-  .btn-primary:hover { 
-    background-color: #047857; 
+
+  .btn-primary:hover {
+    background-color: #047857;
     transform: translateY(-1px);
     box-shadow: var(--shadow-md);
   }
 
-  .result-section { 
-    margin-top: var(--space-md); 
-    padding-top: var(--space-md); 
-    border-top: 1px solid var(--color-border); 
+  .result-section {
+    margin-top: var(--space-md);
+    padding-top: var(--space-md);
+    border-top: 1px solid var(--color-border);
     animation: fadeIn 0.5s ease-out;
   }
-  
+
   @keyframes fadeIn {
-    from { opacity: 0; transform: translateY(10px); }
-    to { opacity: 1; transform: translateY(0); }
+    from {
+      opacity: 0;
+      transform: translateY(10px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
   }
-  
+
   .result-section h3 {
     font-size: 1.1rem;
     color: var(--color-text-muted);
@@ -173,7 +242,7 @@
     margin-bottom: 1rem;
     font-weight: 600;
   }
-  
+
   .comparison-grid {
     display: grid;
     grid-template-columns: 1fr 1fr;
@@ -182,7 +251,9 @@
   }
 
   @media (max-width: 600px) {
-    .comparison-grid { grid-template-columns: 1fr; }
+    .comparison-grid {
+      grid-template-columns: 1fr;
+    }
   }
 
   .card {
@@ -194,14 +265,14 @@
     flex-direction: column;
   }
 
-  .card h4 { 
-    margin-top: 0; 
-    color: var(--color-text-main); 
-    font-size: 1rem; 
+  .card h4 {
+    margin-top: 0;
+    color: var(--color-text-main);
+    font-size: 1rem;
     font-weight: 700;
     margin-bottom: 0.5rem;
   }
-  
+
   .tax-display {
     font-size: 1.8rem;
     font-weight: 800;
@@ -211,20 +282,20 @@
     letter-spacing: -0.02em;
   }
 
-  .details { 
-    font-size: 0.9rem; 
-    color: var(--color-text-muted); 
+  .details {
+    font-size: 0.9rem;
+    color: var(--color-text-muted);
     margin-top: auto;
   }
-  
-  .detail-row { 
-    display: flex; 
-    justify-content: space-between; 
-    margin-bottom: 0.5rem; 
+
+  .detail-row {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 0.5rem;
     padding-bottom: 0.5rem;
     border-bottom: 1px dashed var(--color-border);
   }
-  
+
   .detail-row:last-child {
     border-bottom: none;
     margin-bottom: 0;
@@ -234,19 +305,19 @@
   .recommendation {
     margin-top: 1.5rem;
     padding: 1rem;
-    background: #ECFDF5;
-    border: 1px solid #A7F3D0;
+    background: #ecfdf5;
+    border: 1px solid #a7f3d0;
     border-radius: 8px;
-    color: #065F46;
+    color: #065f46;
     font-weight: 600;
     text-align: center;
     box-shadow: var(--shadow-sm);
   }
-  
+
   .recommendation.info {
-    background: #EFF6FF;
-    border-color: #BFDBFE;
-    color: #1E40AF;
+    background: #eff6ff;
+    border-color: #bfdbfe;
+    color: #1e40af;
   }
 
   .checkbox-group {
@@ -259,7 +330,7 @@
     border-radius: 6px;
     border: 1px solid var(--color-border);
   }
-  
+
   .checkbox-group input {
     width: 1.25rem;
     height: 1.25rem;
@@ -267,101 +338,337 @@
     accent-color: var(--color-primary);
     cursor: pointer;
   }
-  
+
   .checkbox-group label {
     margin-bottom: 0;
     cursor: pointer;
     user-select: none;
   }
+
+  .export-buttons {
+    display: flex;
+    gap: 0.75rem;
+    margin-top: 1.5rem;
+    justify-content: center;
+  }
+
+  .btn-secondary {
+    flex: 1;
+    background-color: #fff;
+    color: var(--color-primary);
+    border: 2px solid var(--color-primary);
+    padding: 0.75rem 1rem;
+    border-radius: 8px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    font-family: var(--font-body);
+    font-size: 0.9rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+  }
+
+  .btn-secondary:hover {
+    background-color: var(--color-primary);
+    color: white;
+    transform: translateY(-1px);
+    box-shadow: var(--shadow-sm);
+  }
+
+  .btn-secondary svg {
+    flex-shrink: 0;
+  }
 </style>
 
 <script>
-  import { calculateFreelancerTax } from '../../utils/taxCalculator';
+  import { calculateFreelancerTax } from "../../utils/taxCalculator";
+  import { addToHistory } from "../../utils/historyManager";
 
-  const calcBtn = document.getElementById('calc-freelancer-btn');
+  const calcBtn = document.getElementById("calc-freelancer-btn");
 
   // Input Formatting Logic (Shared)
   const formatNumber = (num: string) => {
-    if (!num) return '';
-    const parts = num.split('.');
-    parts[0] = parts[0].replace(/\B(?=(\d{3})+(?!\d))/g, ',');
-    return parts.join('.');
+    if (!num) return "";
+    const parts = num.split(".");
+    parts[0] = parts[0].replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+    return parts.join(".");
   };
 
   const parseFormattedNumber = (str: string) => {
-    return parseFloat(str.replace(/,/g, '')) || 0;
+    return parseFloat(str.replace(/,/g, "")) || 0;
   };
 
-  const formattedInputs = document.querySelectorAll('#freelancer-calculator .formatted-input');
-  formattedInputs.forEach(input => {
+  const formattedInputs = document.querySelectorAll(
+    "#freelancer-calculator .formatted-input",
+  );
+  formattedInputs.forEach((input) => {
     const el = input as HTMLInputElement;
-    
-    el.addEventListener('blur', () => {
-      let value = el.value.replace(/,/g, '');
-      if (value) {
-        el.value = formatNumber(value);
+
+    // Real-time formatting as user types
+    el.addEventListener("input", (e) => {
+      const target = e.target as HTMLInputElement;
+      // Get cursor position before formatting
+      const cursorPosition = target.selectionStart || 0;
+      const oldValue = target.value;
+
+      // Remove all non-digit and non-decimal characters
+      let value = target.value.replace(/[^\d.]/g, "");
+
+      // Ensure only one decimal point
+      const parts = value.split(".");
+      if (parts.length > 2) {
+        value = parts[0] + "." + parts.slice(1).join("");
       }
+
+      // Limit to 2 decimal places
+      if (parts.length === 2 && parts[1].length > 2) {
+        value = parts[0] + "." + parts[1].substring(0, 2);
+      }
+
+      // Format with commas
+      const formatted = formatNumber(value);
+      target.value = formatted;
+
+      // Adjust cursor position after formatting
+      const addedCommas =
+        (formatted.match(/,/g) || []).length -
+        (oldValue.match(/,/g) || []).length;
+      const newPosition = cursorPosition + addedCommas;
+      target.setSelectionRange(newPosition, newPosition);
     });
 
-    el.addEventListener('focus', () => {
-      let value = el.value.replace(/,/g, '');
-      if (value === '0.00' || value === '0') {
-        el.value = '';
-      } else {
-        el.value = value;
+    el.addEventListener("focus", () => {
+      // Clear placeholder zeros on focus
+      if (el.value === "0.00" || el.value === "0") {
+        el.value = "";
       }
     });
   });
 
   if (calcBtn) {
-    calcBtn.addEventListener('click', () => {
+    const runCalculation = (saveToHistory = true) => {
       const getVal = (id: string) => {
         const el = document.getElementById(id) as HTMLInputElement;
-        if (el.classList.contains('formatted-input')) {
+        if (el.classList.contains("formatted-input")) {
           return parseFormattedNumber(el.value);
         }
-        return parseFloat(el?.value || '0');
+        return parseFloat(el?.value || "0");
       };
 
-      const annualGross = getVal('annual-gross');
-      const annualExpenses = getVal('annual-expenses');
+      const annualGross = getVal("annual-gross");
+      const annualExpenses = getVal("annual-expenses");
 
       const result = calculateFreelancerTax(annualGross, annualExpenses);
 
       // Update UI
-      const fmt = (num: number) => num.toLocaleString('en-PH', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+      const fmt = (num: number) =>
+        num.toLocaleString("en-PH", {
+          minimumFractionDigits: 2,
+          maximumFractionDigits: 2,
+        });
       const setText = (id: string, val: string) => {
         const el = document.getElementById(id);
         if (el) el.textContent = val;
       };
 
-      setText('graduated-tax', fmt(result.optionA.totalTax));
-      setText('grad-income-tax', fmt(result.optionA.incomeTax));
-      setText('grad-percentage-tax', fmt(result.optionA.percentageTax));
-      setText('grad-taxable', fmt(result.optionA.taxBase));
-      
-      setText('flat-tax', fmt(result.optionB.totalTax));
-      setText('flat-base', fmt(result.optionB.taxBase));
-      // Note: optionB.deduction is not directly in result, but we can infer or hardcode 250k if needed, 
+      setText("graduated-tax", fmt(result.optionA.totalTax));
+      setText("grad-income-tax", fmt(result.optionA.incomeTax));
+      setText("grad-percentage-tax", fmt(result.optionA.percentageTax));
+      setText("grad-taxable", fmt(result.optionA.taxBase));
+
+      setText("flat-tax", fmt(result.optionB.totalTax));
+      setText("flat-base", fmt(result.optionB.taxBase));
+      // Note: optionB.deduction is not directly in result, but we can infer or hardcode 250k if needed,
       // but the result object structure from taxCalculator might need checking.
       // Looking at taxCalculator.ts, calculateFreelancerTax returns:
       // { optionA: {...}, optionB: { totalTax, netIncome, taxBase }, recommendation }
-      // It doesn't explicitly return the deduction used for Option B in the result object, 
+      // It doesn't explicitly return the deduction used for Option B in the result object,
       // but we know it's 250k unless mixed income logic changes things.
       // For now, we'll leave the hardcoded 250k in HTML or update if needed.
 
-      const recommendation = document.getElementById('recommendation-text');
+      const recommendation = document.getElementById("recommendation-text");
       if (recommendation) {
-        if (result.recommendation === 'Option B') {
-          recommendation.textContent = "Option B (8% Flat Rate) is better for you.";
+        if (result.recommendation === "Option B") {
+          recommendation.textContent =
+            "Option B (8% Flat Rate) is better for you.";
           recommendation.className = "recommendation success";
         } else {
-          recommendation.textContent = "Option A (Graduated Rates) is better for you.";
+          recommendation.textContent =
+            "Option A (Graduated Rates) is better for you.";
           recommendation.className = "recommendation info";
         }
       }
 
-      document.getElementById('freelancer-result')?.classList.remove('hidden');
+      const resultSection = document.getElementById("freelancer-result");
+      resultSection?.classList.remove("hidden");
+
+      if (saveToHistory) {
+        addToHistory({
+          type: "Freelancer",
+          summary: `Gross: ₱${fmt(annualGross)}`,
+          result: `Rec: ${result.recommendation}`,
+          inputData: { annualGross, annualExpenses },
+        });
+      }
+
+      resultSection?.scrollIntoView({ behavior: "smooth", block: "center" });
+    };
+
+    calcBtn.addEventListener("click", () => runCalculation(true));
+
+    // Listen for Restore
+    window.addEventListener("restore-calc", (e: any) => {
+      if (e.detail.type !== "Freelancer") return;
+
+      // Small delay
+      setTimeout(() => {
+        const data = e.detail.inputData;
+
+        // Populate fields
+        const setVal = (id: string, val: number | string) => {
+          const el = document.getElementById(id) as HTMLInputElement;
+          if (el) {
+            if (el.classList.contains("formatted-input")) {
+              el.value = formatNumber(val.toString());
+            } else {
+              el.value = val.toString();
+            }
+          }
+        };
+
+        setVal("annual-gross", data.annualGross);
+        setVal("annual-expenses", data.annualExpenses);
+
+        runCalculation(false);
+      }, 100);
     });
   }
+</script>
+
+<!-- Export Libraries -->
+<script
+  src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"
+></script>
+<script
+  src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"
+></script>
+
+<script>
+  // Export functionality
+  document.addEventListener("DOMContentLoaded", () => {
+    const saveImageBtn = document.getElementById("free-save-image-btn");
+    const savePdfBtn = document.getElementById("free-save-pdf-btn");
+    const resultSection = document.getElementById("freelancer-result");
+
+    if (saveImageBtn) {
+      saveImageBtn.addEventListener("click", async () => {
+        if (!resultSection) return;
+
+        try {
+          // Fix for washed out colors: Inline CSS variables
+          const rootStyles = getComputedStyle(document.documentElement);
+          const primary = rootStyles.getPropertyValue("--color-primary");
+          const textMain = rootStyles.getPropertyValue("--color-text-main");
+          const textMuted = rootStyles.getPropertyValue("--color-text-muted");
+          const border = rootStyles.getPropertyValue("--color-border");
+          const surface = rootStyles.getPropertyValue("--color-surface");
+
+          resultSection.style.setProperty("--color-primary", primary);
+          resultSection.style.setProperty("--color-text-main", textMain);
+          resultSection.style.setProperty("--color-text-muted", textMuted);
+          resultSection.style.setProperty("--color-border", border);
+          resultSection.style.setProperty("--color-surface", surface);
+
+          // @ts-ignore - html2canvas is loaded via CDN
+          const canvas = await html2canvas(resultSection, {
+            backgroundColor: "#ffffff",
+            scale: 2,
+            logging: false,
+            useCORS: true,
+            onclone: (clonedDoc: any) => {
+              const el = clonedDoc.getElementById("freelancer-result");
+              if (el) {
+                el.style.animation = "none";
+                el.style.opacity = "1";
+                el.style.transform = "none";
+              }
+            },
+          });
+
+          // Convert to blob and download
+          canvas.toBlob((blob: any) => {
+            if (!blob) return;
+            const url = URL.createObjectURL(blob);
+            const link = document.createElement("a");
+            link.download = `freelancer-tax-calculation-${new Date().getTime()}.png`;
+            link.href = url;
+            link.click();
+            URL.revokeObjectURL(url);
+          });
+        } catch (error) {
+          console.error("Error generating image:", error);
+          alert("Failed to generate image. Please try again.");
+        }
+      });
+    }
+
+    if (savePdfBtn) {
+      savePdfBtn.addEventListener("click", async () => {
+        if (!resultSection) return;
+
+        try {
+          // Fix for washed out colors: Inline CSS variables
+          const rootStyles = getComputedStyle(document.documentElement);
+          const primary = rootStyles.getPropertyValue("--color-primary");
+          const textMain = rootStyles.getPropertyValue("--color-text-main");
+          const textMuted = rootStyles.getPropertyValue("--color-text-muted");
+          const border = rootStyles.getPropertyValue("--color-border");
+          const surface = rootStyles.getPropertyValue("--color-surface");
+
+          resultSection.style.setProperty("--color-primary", primary);
+          resultSection.style.setProperty("--color-text-main", textMain);
+          resultSection.style.setProperty("--color-text-muted", textMuted);
+          resultSection.style.setProperty("--color-border", border);
+          resultSection.style.setProperty("--color-surface", surface);
+
+          // @ts-ignore - html2canvas and jsPDF are loaded via CDN
+          const canvas = await html2canvas(resultSection, {
+            backgroundColor: "#ffffff",
+            scale: 2,
+            logging: false,
+            useCORS: true,
+            onclone: (clonedDoc: any) => {
+              const el = clonedDoc.getElementById("freelancer-result");
+              if (el) {
+                el.style.animation = "none";
+                el.style.opacity = "1";
+                el.style.transform = "none";
+              }
+            },
+          });
+
+          const imgData = canvas.toDataURL("image/png");
+
+          // @ts-ignore
+          const { jsPDF } = window.jspdf;
+          const pdf = new jsPDF({
+            orientation: "portrait",
+            unit: "mm",
+            format: "a4",
+          });
+
+          const imgWidth = 190;
+          const imgHeight = (canvas.height * imgWidth) / canvas.width;
+
+          pdf.addImage(imgData, "PNG", 10, 10, imgWidth, imgHeight);
+          pdf.save(`freelancer-tax-calculation-${new Date().getTime()}.pdf`);
+        } catch (error) {
+          console.error("Error generating PDF:", error);
+          alert("Failed to generate PDF. Please try again.");
+        }
+      });
+    }
+  });
 </script>

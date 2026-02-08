@@ -79,6 +79,23 @@ body {
   overflow-x: hidden;
 }
 
+main {
+  width: 100%;
+}
+
+img,
+video,
+canvas,
+svg {
+  max-width: 100%;
+}
+
+pre,
+table {
+  max-width: 100%;
+  overflow-x: auto;
+}
+
 h1,
 h2,
 h3,

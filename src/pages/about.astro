@@ -109,4 +109,23 @@ import Layout from '../layouts/Layout.astro';
 		font-size: 0.9rem;
 		margin-bottom: 0;
 	}
+
+	@media (max-width: 600px) {
+		.page-content {
+			padding: var(--space-md) var(--space-sm);
+		}
+
+		.page-title {
+			margin-bottom: var(--space-md);
+		}
+
+		.mission p {
+			font-size: 1rem;
+		}
+
+		.value-item,
+		.disclaimer {
+			padding: var(--space-sm);
+		}
+	}
 </style>

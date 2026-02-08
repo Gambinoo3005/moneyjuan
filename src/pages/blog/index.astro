@@ -12,11 +12,16 @@ const posts = (await getCollection('blog')).sort(
 <Layout title="Articles | MoneyJuan" description="All articles on saving, investing, and building wealth.">
 	<div class="container page-content">
 		<h1 class="page-title">All Articles</h1>
+		<p id="blog-search-status" class="search-status" hidden></p>
 		
 		<div class="grid posts-grid">
 			{
 				posts.map((post) => (
-					<a href={`/blog/${post.id}/`} class="card post-card">
+					<a
+						href={`/blog/${post.id}/`}
+						class="card post-card"
+						data-search={`${post.data.title} ${post.data.description || ''} ${post.data.category ? post.data.category.replace('-', ' ') : 'Article'} ${post.data.author || 'MoneyJuan Team'}`.toLowerCase()}
+					>
 						<div class="image-container">
 							{post.data.heroImage && <Image width={720} height={360} src={post.data.heroImage} alt="" />}
 						</div>
@@ -50,8 +55,20 @@ const posts = (await getCollection('blog')).sort(
 	}
 
 	.posts-grid {
-		grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+		grid-template-columns: repeat(auto-fill, minmax(min(240px, 100%), 1fr));
 		gap: var(--space-md);
+	}
+
+	.search-status {
+		margin: calc(var(--space-sm) * -1) auto var(--space-md);
+		text-align: center;
+		font-size: 0.95rem;
+		color: var(--color-text-muted);
+	}
+
+	.search-status.is-empty {
+		color: #B91C1C;
+		font-weight: 600;
 	}
 
 	.post-card {
@@ -64,6 +81,10 @@ const posts = (await getCollection('blog')).sort(
 		display: flex;
 		flex-direction: column;
 		color: inherit;
+	}
+
+	.post-card[hidden] {
+		display: none !important;
 	}
 
 	.post-card:hover {
@@ -125,6 +146,7 @@ const posts = (await getCollection('blog')).sort(
 		font-size: 0.85rem;
 		color: var(--color-text-muted);
 		display: flex;
+		flex-wrap: wrap;
 		align-items: center;
 		gap: 0.4rem;
 		margin-top: auto;
@@ -139,4 +161,52 @@ const posts = (await getCollection('blog')).sort(
 	.separator-small {
 		color: var(--color-border);
 	}
+
+	@media (max-width: 600px) {
+		.page-content {
+			padding: var(--space-md) var(--space-sm);
+		}
+
+		.page-title {
+			font-size: clamp(1.9rem, 9vw, 2.3rem);
+			margin-bottom: var(--space-md);
+		}
+
+		.post-content {
+			padding: var(--space-sm);
+		}
+	}
 </style>
+
+<script>
+	const params = new URLSearchParams(window.location.search);
+	const rawQuery = params.get('q');
+	const searchStatus = document.getElementById('blog-search-status');
+	const pageTitle = document.querySelector('.page-title');
+	const postCards = Array.from(document.querySelectorAll('.post-card'));
+
+	if (rawQuery && rawQuery.trim().length > 0) {
+		const query = rawQuery.trim().toLowerCase();
+		let visibleCount = 0;
+
+		for (const card of postCards) {
+			const haystack = (card.getAttribute('data-search') || '').toLowerCase();
+			const isMatch = haystack.includes(query);
+			card.hidden = !isMatch;
+			if (isMatch) visibleCount += 1;
+		}
+
+		if (pageTitle) {
+			pageTitle.textContent = 'Search Results';
+		}
+
+		if (searchStatus) {
+			searchStatus.hidden = false;
+			searchStatus.textContent =
+				visibleCount > 0
+					? `Showing ${visibleCount} result${visibleCount === 1 ? '' : 's'} for "${rawQuery}".`
+					: `No results found for "${rawQuery}".`;
+			searchStatus.classList.toggle('is-empty', visibleCount === 0);
+		}
+	}
+</script>

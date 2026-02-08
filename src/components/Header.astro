@@ -1,12 +1,37 @@
 ---
 import HeaderLink from './HeaderLink.astro';
-import { SITE_TITLE } from '../consts';
 ---
 
 <header>
 	<div class="container header-content">
-		<a href="/" class="logo"><span class="text-primary">Money</span>Juan</a>
-		<nav>
+		<div class="header-top">
+			<a href="/" class="logo"><span class="text-primary">Money</span>Juan</a>
+			<div class="header-actions">
+				<button
+					type="button"
+					class="search-toggle search-toggle-mobile"
+					aria-label="Open search"
+					data-search-open
+				>
+					<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" aria-hidden="true">
+						<circle cx="11" cy="11" r="7"></circle>
+						<line x1="16.65" y1="16.65" x2="21" y2="21"></line>
+					</svg>
+				</button>
+			<button
+				type="button"
+				class="menu-toggle"
+				aria-label="Toggle navigation"
+				aria-controls="primary-nav"
+				aria-expanded="false"
+			>
+				<span></span>
+				<span></span>
+				<span></span>
+			</button>
+			</div>
+		</div>
+		<nav id="primary-nav" class="primary-nav">
 			<HeaderLink href="/blog/category/saving">Saving & Budgeting</HeaderLink>
 			<HeaderLink href="/blog/category/earning">Earning More</HeaderLink>
 			<HeaderLink href="/blog/category/debt">Debt & Credit</HeaderLink>
@@ -14,12 +39,42 @@ import { SITE_TITLE } from '../consts';
 			<HeaderLink href="/blog/category/family">Family</HeaderLink>
 			<HeaderLink href="/blog/category/resources">Resources</HeaderLink>
 			<div class="dropdown">
-				<span class="dropdown-trigger">Tools</span>
+				<a href="/tools/calculator" class="dropdown-trigger">Tools</a>
 				<div class="dropdown-menu">
 					<a href="/tools/calculator" class="dropdown-item">Calculator</a>
 				</div>
 			</div>
+			<button
+				type="button"
+				class="search-toggle search-toggle-desktop"
+				aria-label="Open search"
+				data-search-open
+			>
+				<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" aria-hidden="true">
+					<circle cx="11" cy="11" r="7"></circle>
+					<line x1="16.65" y1="16.65" x2="21" y2="21"></line>
+				</svg>
+			</button>
 		</nav>
+	</div>
+	<div id="header-search-overlay" class="search-overlay" aria-hidden="true">
+		<form class="search-overlay-form" method="get" action="/blog/">
+			<label for="header-search-input" class="sr-only">Search articles</label>
+			<div class="search-field">
+				<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" aria-hidden="true">
+					<circle cx="11" cy="11" r="7"></circle>
+					<line x1="16.65" y1="16.65" x2="21" y2="21"></line>
+				</svg>
+				<input
+					id="header-search-input"
+					name="q"
+					type="search"
+					placeholder="Search articles, topics, or tools"
+					autocomplete="off"
+					required
+				/>
+			</div>
+		</form>
 	</div>
 </header>
 
@@ -43,6 +98,19 @@ import { SITE_TITLE } from '../consts';
 		gap: 2rem;
 	}
 
+	.header-top {
+		display: flex;
+		align-items: center;
+		justify-content: space-between;
+		gap: 1rem;
+	}
+
+	.header-actions {
+		display: flex;
+		align-items: center;
+		gap: 0.55rem;
+	}
+
 	.logo {
 		font-family: var(--font-display);
 		font-size: 2rem;
@@ -57,14 +125,102 @@ import { SITE_TITLE } from '../consts';
 		color: var(--color-primary);
 	}
 
+	.search-toggle {
+		border: 1px solid var(--color-border);
+		background: #FFFFFF;
+		color: var(--color-primary);
+		border-radius: 999px;
+		display: inline-flex;
+		align-items: center;
+		justify-content: center;
+		gap: 0.4rem;
+		height: 2.25rem;
+		padding: 0 0.8rem;
+		font-family: var(--font-display);
+		font-size: 0.78rem;
+		font-weight: 700;
+		text-transform: uppercase;
+		letter-spacing: 0.05em;
+		cursor: pointer;
+		transition: border-color 0.2s ease, color 0.2s ease, background-color 0.2s ease;
+	}
+
+	.search-toggle svg {
+		width: 15px;
+		height: 15px;
+		fill: none;
+		stroke: currentColor;
+		stroke-width: 2;
+		stroke-linecap: round;
+		stroke-linejoin: round;
+		pointer-events: none;
+	}
+
+	.search-toggle:hover {
+		border-color: var(--color-primary);
+		color: var(--color-secondary);
+		background: rgba(5, 150, 105, 0.05);
+	}
+
+	.search-toggle-desktop {
+		margin-left: 0.2rem;
+		width: 2.25rem;
+		padding: 0;
+	}
+
+	.search-toggle-mobile {
+		display: none;
+	}
+
+	.menu-toggle {
+		display: none;
+		background: transparent;
+		border: 1px solid var(--color-border);
+		border-radius: 8px;
+		width: 42px;
+		height: 42px;
+		padding: 9px 8px;
+		cursor: pointer;
+	}
+
+	.menu-toggle span {
+		display: block;
+		width: 100%;
+		height: 2px;
+		background: var(--color-primary);
+		border-radius: 2px;
+		transition: transform 0.2s ease, opacity 0.2s ease;
+	}
+
+	.menu-toggle span + span {
+		margin-top: 6px;
+	}
+
+	.menu-toggle[aria-expanded='true'] span:nth-child(1) {
+		transform: translateY(8px) rotate(45deg);
+	}
+
+	.menu-toggle[aria-expanded='true'] span:nth-child(2) {
+		opacity: 0;
+	}
+
+	.menu-toggle[aria-expanded='true'] span:nth-child(3) {
+		transform: translateY(-8px) rotate(-45deg);
+	}
+
 	nav {
 		display: flex;
 		flex-wrap: wrap;
 		gap: 0.5rem;
 		align-items: center;
+		min-width: 0;
 	}
 
-	nav :global(a) {
+	.primary-nav {
+		margin-left: auto;
+	}
+
+	nav > :global(a) {
 		padding: 0.5rem 0.75rem;
 		color: var(--color-primary);
 		text-decoration: none;
@@ -77,8 +233,8 @@ import { SITE_TITLE } from '../consts';
 		border-radius: 4px;
 	}
 
-	nav :global(a:hover),
-	nav :global(a.active) {
+	nav > :global(a:hover),
+	nav > :global(a.active) {
 		color: var(--color-secondary);
 		background: rgba(5, 150, 105, 0.05);
 	}
@@ -103,6 +259,7 @@ import { SITE_TITLE } from '../consts';
 		display: inline-flex;
 		align-items: center;
 		gap: 0.35rem;
+		text-decoration: none;
 	}
 
 	.dropdown-trigger::after {
@@ -122,55 +279,336 @@ import { SITE_TITLE } from '../consts';
 
 	.dropdown-menu {
 		position: absolute;
-		top: calc(100% + 0.5rem);
-		left: 50%;
-		transform: translateX(-50%) translateY(-10px);
+		top: 100%;
+		left: 0;
+		transform: translateY(-6px);
 		background: #FFFFFF;
 		border: 1px solid var(--color-border);
-		border-radius: 8px;
-		box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
-		min-width: 220px;
+		border-radius: 10px;
+		box-shadow: 0 8px 20px rgba(15, 23, 42, 0.12);
+		min-width: 140px;
 		opacity: 0;
 		visibility: hidden;
-		transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+		pointer-events: none;
+		transition: opacity 0.18s ease, transform 0.18s ease, visibility 0.18s ease;
 		z-index: 1000;
-		padding: 0.5rem;
+		padding: 0.5rem 0.35rem 0.35rem;
 	}
 
 	.dropdown:hover .dropdown-menu {
 		opacity: 1;
 		visibility: visible;
-		transform: translateX(-50%) translateY(0);
+		pointer-events: auto;
+		transform: translateY(0);
+	}
+
+	.dropdown:focus-within .dropdown-menu {
+		opacity: 1;
+		visibility: visible;
+		pointer-events: auto;
+		transform: translateY(0);
 	}
 
 	.dropdown-item {
 		display: block;
-		padding: 0.875rem 1.25rem;
+		padding: 0.5rem 0.7rem;
 		color: var(--color-text-main);
 		text-decoration: none;
-		font-family: var(--font-body);
-		font-weight: 600;
-		font-size: 0.95rem;
-		transition: all 0.2s ease;
+		font-family: var(--font-display);
+		font-weight: 700;
+		font-size: 0.78rem;
+		text-transform: none;
+		letter-spacing: 0.02em;
+		line-height: 1.25;
+		white-space: nowrap;
+		transition: background-color 0.2s ease, color 0.2s ease;
 		border-radius: 6px;
 		background: transparent;
 	}
 
 	.dropdown-item:hover {
-		background: linear-gradient(135deg, rgba(5, 150, 105, 0.08) 0%, rgba(5, 150, 105, 0.12) 100%);
+		background: rgba(5, 150, 105, 0.1);
 		color: var(--color-primary);
-		transform: translateX(4px);
 	}
 
-	@media (max-width: 1024px) {
+	.search-overlay {
+		position: fixed;
+		inset: 0;
+		background: rgba(15, 23, 42, 0.22);
+		z-index: 1200;
+		opacity: 0;
+		visibility: hidden;
+		pointer-events: none;
+		transition: opacity 0.18s ease, visibility 0.18s ease;
+	}
+
+	.search-overlay.is-open {
+		opacity: 1;
+		visibility: visible;
+		pointer-events: auto;
+	}
+
+	.search-overlay-form {
+		width: min(640px, calc(100% - 1rem));
+		margin: clamp(5rem, 12vh, 7.5rem) auto 0;
+	}
+
+	.search-field {
+		display: flex;
+		align-items: center;
+		gap: 0.55rem;
+		border: 1px solid var(--color-border);
+		border-radius: 12px;
+		padding: 0.55rem 0.65rem 0.55rem 0.75rem;
+		background: #FFFFFF;
+		box-shadow: 0 10px 24px rgba(15, 23, 42, 0.12);
+	}
+
+	.search-field:focus-within {
+		border-color: var(--color-primary);
+		box-shadow: 0 0 0 3px rgba(5, 150, 105, 0.11);
+	}
+
+	.search-field svg {
+		width: 16px;
+		height: 16px;
+		fill: none;
+		stroke: var(--color-text-muted);
+		stroke-width: 2;
+		stroke-linecap: round;
+		stroke-linejoin: round;
+		pointer-events: none;
+		flex: 0 0 auto;
+	}
+
+	.search-field input {
+		flex: 1;
+		min-width: 0;
+		border: none;
+		background: transparent;
+		color: var(--color-text-main);
+		font-family: var(--font-body);
+		font-size: 1.05rem;
+		font-weight: 600;
+		line-height: 1.45;
+		outline: none;
+		padding: 0.3rem 0;
+	}
+
+	.search-field input::placeholder {
+		color: var(--color-text-muted);
+		opacity: 0.9;
+		font-weight: 500;
+	}
+
+	.search-field input[type='search'] {
+		appearance: none;
+		-webkit-appearance: none;
+	}
+
+	.search-field input[type='search']::-webkit-search-decoration,
+	.search-field input[type='search']::-webkit-search-cancel-button,
+	.search-field input[type='search']::-webkit-search-results-button,
+	.search-field input[type='search']::-webkit-search-results-decoration {
+		appearance: none;
+		-webkit-appearance: none;
+		display: none;
+	}
+
+	.search-field input[type='search']::-ms-clear,
+	.search-field input[type='search']::-ms-reveal {
+		display: none;
+		width: 0;
+		height: 0;
+	}
+
+	.sr-only {
+		position: absolute;
+		width: 1px;
+		height: 1px;
+		padding: 0;
+		margin: -1px;
+		overflow: hidden;
+		clip: rect(0, 0, 0, 0);
+		white-space: nowrap;
+		border: 0;
+	}
+
+	@media (max-width: 900px) {
 		.header-content {
-			flex-direction: column;
-			gap: 1rem;
-			padding: 1rem;
+			display: block;
+			padding: 0.85rem 0;
 		}
-		
-		nav {
+
+		.header-top {
+			width: 100%;
+			position: relative;
 			justify-content: center;
 		}
+
+		.logo {
+			font-size: 1.8rem;
+			margin: 0 auto;
+		}
+
+		.header-actions {
+			position: absolute;
+			right: 0.3rem;
+			top: 50%;
+			transform: translateY(-50%);
+			gap: 0.45rem;
+		}
+
+		.search-toggle-mobile {
+			display: inline-flex;
+			width: 38px;
+			height: 38px;
+			padding: 0;
+		}
+
+		.search-toggle-mobile span {
+			display: none;
+		}
+
+		.search-toggle-desktop {
+			display: none;
+		}
+
+		.menu-toggle {
+			display: inline-block;
+			position: static;
+			width: 38px;
+			height: 38px;
+			padding: 8px 7px;
+		}
+
+		.primary-nav {
+			display: none;
+			width: 100%;
+			margin-left: 0;
+			flex-direction: column;
+			flex-wrap: nowrap;
+			align-items: stretch;
+			gap: 0.35rem;
+			padding-top: 0.7rem;
+		}
+
+		.primary-nav.is-open {
+			display: flex;
+		}
+
+		nav > :global(a),
+		.dropdown {
+			width: 100%;
+		}
+
+		nav > :global(a),
+		.dropdown-trigger {
+			display: block;
+			width: 100%;
+			padding: 0.65rem 0.75rem;
+			font-size: 0.78rem;
+			text-align: left;
+			white-space: normal;
+		}
+
+		.dropdown-menu {
+			display: none;
+		}
+
+		.dropdown-trigger::after {
+			display: none;
+		}
+
+		.search-overlay-form {
+			width: calc(100% - 0.75rem);
+			margin-top: 0.75rem;
+		}
+
+		.search-field {
+			padding: 0.38rem 0.45rem 0.38rem 0.58rem;
+			gap: 0.42rem;
+		}
+
+		.search-field input {
+			font-size: 0.97rem;
+			line-height: 1.42;
+		}
+
 	}
 </style>
+
+<script>
+	const menuToggle = document.querySelector('.menu-toggle');
+	const nav = document.getElementById('primary-nav');
+	const searchOverlay = document.getElementById('header-search-overlay');
+	const searchOverlayForm = searchOverlay ? searchOverlay.querySelector('.search-overlay-form') : null;
+	const searchInput = document.getElementById('header-search-input');
+	const searchOpenButtons = document.querySelectorAll('[data-search-open]');
+
+	const closeMenu = () => {
+		if (!menuToggle || !nav) return;
+		nav.classList.remove('is-open');
+		menuToggle.setAttribute('aria-expanded', 'false');
+	};
+
+	const openSearch = () => {
+		if (!searchOverlay) return;
+		searchOverlay.classList.add('is-open');
+		searchOverlay.setAttribute('aria-hidden', 'false');
+		if (searchInput) {
+			searchInput.focus();
+		}
+	};
+
+	const closeSearch = () => {
+		if (!searchOverlay) return;
+		searchOverlay.classList.remove('is-open');
+		searchOverlay.setAttribute('aria-hidden', 'true');
+	};
+
+	searchOpenButtons.forEach((button) => {
+		button.addEventListener('click', openSearch);
+	});
+
+	if (searchOverlay) {
+		searchOverlay.addEventListener('click', (event) => {
+			const target = event.target;
+			if (!(target instanceof Element)) return;
+			if (target.closest('[data-search-open]')) return;
+			if (searchOverlayForm && searchOverlayForm.contains(target)) return;
+			closeSearch();
+		});
+	}
+
+	if (menuToggle && nav) {
+		menuToggle.addEventListener('click', () => {
+			const isOpen = nav.classList.toggle('is-open');
+			menuToggle.setAttribute('aria-expanded', String(isOpen));
+		});
+
+		nav.querySelectorAll('a').forEach((link) => {
+			link.addEventListener('click', () => {
+				if (window.matchMedia('(max-width: 900px)').matches) {
+					closeMenu();
+				}
+			});
+		});
+
+		window.addEventListener('resize', () => {
+			if (window.innerWidth > 900) {
+				closeMenu();
+			}
+		});
+
+		document.addEventListener('keydown', (event) => {
+			if (event.key === 'Escape') {
+				if (searchOverlay && searchOverlay.classList.contains('is-open')) {
+					closeSearch();
+				} else {
+					closeMenu();
+				}
+			}
+		});
+	}
+</script>

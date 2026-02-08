@@ -17,7 +17,12 @@
     <label for="basic-pay">Basic Pay (per period)</label>
     <div class="input-wrapper">
       <span class="currency">₱</span>
-      <input type="text" id="basic-pay" placeholder="0.00" class="formatted-input">
+      <input
+        type="text"
+        id="basic-pay"
+        placeholder="0.00"
+        class="formatted-input"
+      />
     </div>
   </div>
 
@@ -30,14 +35,25 @@
       <label for="overtime-pay">Overtime Pay</label>
       <div class="input-wrapper">
         <span class="currency">₱</span>
-        <input type="text" id="overtime-pay" placeholder="0.00" class="formatted-input">
+        <input
+          type="text"
+          id="overtime-pay"
+          placeholder="0.00"
+          class="formatted-input"
+        />
       </div>
     </div>
 
     <div class="input-group">
       <label for="night-shift-hours">Night Shift Hours</label>
       <div class="input-wrapper">
-        <input type="number" id="night-shift-hours" placeholder="0" min="0" step="1">
+        <input
+          type="number"
+          id="night-shift-hours"
+          placeholder="0"
+          min="0"
+          step="1"
+        />
       </div>
     </div>
 
@@ -45,7 +61,12 @@
       <label for="allowances-taxable">Taxable Allowances</label>
       <div class="input-wrapper">
         <span class="currency">₱</span>
-        <input type="text" id="allowances-taxable" placeholder="0.00" class="formatted-input">
+        <input
+          type="text"
+          id="allowances-taxable"
+          placeholder="0.00"
+          class="formatted-input"
+        />
       </div>
     </div>
 
@@ -53,12 +74,17 @@
       <label for="allowances-nontaxable">Non-Taxable Allowances</label>
       <div class="input-wrapper">
         <span class="currency">₱</span>
-        <input type="text" id="allowances-nontaxable" placeholder="0.00" class="formatted-input">
+        <input
+          type="text"
+          id="allowances-nontaxable"
+          placeholder="0.00"
+          class="formatted-input"
+        />
       </div>
     </div>
-    
+
     <div class="checkbox-group">
-      <input type="checkbox" id="is-mwe">
+      <input type="checkbox" id="is-mwe" />
       <label for="is-mwe">Minimum Wage Earner?</label>
     </div>
   </div>
@@ -102,6 +128,42 @@
         <span id="total-deduction">0.00</span>
       </div>
     </div>
+
+    <div class="export-buttons" data-html2canvas-ignore="true">
+      <button id="save-image-btn" class="btn-secondary">
+        <svg
+          width="16"
+          height="16"
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+          stroke-width="2"
+        >
+          <rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect>
+          <circle cx="8.5" cy="8.5" r="1.5"></circle>
+          <polyline points="21 15 16 10 5 21"></polyline>
+        </svg>
+        Save as Image
+      </button>
+      <button id="save-pdf-btn" class="btn-secondary">
+        <svg
+          width="16"
+          height="16"
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+          stroke-width="2"
+        >
+          <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"
+          ></path>
+          <polyline points="14 2 14 8 20 8"></polyline>
+          <line x1="16" y1="13" x2="8" y2="13"></line>
+          <line x1="16" y1="17" x2="8" y2="17"></line>
+          <polyline points="10 9 9 9 8 9"></polyline>
+        </svg>
+        Save as PDF
+      </button>
+    </div>
   </div>
 </div>
 
@@ -143,7 +205,8 @@
     z-index: 10;
   }
 
-  input, select {
+  input,
+  select {
     width: 100%;
     padding: 0.875rem;
     padding-left: 2.5rem; /* Space for currency symbol */
@@ -152,16 +215,19 @@
     font-size: 1rem;
     font-family: var(--font-body);
     color: var(--color-text-main);
-    transition: border-color 0.2s, box-shadow 0.2s;
+    transition:
+      border-color 0.2s,
+      box-shadow 0.2s;
     background: var(--color-bg);
   }
-  
+
   select {
     padding-left: 0.75rem;
     cursor: pointer;
   }
 
-  input:focus, select:focus {
+  input:focus,
+  select:focus {
     outline: none;
     border-color: var(--color-primary);
     box-shadow: 0 0 0 3px rgba(5, 150, 105, 0.1);
@@ -207,7 +273,7 @@
     border-radius: 4px;
     transition: background 0.2s;
   }
-  
+
   #toggle-advanced:hover {
     background: var(--color-surface-hover);
   }
@@ -222,12 +288,18 @@
     border-top: 1px solid var(--color-border);
     animation: fadeIn 0.5s ease-out;
   }
-  
+
   @keyframes fadeIn {
-    from { opacity: 0; transform: translateY(10px); }
-    to { opacity: 1; transform: translateY(0); }
+    from {
+      opacity: 0;
+      transform: translateY(10px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
   }
-  
+
   .result-section h3 {
     font-size: 1.1rem;
     color: var(--color-text-muted);
@@ -262,7 +334,7 @@
   }
 
   .deduction {
-    color: #EF4444;
+    color: #ef4444;
   }
 
   .total-deduction {
@@ -272,7 +344,7 @@
     font-weight: 700;
     color: var(--color-text-main);
   }
-  
+
   .checkbox-group {
     display: flex;
     align-items: center;
@@ -283,7 +355,7 @@
     border-radius: 6px;
     border: 1px solid var(--color-border);
   }
-  
+
   .checkbox-group input {
     width: 1.25rem;
     height: 1.25rem;
@@ -292,130 +364,357 @@
     cursor: pointer;
     accent-color: var(--color-primary);
   }
-  
+
   .checkbox-group label {
     margin-bottom: 0;
     cursor: pointer;
     user-select: none;
   }
+
+  .export-buttons {
+    display: flex;
+    gap: 0.75rem;
+    margin-top: 1.5rem;
+    justify-content: center;
+  }
+
+  .btn-secondary {
+    flex: 1;
+    background-color: #fff;
+    color: var(--color-primary);
+    border: 2px solid var(--color-primary);
+    padding: 0.75rem 1rem;
+    border-radius: 8px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    font-family: var(--font-body);
+    font-size: 0.9rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+  }
+
+  .btn-secondary:hover {
+    background-color: var(--color-primary);
+    color: white;
+    transform: translateY(-1px);
+    box-shadow: var(--shadow-sm);
+  }
+
+  .btn-secondary svg {
+    flex-shrink: 0;
+  }
 </style>
 
 <script>
-  import { calculateEmployeeNetPay } from '../../utils/taxCalculator';
+  import { calculateEmployeeNetPay } from "../../utils/taxCalculator";
+  import { addToHistory } from "../../utils/historyManager";
 
-  const calculateBtn = document.getElementById('calculate-btn');
-  const advancedToggle = document.getElementById('toggle-advanced');
-  const advancedOptions = document.getElementById('advanced-options');
+  const calculateBtn = document.getElementById("calculate-btn");
+  const advancedToggle = document.getElementById("toggle-advanced");
+  const advancedOptions = document.getElementById("advanced-options");
 
   // Input Formatting Logic
   const formatNumber = (num: string) => {
-    if (!num) return '';
-    const parts = num.split('.');
-    parts[0] = parts[0].replace(/\B(?=(\d{3})+(?!\d))/g, ',');
-    return parts.join('.');
+    if (!num) return "";
+    const parts = num.split(".");
+    parts[0] = parts[0].replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+    return parts.join(".");
   };
 
   const parseFormattedNumber = (str: string) => {
-    return parseFloat(str.replace(/,/g, '')) || 0;
+    return parseFloat(str.replace(/,/g, "")) || 0;
   };
 
-  const formattedInputs = document.querySelectorAll('.formatted-input');
-  formattedInputs.forEach(input => {
+  const formattedInputs = document.querySelectorAll(".formatted-input");
+  formattedInputs.forEach((input) => {
     const el = input as HTMLInputElement;
-    
-    el.addEventListener('input', (e) => {
-      // Allow only numbers, commas, and dots
-      let value = el.value.replace(/[^0-9.]/g, '');
-      
-      // Prevent multiple dots
-      const parts = value.split('.');
+
+    // Real-time formatting as user types
+    el.addEventListener("input", (e) => {
+      const target = e.target as HTMLInputElement;
+      // Get cursor position before formatting
+      const cursorPosition = target.selectionStart || 0;
+      const oldValue = target.value;
+
+      // Remove all non-digit and non-decimal characters
+      let value = target.value.replace(/[^\d.]/g, "");
+
+      // Ensure only one decimal point
+      const parts = value.split(".");
       if (parts.length > 2) {
-        value = parts[0] + '.' + parts.slice(1).join('');
+        value = parts[0] + "." + parts.slice(1).join("");
       }
-      
-      // Store cursor position
-      // This is a simple implementation; for perfect cursor handling with commas, more complex logic is needed.
-      // For now, we'll format on blur to avoid cursor jumping issues, or simple formatting.
-      // Let's try formatting on input but handling cursor is tricky.
-      // Alternative: Format on blur, unformat on focus.
+
+      // Limit to 2 decimal places
+      if (parts.length === 2 && parts[1].length > 2) {
+        value = parts[0] + "." + parts[1].substring(0, 2);
+      }
+
+      // Format with commas
+      const formatted = formatNumber(value);
+      target.value = formatted;
+
+      // Adjust cursor position after formatting
+      const addedCommas =
+        (formatted.match(/,/g) || []).length -
+        (oldValue.match(/,/g) || []).length;
+      const newPosition = cursorPosition + addedCommas;
+      target.setSelectionRange(newPosition, newPosition);
     });
 
-    el.addEventListener('blur', () => {
-      let value = el.value.replace(/,/g, '');
-      if (value) {
-        el.value = formatNumber(value);
-      }
-    });
-
-    el.addEventListener('focus', () => {
-      let value = el.value.replace(/,/g, '');
-      if (value === '0.00' || value === '0') {
-        el.value = '';
-      } else {
-        el.value = value;
+    el.addEventListener("focus", () => {
+      // Clear placeholder zeros on focus
+      if (el.value === "0.00" || el.value === "0") {
+        el.value = "";
       }
     });
   });
 
   if (advancedToggle && advancedOptions) {
-    advancedToggle.addEventListener('click', () => {
-      advancedOptions.classList.toggle('hidden');
-      advancedToggle.textContent = advancedOptions.classList.contains('hidden') 
-        ? 'Show Advanced Options' 
-        : 'Hide Advanced Options';
+    advancedToggle.addEventListener("click", () => {
+      advancedOptions.classList.toggle("hidden");
+      advancedToggle.textContent = advancedOptions.classList.contains("hidden")
+        ? "Show Advanced Options"
+        : "Hide Advanced Options";
     });
   }
 
   if (calculateBtn) {
-    calculateBtn.addEventListener('click', () => {
+    const runCalculation = (saveToHistory = true) => {
       const getVal = (id: string) => {
         const el = document.getElementById(id) as HTMLInputElement;
-        if (el.classList.contains('formatted-input')) {
+        if (el.classList.contains("formatted-input")) {
           return parseFormattedNumber(el.value);
         }
-        return parseFloat(el?.value || '0');
+        return parseFloat(el?.value || "0");
       };
-      
+
       const input = {
-        period: (document.getElementById('pay-period') as HTMLSelectElement).value as any,
-        basicPay: getVal('basic-pay'),
-        overtimePay: getVal('overtime-pay'),
-        nightShiftHours: getVal('night-shift-hours'),
-        allowancesTaxable: getVal('allowances-taxable'),
-        allowancesNonTaxable: getVal('allowances-nontaxable'),
-        bonusThisPay: 0, 
-        bonusYTDExclThisPay: 0, 
-        isMinimumWageEarner: (document.getElementById('is-mwe') as HTMLInputElement).checked
+        period: (document.getElementById("pay-period") as HTMLSelectElement)
+          .value as any,
+        basicPay: getVal("basic-pay"),
+        overtimePay: getVal("overtime-pay"),
+        nightShiftHours: getVal("night-shift-hours"),
+        allowancesTaxable: getVal("allowances-taxable"),
+        allowancesNonTaxable: getVal("allowances-nontaxable"),
+        bonusThisPay: 0,
+        bonusYTDExclThisPay: 0,
+        isMinimumWageEarner: (
+          document.getElementById("is-mwe") as HTMLInputElement
+        ).checked,
       };
 
       const result = calculateEmployeeNetPay(input);
 
       // Update UI
-      const fmt = (num: number) => num.toLocaleString('en-PH', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+      const fmt = (num: number) =>
+        num.toLocaleString("en-PH", {
+          minimumFractionDigits: 2,
+          maximumFractionDigits: 2,
+        });
 
       const setText = (id: string, val: string) => {
         const el = document.getElementById(id);
         if (el) el.textContent = val;
       };
 
-      setText('net-pay-value', fmt(result.netPay));
-      setText('gross-pay-value', fmt(result.grossPay));
-      setText('sss-deduction', `-${fmt(result.deductions.sss)}`);
-      setText('philhealth-deduction', `-${fmt(result.deductions.philhealth)}`);
-      setText('pagibig-deduction', `-${fmt(result.deductions.pagibig)}`);
-      setText('tax-deduction', `-${fmt(result.deductions.tax)}`);
-      setText('total-deduction', `-${fmt(result.deductions.total)}`);
+      setText("net-pay-value", fmt(result.netPay));
+      setText("gross-pay-value", fmt(result.grossPay));
+      setText("sss-deduction", `-${fmt(result.deductions.sss)}`);
+      setText("philhealth-deduction", `-${fmt(result.deductions.philhealth)}`);
+      setText("pagibig-deduction", `-${fmt(result.deductions.pagibig)}`);
+      setText("tax-deduction", `-${fmt(result.deductions.tax)}`);
+      setText("total-deduction", `-${fmt(result.deductions.total)}`);
 
       // Show/Hide Night Diff Row
-      const ndRow = document.getElementById('night-diff-row');
+      const ndRow = document.getElementById("night-diff-row");
       if (result.nightDifferentialPay > 0 && ndRow) {
-        ndRow.style.display = 'flex';
-        setText('night-diff-value', fmt(result.nightDifferentialPay));
+        ndRow.style.display = "flex";
+        setText("night-diff-value", fmt(result.nightDifferentialPay));
       } else if (ndRow) {
-        ndRow.style.display = 'none';
+        ndRow.style.display = "none";
       }
 
-      document.getElementById('result-section')?.classList.remove('hidden');
+      const resultSection = document.getElementById("result-section");
+      resultSection?.classList.remove("hidden");
+
+      if (saveToHistory) {
+        addToHistory({
+          type: "Employee",
+          summary: `Gross: ₱${fmt(result.grossPay)}`,
+          result: `Net: ₱${fmt(result.netPay)}`,
+          inputData: input,
+        });
+      }
+
+      // Scroll to result if it was a restore or user click
+      resultSection?.scrollIntoView({ behavior: "smooth", block: "center" });
+    };
+
+    calculateBtn.addEventListener("click", () => runCalculation(true));
+
+    // Listen for Restore
+    window.addEventListener("restore-calc", (e: any) => {
+      if (e.detail.type !== "Employee") return;
+
+      // Small delay to ensure the tab has switched and the module is visible
+      setTimeout(() => {
+        const data = e.detail.inputData;
+
+        // Populate fields
+        const setVal = (id: string, val: number | string) => {
+          const el = document.getElementById(id) as HTMLInputElement;
+          if (el) {
+            if (el.classList.contains("formatted-input")) {
+              el.value = formatNumber(val.toString());
+            } else if (el.type === "checkbox") {
+              el.checked = !!val;
+            } else {
+              el.value = val.toString();
+            }
+          }
+        };
+
+        setVal("pay-period", data.period);
+        setVal("basic-pay", data.basicPay);
+        setVal("overtime-pay", data.overtimePay);
+        setVal("night-shift-hours", data.nightShiftHours);
+        setVal("allowances-taxable", data.allowancesTaxable);
+        setVal("allowances-nontaxable", data.allowancesNonTaxable);
+        setVal("is-mwe", data.isMinimumWageEarner);
+
+        // Run without saving logic
+        runCalculation(false);
+      }, 100);
     });
   }
+</script>
+
+<!-- Export Libraries -->
+<script
+  src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"
+></script>
+<script
+  src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"
+></script>
+
+<script>
+  // Export functionality
+  document.addEventListener("DOMContentLoaded", () => {
+    const saveImageBtn = document.getElementById("save-image-btn");
+    const savePdfBtn = document.getElementById("save-pdf-btn");
+    const resultSection = document.getElementById("result-section");
+
+    if (saveImageBtn) {
+      saveImageBtn.addEventListener("click", async () => {
+        if (!resultSection) return;
+
+        try {
+          // Fix for washed out colors: Inline CSS variables
+          const rootStyles = getComputedStyle(document.documentElement);
+          const primary = rootStyles.getPropertyValue("--color-primary");
+          const textMain = rootStyles.getPropertyValue("--color-text-main");
+          const textMuted = rootStyles.getPropertyValue("--color-text-muted");
+          const border = rootStyles.getPropertyValue("--color-border");
+          const surface = rootStyles.getPropertyValue("--color-surface");
+
+          resultSection.style.setProperty("--color-primary", primary);
+          resultSection.style.setProperty("--color-text-main", textMain);
+          resultSection.style.setProperty("--color-text-muted", textMuted);
+          resultSection.style.setProperty("--color-border", border);
+          resultSection.style.setProperty("--color-surface", surface);
+
+          // @ts-ignore - html2canvas is loaded via CDN
+          const canvas = await html2canvas(resultSection, {
+            backgroundColor: "#ffffff",
+            scale: 2,
+            logging: false,
+            useCORS: true,
+            onclone: (clonedDoc: any) => {
+              const el = clonedDoc.getElementById("result-section");
+              if (el) {
+                el.style.animation = "none";
+                el.style.opacity = "1";
+                el.style.transform = "none";
+              }
+            },
+          });
+
+          // Convert to blob and download
+          canvas.toBlob((blob: any) => {
+            if (!blob) return;
+            const url = URL.createObjectURL(blob);
+            const link = document.createElement("a");
+            link.download = `employee-tax-calculation-${new Date().getTime()}.png`;
+            link.href = url;
+            link.click();
+            URL.revokeObjectURL(url);
+          });
+        } catch (error) {
+          console.error("Error generating image:", error);
+          alert("Failed to generate image. Please try again.");
+        }
+      });
+    }
+
+    if (savePdfBtn) {
+      savePdfBtn.addEventListener("click", async () => {
+        if (!resultSection) return;
+
+        try {
+          // Fix for washed out colors: Inline CSS variables
+          const rootStyles = getComputedStyle(document.documentElement);
+          const primary = rootStyles.getPropertyValue("--color-primary");
+          const textMain = rootStyles.getPropertyValue("--color-text-main");
+          const textMuted = rootStyles.getPropertyValue("--color-text-muted");
+          const border = rootStyles.getPropertyValue("--color-border");
+          const surface = rootStyles.getPropertyValue("--color-surface");
+
+          resultSection.style.setProperty("--color-primary", primary);
+          resultSection.style.setProperty("--color-text-main", textMain);
+          resultSection.style.setProperty("--color-text-muted", textMuted);
+          resultSection.style.setProperty("--color-border", border);
+          resultSection.style.setProperty("--color-surface", surface);
+
+          // @ts-ignore - html2canvas and jsPDF are loaded via CDN
+          const canvas = await html2canvas(resultSection, {
+            backgroundColor: "#ffffff",
+            scale: 2,
+            logging: false,
+            useCORS: true,
+            onclone: (clonedDoc: any) => {
+              const el = clonedDoc.getElementById("result-section");
+              if (el) {
+                el.style.animation = "none";
+                el.style.opacity = "1";
+                el.style.transform = "none";
+              }
+            },
+          });
+
+          const imgData = canvas.toDataURL("image/png");
+
+          // @ts-ignore
+          const { jsPDF } = window.jspdf;
+          const pdf = new jsPDF({
+            orientation: "portrait",
+            unit: "mm",
+            format: "a4",
+          });
+
+          const imgWidth = 190;
+          const imgHeight = (canvas.height * imgWidth) / canvas.width;
+
+          pdf.addImage(imgData, "PNG", 10, 10, imgWidth, imgHeight);
+          pdf.save(`employee-tax-calculation-${new Date().getTime()}.pdf`);
+        } catch (error) {
+          console.error("Error generating PDF:", error);
+          alert("Failed to generate PDF. Please try again.");
+        }
+      });
+    }
+  });
 </script>
