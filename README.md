@@ -11,7 +11,7 @@ This repository houses a modern static blog site leveraging Astro's content coll
 **Content Management**
 - MDX support for enhanced content authoring with embedded components
 - Structured content collections with type-safe frontmatter validation
-- Full-text search functionality powered by Fuse.js
+- URL-driven article search integrated into the site header
 
 **Performance & SEO**
 - Static site generation for optimal loading speeds
@@ -29,7 +29,6 @@ This repository houses a modern static blog site leveraging Astro's content coll
 
 - **Framework**: Astro 5.x
 - **Content**: MDX with Astro's content collections
-- **Search**: Fuse.js for client-side search
 - **Image Processing**: Sharp for optimized image delivery
 - **Integrations**: Sitemap, RSS feed generation
 

@@ -1,7 +1,3 @@
----
-// src/components/calculator/FreelancerCalculator.astro
----
-
 <div class="calculator-module hidden" id="freelancer-calculator">
   <div class="input-group">
     <label for="annual-gross">Annual Gross Income</label>
@@ -84,9 +80,7 @@
       </div>
     </div>
 
-    <div class="recommendation" id="recommendation-text">
-      <!-- JS will populate this -->
-    </div>
+    <div class="recommendation" id="recommendation-text"></div>
 
     <div class="export-buttons" data-html2canvas-ignore="true">
       <button id="free-save-image-btn" class="btn-secondary">
@@ -480,13 +474,7 @@
 
       setText("flat-tax", fmt(result.optionB.totalTax));
       setText("flat-base", fmt(result.optionB.taxBase));
-      // Note: optionB.deduction is not directly in result, but we can infer or hardcode 250k if needed,
-      // but the result object structure from taxCalculator might need checking.
-      // Looking at taxCalculator.ts, calculateFreelancerTax returns:
-      // { optionA: {...}, optionB: { totalTax, netIncome, taxBase }, recommendation }
-      // It doesn't explicitly return the deduction used for Option B in the result object,
-      // but we know it's 250k unless mixed income logic changes things.
-      // For now, we'll leave the hardcoded 250k in HTML or update if needed.
+      setText("flat-deduction", fmt(result.optionB.deduction));
 
       const recommendation = document.getElementById("recommendation-text");
       if (recommendation) {
@@ -672,3 +660,4 @@
     }
   });
 </script>
+

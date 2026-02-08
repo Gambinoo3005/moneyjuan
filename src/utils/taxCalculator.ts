@@ -1,6 +1,5 @@
 import { TaxConfig } from './taxConfig';
 
-// Types
 export interface EmployeeCompInput {
     period: 'monthly' | 'semi-monthly' | 'weekly' | 'daily';
     basicPay: number;
@@ -11,9 +10,9 @@ export interface EmployeeCompInput {
     allowancesNonTaxable: number;
     bonusThisPay: number;
     bonusYTDExclThisPay: number;
-    sssEmployee?: number; // Optional override
-    philhealthEmployee?: number; // Optional override
-    pagibigEmployee?: number; // Optional override
+    sssEmployee?: number;
+    philhealthEmployee?: number;
+    pagibigEmployee?: number;
     isMinimumWageEarner: boolean;
 }
 
@@ -30,18 +29,16 @@ export interface EmployeeCompResult {
     nightDifferentialPay: number;
 }
 
-// Helper: Get Annual Multiplier
 function getAnnualMultiplier(period: string): number {
     switch (period) {
         case 'monthly': return 12;
         case 'semi-monthly': return 24;
         case 'weekly': return 52;
-        case 'daily': return 260; // Approx working days
+        case 'daily': return 260;
         default: return 12;
     }
 }
 
-// 1. SSS Calculation (2025)
 export function calculateSSS(monthlySalary: number): { employee: number; employer: number; total: number } {
     let msc = monthlySalary;
     if (msc < TaxConfig.sss.msc_min) msc = TaxConfig.sss.msc_min;
@@ -54,7 +51,6 @@ export function calculateSSS(monthlySalary: number): { employee: number; employe
     return { employee, employer, total };
 }
 
-// 2. PhilHealth Calculation (2025)
 export function calculatePhilHealth(monthlyBasicSalary: number): { employee: number; employer: number; total: number } {
     let base = monthlyBasicSalary;
     if (base < TaxConfig.philhealth.floor) base = TaxConfig.philhealth.floor;
@@ -67,7 +63,6 @@ export function calculatePhilHealth(monthlyBasicSalary: number): { employee: num
     return { employee, employer, total };
 }
 
-// 3. Pag-IBIG Calculation
 export function calculatePagIBIG(monthlyCompensation: number): { employee: number; employer: number; total: number } {
     const fundSalary = Math.min(monthlyCompensation, TaxConfig.pagibig.fund_salary_cap);
 
@@ -82,7 +77,6 @@ export function calculatePagIBIG(monthlyCompensation: number): { employee: numbe
     return { employee, employer, total: employee + employer };
 }
 
-// 4. Income Tax Calculation (TRAIN)
 export function calculateIncomeTax(taxableIncome: number): number {
     if (taxableIncome <= 0) return 0;
 
@@ -94,7 +88,6 @@ export function calculateIncomeTax(taxableIncome: number): number {
     return 0;
 }
 
-// Helper: Calculate Withholding Tax for a period
 function calculateWithholdingTax(taxableIncomePeriod: number, period: string): number {
     const multiplier = getAnnualMultiplier(period);
     const projectedAnnual = taxableIncomePeriod * multiplier;
@@ -102,7 +95,6 @@ function calculateWithholdingTax(taxableIncomePeriod: number, period: string): n
     return annualTax / multiplier;
 }
 
-// 5. Employee Net Pay Calculator
 export function calculateEmployeeNetPay(input: EmployeeCompInput): EmployeeCompResult {
     const multiplier = getAnnualMultiplier(input.period);
 
@@ -111,12 +103,10 @@ export function calculateEmployeeNetPay(input: EmployeeCompInput): EmployeeCompR
     else if (input.period === 'weekly') monthlyBasic *= 4.33;
     else if (input.period === 'daily') monthlyBasic *= 22;
 
-    // Calculate Govt Contributions (Monthly)
     const sss = calculateSSS(monthlyBasic);
     const philhealth = calculatePhilHealth(monthlyBasic);
     const pagibig = calculatePagIBIG(monthlyBasic);
 
-    // Prorate contributions for the period
     const periodDivisor = multiplier / 12;
 
     const sssDed = input.sssEmployee ?? (sss.employee / periodDivisor);
@@ -125,7 +115,6 @@ export function calculateEmployeeNetPay(input: EmployeeCompInput): EmployeeCompR
 
     const totalGovtDed = sssDed + phDed + piDed;
 
-    // Night Differential Calculation
     let hourlyRate = 0;
     if (input.period === 'daily') {
         hourlyRate = input.basicPay / 8;
@@ -138,12 +127,7 @@ export function calculateEmployeeNetPay(input: EmployeeCompInput): EmployeeCompR
     const nightShiftHours = input.nightShiftHours || 0;
     const nightDifferentialPay = hourlyRate * ndRate * nightShiftHours;
 
-    // Gross Compensation
     const grossComp = input.basicPay + input.overtimePay + nightDifferentialPay + input.allowancesTaxable + input.bonusThisPay;
-
-    // Taxable Income Calculation
-    // 13th month & other benefits exemption logic (simplified)
-    const totalBenefitsYTD = input.bonusYTDExclThisPay + input.bonusThisPay;
 
     let taxableBonusThisPay = 0;
     if (input.bonusYTDExclThisPay >= TaxConfig.individual_income_tax.thirteenth_month_cap) {
@@ -157,12 +141,8 @@ export function calculateEmployeeNetPay(input: EmployeeCompInput): EmployeeCompR
     let taxableIncome = 0;
 
     if (input.isMinimumWageEarner) {
-        // MWE: Basic, OT, Holiday, Night Diff, Hazard Pay are exempt.
-        // Only taxable allowances and taxable bonus are subject to tax.
         taxableIncome = input.allowancesTaxable + taxableBonusThisPay;
     } else {
-        // Regular Employee
-        // Taxable = (Basic + OT + NightDiff + Taxable Allowances + Taxable Bonus) - Govt Contributions
         taxableIncome = (input.basicPay + input.overtimePay + nightDifferentialPay + input.allowancesTaxable + taxableBonusThisPay) - totalGovtDed;
     }
 
@@ -186,29 +166,21 @@ export function calculateEmployeeNetPay(input: EmployeeCompInput): EmployeeCompR
     };
 }
 
-// 6. Freelancer / Self-Employed Calculator
 export function calculateFreelancerTax(grossIncome: number, expenses: number, type: 'graduated' | '8%' = 'graduated') {
-    // We calculate both options usually for comparison, but this function signature suggests one.
-    // Let's return a comparison object if no type is strict, or just use the logic we had.
-    // The UI expects a result with optionA and optionB.
-
-    // Option A: Graduated
+    const percentageTaxRate = TaxConfig.percentage_tax.at(-1)?.rate ?? 0.03;
     const netTaxableA = Math.max(0, grossIncome - expenses);
     const incomeTaxA = calculateIncomeTax(netTaxableA);
-    const percentageTaxA = grossIncome * 0.03; // 3%
+    const percentageTaxA = grossIncome * percentageTaxRate;
     const totalTaxA = incomeTaxA + percentageTaxA;
 
-    // Option B: 8% Flat
-    // Deduction of 250k is only for pure self-employed. 
-    // We'll assume pure self-employed for the basic calculator unless mixed flag is passed (which we don't have here yet).
-    // Let's assume the UI handles the mixed logic or we default to pure.
-    // For now, default to pure self-employed logic (250k deduction).
-    const deductionB = 250000;
+    const deductionB = TaxConfig.eight_percent_option.pure_self_employed_extra_deduction;
     const taxBaseB = Math.max(0, grossIncome - deductionB);
-    const totalTaxB = taxBaseB * 0.08;
+    const totalTaxB = taxBaseB * TaxConfig.eight_percent_option.rate;
 
-    let recommendation = 'Option A';
-    if (totalTaxB < totalTaxA) recommendation = 'Option B';
+    let recommendation = type === '8%' ? 'Option B' : 'Option A';
+    if (totalTaxA !== totalTaxB) {
+        recommendation = totalTaxB < totalTaxA ? 'Option B' : 'Option A';
+    }
 
     return {
         optionA: {
@@ -221,16 +193,15 @@ export function calculateFreelancerTax(grossIncome: number, expenses: number, ty
         optionB: {
             totalTax: totalTaxB,
             netIncome: grossIncome - expenses - totalTaxB,
-            taxBase: taxBaseB
+            taxBase: taxBaseB,
+            deduction: deductionB
         },
         recommendation
     };
 }
 
-// 7. Small Business Tax (VAT vs Non-VAT)
 export function calculateBusinessTax(grossSales: number, inputVat: number = 0, isVatRegistered: boolean) {
     if (isVatRegistered || grossSales > TaxConfig.vat.threshold) {
-        // VAT
         const outputVat = grossSales * TaxConfig.vat.rate;
         const vatDue = outputVat - inputVat;
         return {
@@ -242,8 +213,7 @@ export function calculateBusinessTax(grossSales: number, inputVat: number = 0, i
             taxRate: '12%'
         };
     } else {
-        // Percentage Tax
-        const rate = 0.03; // Default 2025
+        const rate = TaxConfig.percentage_tax.at(-1)?.rate ?? 0.03;
         const taxDue = grossSales * rate;
         return {
             taxType: 'Percentage Tax',

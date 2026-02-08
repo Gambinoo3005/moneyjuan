@@ -11,16 +11,14 @@ const allPosts = (await getCollection('blog')).sort(
 const featurePost = allPosts[0];
 const sidePosts = allPosts.slice(1, 4);
 const latestArticles = allPosts.slice(0, 6);
-const financialEvents = allPosts.slice(6, 12);
+const financialEvents = allPosts
+	.filter((post) => post.data.category === 'events')
+	.slice(0, 6);
 ---
 
 <Layout>
 	<div class="verge-wrapper container">
-		
-		{/* Hero Section: Asymmetric Grid */}
-		{/* Hero Section: Asymmetric Grid */}
 		<section class="hero-grid">
-			{/* Main Feature Story */}
 			<div class="feature-story">
 				<a href={`/blog/${featurePost.id}/`} class="feature-link">
 					<div class="feature-image">
@@ -39,7 +37,6 @@ const financialEvents = allPosts.slice(6, 12);
 				</a>
 			</div>
 
-			{/* Side Stories List */}
 			<div class="side-stories">
 				<h2 class="side-heading">Top Stories</h2>
 				<div class="side-list">
@@ -63,10 +60,8 @@ const financialEvents = allPosts.slice(6, 12);
 			</div>
 		</section>
 
-		{/* Divider */}
 		<hr class="section-divider" />
 
-		{/* Latest Articles Section */}
 		{latestArticles.length > 0 && (
 			<section class="articles-section">
 				<h2 class="section-title">Latest Articles</h2>
@@ -91,10 +86,8 @@ const financialEvents = allPosts.slice(6, 12);
 			</section>
 		)}
 
-		{/* Divider */}
 		<hr class="section-divider" />
 
-		{/* Financial Events Section */}
 		{financialEvents.length > 0 && (
 			<section class="events-section">
 				<h2 class="section-title">Latest Financial Events</h2>
@@ -119,7 +112,6 @@ const financialEvents = allPosts.slice(6, 12);
 			</section>
 		)}
 
-		{/* Newsletter CTA Section */}
 		<section class="newsletter-cta">
 			<div class="newsletter-content">
 				<div class="newsletter-text">
@@ -156,7 +148,6 @@ const financialEvents = allPosts.slice(6, 12);
 		padding-bottom: var(--space-lg);
 	}
 
-	/* Hero Grid Layout */
 	.hero-grid {
 		display: grid;
 		grid-template-columns: 1.45fr 1fr;
@@ -164,7 +155,6 @@ const financialEvents = allPosts.slice(6, 12);
 		margin-bottom: var(--space-lg);
 	}
 
-	/* Feature Story Styles */
 	.feature-story {
 		position: relative;
 	}
@@ -248,7 +238,6 @@ const financialEvents = allPosts.slice(6, 12);
 		color: var(--color-border);
 	}
 
-	/* Side Stories Styles */
 	.side-stories {
 		padding-left: var(--space-md);
 		border-left: 1px solid var(--color-border);
@@ -293,7 +282,7 @@ const financialEvents = allPosts.slice(6, 12);
 		font-size: 0.75rem;
 		font-weight: 700;
 		text-transform: uppercase;
-		color: var(--color-primary); /* Changed to primary (green) */
+		color: var(--color-primary);
 		margin-bottom: 0.25rem;
 		letter-spacing: 0.05em;
 	}
@@ -335,7 +324,7 @@ const financialEvents = allPosts.slice(6, 12);
 		width: 100px;
 		height: 100px;
 		flex-shrink: 0;
-		border-radius: 12px; /* Standardized radius */
+		border-radius: 12px;
 		overflow: hidden;
 		border: 1px solid var(--color-border);
 	}
@@ -352,7 +341,6 @@ const financialEvents = allPosts.slice(6, 12);
 		margin: var(--space-lg) 0;
 	}
 
-	/* Section Styles */
 	.articles-section,
 	.events-section {
 		margin: var(--space-lg) 0;
@@ -383,7 +371,7 @@ const financialEvents = allPosts.slice(6, 12);
 		flex-direction: column;
 		background: #FFFFFF;
 		border: 1px solid var(--color-border);
-		border-radius: 12px; /* Standardized radius */
+		border-radius: 12px;
 		overflow: visible;
 		transition: all 0.3s ease;
 	}
@@ -391,12 +379,12 @@ const financialEvents = allPosts.slice(6, 12);
 	.article-card:hover {
 		box-shadow: var(--shadow-md);
 		border-color: var(--color-primary);
-		transform: translateY(-3px); /* Standardized hover lift */
+		transform: translateY(-3px);
 	}
 
 	.article-image {
 		width: 100%;
-		aspect-ratio: 16/9; /* Standardized aspect ratio */
+		aspect-ratio: 16/9;
 		overflow: hidden;
 		background: var(--color-surface);
 		border-bottom: 1px solid var(--color-border);
@@ -414,7 +402,7 @@ const financialEvents = allPosts.slice(6, 12);
 	}
 
 	.article-content {
-		padding: var(--space-md); /* Increased padding for better spacing */
+		padding: var(--space-md);
 		flex: 1;
 		display: flex;
 		flex-direction: column;
@@ -422,7 +410,7 @@ const financialEvents = allPosts.slice(6, 12);
 
 	.article-title {
 		font-family: var(--font-display);
-		font-size: 1.25rem; /* Slightly larger */
+		font-size: 1.25rem;
 		font-weight: 700;
 		line-height: 1.4;
 		margin-bottom: var(--space-xs);
@@ -434,14 +422,10 @@ const financialEvents = allPosts.slice(6, 12);
 	.article-card:hover .article-title {
 		color: var(--color-primary);
 	}
-
-
-
-	/* Newsletter CTA */
 	.newsletter-cta {
 		margin-top: var(--space-xl);
 		margin-bottom: 0;
-		background: var(--color-primary); /* Solid Primary Green */
+		background: var(--color-primary);
 		border-radius: 24px;
 		padding: var(--space-lg);
 		color: #FFFFFF;
@@ -469,7 +453,7 @@ const financialEvents = allPosts.slice(6, 12);
 
 	.newsletter-desc {
 		font-size: 1.2rem;
-		color: #D1FAE5; /* Light green text */
+		color: #D1FAE5;
 		margin-bottom: var(--space-md);
 		max-width: 45ch;
 	}
@@ -529,7 +513,7 @@ const financialEvents = allPosts.slice(6, 12);
 	}
 
 	.cta-btn {
-		background: var(--color-text-main); /* Solid Dark */
+		background: var(--color-text-main);
 		color: #FFFFFF;
 		border: none;
 		padding: 1rem;
@@ -552,7 +536,6 @@ const financialEvents = allPosts.slice(6, 12);
 		margin-top: var(--space-sm);
 	}
 
-	/* Responsive */
 	@media (max-width: 900px) {
 		.hero-grid {
 			grid-template-columns: 1fr;

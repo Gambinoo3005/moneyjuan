@@ -30,15 +30,7 @@ export const TaxConfig = {
     employee_rate: 0.05,
     employer_rate: 0.10,
     msc_min: 5000,
-    msc_max: 35000,
-    // Simplified bracket logic: 
-    // Contribution is based on MSC. MSC is salary rounded to nearest bracket.
-    // For 2025, it's basically salary * rate, but capped at msc_max and floored at msc_min.
-    // However, exact tables have specific EC and WISP components.
-    // For this calculator, we will use the formula approximation as requested/implied for simplicity unless exact table is needed.
-    // The user prompt said: "Use EE part as payroll deduction; optionally show employer’s share in the UI."
-    // and "Store the official 2025 SSS contribution table... or use formula approximation if acceptable".
-    // Given the prompt "Total rate: 15% of Monthly Salary Credit (MSC)", we will implement the MSC logic.
+    msc_max: 35000
   },
   philhealth: {
     rate: 0.05,
@@ -46,8 +38,8 @@ export const TaxConfig = {
     ceiling: 100000,
     share_employee: 0.5,
     share_employer: 0.5,
-    min_contribution: 500, // 5% of 10k
-    max_contribution: 5000 // 5% of 100k
+    min_contribution: 500,
+    max_contribution: 5000
   },
   pagibig: {
     fund_salary_cap: 10000,
@@ -56,6 +48,6 @@ export const TaxConfig = {
       { max: Infinity, rate: 0.02 }
     ],
     er_rate: 0.02,
-    max_contribution: 200 // 2% of 10k
+    max_contribution: 200
   }
 };
