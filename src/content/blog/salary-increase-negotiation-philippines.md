@@ -7,9 +7,9 @@ heroImage: '../../assets/blog/salary_negotiation.webp'
 author: 'Bryan Jacinto'
 ---
 
-Asking for a raise feels uncomfortable for most people. For many Filipinos, it feels even worse because we're taught not to be demanding or appear ungrateful. You might worry about seeming entitled, damaging your relationship with your boss, or worse, being seen as someone who doesn't appreciate their job.
+Asking for a raise feels uncomfortable for most people. For many Filipinos, it feels even worse because we're taught not to be demanding or appear ungrateful. You might worry about seeming entitled, damaging your relationship with your boss, or getting a negative reputation among colleagues.
 
-But here's the reality: asking for a raise is a normal part of professional growth. Companies expect employees to advocate for themselves. Your boss won't think less of you for asking, especially if you do it the right way.
+But here's the reality: asking for a raise is a normal part of professional growth. Companies, especially multinational firms and large corporations in BGC or Makati, expect employees to advocate for themselves. Your boss won't think less of you for asking, especially if you do it the right way.
 
 The awkwardness you feel is real, but it doesn't have to stop you. With the right preparation and approach, you can ask for what you deserve without the discomfort taking over.
 
@@ -21,7 +21,9 @@ The key to asking for a raise without feeling awkward is preparation. When you k
 
 ### Research Your Market Value
 
-Find out what people in your role actually make. Use salary websites like JobStreet, LinkedIn Salary Insights, or ask trusted colleagues in similar positions at other companies. Look for roles with your job title, years of experience, and industry.
+Find out what people in your role actually make. Use salary websites like JobStreet Philippines or LinkedIn Salary Insights. Look for roles with your job title, years of experience, and industry.
+
+You can also check job postings on Kalibrr or Indeed Philippines to see what companies are offering for similar positions. Ask trusted former colleagues who moved to other companies what the market looks like.
 
 If you're earning significantly below market rate, this gives you solid ground to stand on. If you're already at market rate, you'll need to focus on your performance and contributions instead.
 
@@ -29,19 +31,25 @@ If you're earning significantly below market rate, this gives you solid ground t
 
 Make a list of your accomplishments from the past year. Include specific projects you completed, problems you solved, money you saved the company, or revenue you generated. Use numbers whenever possible.
 
-Examples that work: "Led the project that reduced processing time by 30%," "Brought in three new clients worth 2 million pesos in contracts," "Trained five new team members, reducing onboarding time by two weeks." Vague statements like "worked hard" or "did my best" won't cut it.
+Examples that work: "Led the Lazada campaign that increased online sales by 40%" or "Brought in SM as a new client, worth ₱8 million in contracts" or "Reduced payment delays from 45 days to 20 days."
+
+Vague statements like "worked hard" or "always gave my best" won't cut it. Your boss needs concrete evidence.
 
 ### Know Your Company's Financial Health
 
-Timing matters. If your company just announced layoffs or budget cuts, asking for a raise will likely get a no. If the company just had a record quarter or your department exceeded goals, that's your window.
+Timing matters. If your company just announced layoffs or budget cuts, asking for a raise will likely get a no. If the company just had a record quarter, landed a major client, or your department exceeded targets, that's your window.
 
-Pay attention to company announcements, quarterly results, and the general mood in leadership meetings. You want to ask when the company can actually afford to say yes.
+Pay attention to company announcements, quarterly results, and the general mood in leadership meetings. If your company just opened a new branch or expanded operations, that's usually a good sign. If they're cutting bonuses or Christmas parties, wait.
+
+You want to ask when the company can actually afford to say yes.
 
 ### Understand Your Company's Raise Cycle
 
-Some companies only give raises during annual reviews. Others have budget allocations at specific times of the year. Ask HR or your manager when raises are typically discussed.
+Some companies only give raises during annual reviews, usually around January or after the company's fiscal year ends. Others, especially BPOs and multinational companies, have specific performance review periods tied to raises.
 
-If you ask outside the cycle, you might get a "come back in six months" response even if you deserve it. Knowing the timeline helps you plan your approach.
+Ask HR or your manager when raises are typically discussed. Some companies do it quarterly, others annually. Many Filipino companies align raises with the 13th month pay period or the start of the fiscal year.
+
+If you ask outside the cycle, you might get a "come back during performance review season" response even if you deserve it. Knowing the timeline helps you plan your approach.
 
 ## Preparing What to Say
 
@@ -51,25 +59,31 @@ The actual conversation will be easier if you know exactly what you want to comm
 
 Decide how much you're asking for before the meeting. Research suggests asking for a specific number rather than a range shows you've done your homework.
 
-Base your number on market research, your performance, and what feels realistic. Asking for 15-20% might work if you're significantly underpaid or took on major new responsibilities. A 5-10% increase is more standard for regular performance-based raises.
+Base your number on market research, your performance, and what feels realistic. If you're currently earning ₱35,000 and market rate is ₱45,000, asking for ₱42,000-45,000 is reasonable. If you've taken on significant new responsibilities, a ₱5,000-7,000 increase makes sense.
+
+A 15-20% increase might work if you're significantly underpaid or took on major new responsibilities. A 5-10% increase (roughly ₱2,000-3,500 on a ₱35,000 salary) is more standard for regular performance-based raises.
 
 ### Prepare Your Opening
 
-You need a clear, confident opening that gets straight to the point. Avoid apologizing or hedging.
+You need a clear, confident opening that gets straight to the point. Avoid apologizing or hedging with too much softness.
 
-Don't say: "I'm sorry to bother you, but I was wondering if maybe we could possibly talk about my salary sometime if you're not too busy..."
+Don't say: "Sorry to bother you sir/ma'am, but I was wondering if maybe we could possibly talk about my salary sometime if you're not too busy and if it's okay..."
 
-Do say: "I'd like to discuss my compensation. I've been in this role for 18 months, and based on my contributions and market research, I believe an adjustment is warranted."
+Do say: "Good morning. I'd like to discuss my compensation. I've been in this role for 18 months now, and based on my contributions and current market rates, I believe an adjustment is warranted. Do you have time to talk about this?"
+
+Keep it respectful but direct. Filipino workplace culture values respect, but that doesn't mean you need to be overly apologetic.
 
 ### Build Your Case
 
 Structure your reasoning in three parts: your performance, market value, and future contributions.
 
-Performance: "Over the past year, I've successfully managed the launch of our new product line, which generated 5 million in revenue."
+Performance: "Over the past year, I've successfully managed our partnership with Jollibee, which brought in ₱12 million in revenue."
 
-Market value: "Based on salary data for similar roles in our industry, the market rate is 15-20% higher than my current compensation."
+Market value: "Based on salary data from JobStreet for Marketing Managers with my experience level in Metro Manila, the market rate is ₱50,000-55,000. My current salary is ₱42,000."
 
-Future value: "I'm ready to take on the lead role for the upcoming expansion project, which will require managing a team of five."
+Future value: "I'm ready to take on the Team Lead role for the upcoming expansion, which will involve managing enterprise clients."
+
+Connect your value to business outcomes the company cares about: revenue, efficiency, client retention, cost savings.
 
 ### Practice Out Loud
 
@@ -83,15 +97,15 @@ How you ask for the meeting matters as much as what you say in it.
 
 ### Request a Meeting Properly
 
-Don't ambush your boss in the hallway or bring it up during your regular check-in. Send a formal request for a dedicated meeting.
+Don't ambush your boss in the pantry or bring it up during your regular check-in. Send a formal request for a dedicated meeting via email or your company's messaging system.
 
-Email template: "Hi [Manager's Name], I'd like to schedule a meeting to discuss my role and compensation. Would you have 30 minutes available this week or next? Please let me know what works for your schedule."
+Email template: "Good day Sir/Ma'am, I'd like to schedule a meeting to discuss my role and compensation. Would you have 30 minutes available this week or next? Please let me know what works best for your schedule. Thank you."
 
-This gives your manager time to prepare and shows you're taking it seriously. It also prevents the "let me think about it" delay that happens with surprise requests.
+This gives your manager time to prepare and shows you're taking it seriously. It also prevents the delayed response that happens with surprise requests.
 
 ### Choose the Right Time
 
-Tuesday through Thursday, mid-morning or early afternoon usually works best. Avoid Monday mornings when everyone is stressed, and Friday afternoons when people are mentally checked out.
+Tuesday through Thursday, mid-morning or early afternoon usually works best. Avoid Monday mornings when everyone is dealing with the week's start, and Friday afternoons when people are mentally checked out.
 
 Don't schedule it right after your boss had a difficult meeting or during a company crisis. Wait for a relatively calm period.
 
@@ -109,15 +123,19 @@ You've prepared. You've scheduled the meeting. Now it's time to actually ask.
 
 Walk in confident. Greet your manager normally, sit down, and get to the point within the first minute.
 
-"Thank you for meeting with me. As I mentioned, I wanted to discuss my compensation. I've been with the company for two years, and I believe my contributions warrant a salary increase to [specific amount]."
+"Thank you for meeting with me, sir/ma'am. As I mentioned, I wanted to discuss my compensation. I've been with the company for two years now, and I believe my contributions warrant a salary increase to ₱48,000."
 
-Then pause. Let them process what you've said before you continue.
+Then pause. Let them process what you've said before you continue. Don't rush to fill the silence.
 
 ### Present Your Evidence
 
 Walk through your prepared case calmly and clearly. Reference your list of accomplishments, market research, and increased responsibilities.
 
-Keep it factual and professional. This isn't the time to talk about personal financial struggles, rising living costs, or what your friend at another company makes. Focus on your professional value.
+Keep it factual and professional. This isn't the time to talk about personal financial struggles, rising costs of living, or needing to support family. Focus on your professional value to this company.
+
+Don't say: "Everything is getting more expensive and I need to send money home."
+
+Do say: "I've consistently exceeded my KPIs and my research shows similar roles pay ₱5,000-8,000 more in the current market."
 
 ### Let Them Respond
 
@@ -131,7 +149,7 @@ If they say yes: Great! Get it in writing with the new salary and effective date
 
 If they say no: Ask why. Listen to their reasoning. Is it budget constraints, timing, performance concerns, or company policy? Understanding the reason helps you decide your next move.
 
-If they say maybe: Ask for specifics. "What would need to happen for this to become a yes? What timeline are we looking at?" Pin down concrete next steps and a follow-up date.
+If they say maybe: Ask for specifics. "What would need to happen for this to become a yes? What timeline are we looking at?" Pin down concrete next steps and a specific follow-up date.
 
 ### Avoid Getting Defensive
 
@@ -177,7 +195,9 @@ Even with all this preparation, you might still feel too anxious to ask. That's 
 
 Your relationship with your employer is fundamentally a business transaction. You provide value, they compensate you for it. Renegotiating that compensation is normal business practice.
 
-They're not doing you a favor by employing you. You're not being greedy by asking for fair pay. This is how the system works.
+They're not doing you a favor by employing you, and you're not being disrespectful by asking for fair pay. This is how professional careers work. Western companies and multinationals expect this, and Filipino companies are increasingly adopting this mindset.
+
+You're not being presumptuous by advocating for yourself. You're being professional.
 
 ### Write It Down First
 

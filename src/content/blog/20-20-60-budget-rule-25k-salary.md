@@ -7,9 +7,9 @@ category: 'saving'
 author: 'Bryan Jacinto'
 ---
 
-Most budgeting advice you'll find online was written for different economies. The classic 50-30-20 rule assumes you can live comfortably on half your income, save 20%, and still have 30% left for wants. When you're earning 25,000 pesos a month in the Philippines, that math just doesn't work.
+Most budgeting advice you'll find online was written for different economies. The classic 50-30-20 rule assumes you can live comfortably on half your income, save 20%, and still have 30% left for wants. When you're earning 25,000 pesos a month in Metro Manila, that math just doesn't work.
 
-The 20-20-60 budget rule was designed for Filipino realities. It acknowledges that many people are managing debt, supporting family members, and dealing with costs that have grown faster than wages.
+The 20-20-60 budget rule was designed for Filipino realities. It acknowledges that many people are managing debt, supporting family members, and dealing with rent and living costs that have grown faster than wages.
 
 Think of this as a starting point, not a rigid rule. The goal is to give every peso a purpose while still leaving room for the unexpected expenses that always come up.
 
@@ -45,11 +45,11 @@ Start by building an emergency fund of at least three months' worth of expenses.
 
 #### Retirement and Long-term: ₱1,500
 
-Consider Pag-IBIG MP2, which has historically given 5-7% annual returns. Even small amounts compound over time.
+Consider Pag-IBIG MP2, which has historically given 5-7% annual returns. If you're employed, you're already contributing to SSS and Pag-IBIG, but this extra amount helps build your retirement fund faster.
 
 #### Short-term Goals: ₱500
 
-Save for bigger purchases you're planning within the year. New phone? Trip? This approach beats putting it on credit.
+Save for bigger purchases you're planning within the year. New phone? Trip? This approach beats putting it on credit or using installment plans.
 
 Set up automatic transfers on payday so the money moves to savings before you can spend it.
 
@@ -63,7 +63,7 @@ If you have credit card debt, personal loans, or installment payments, prioritiz
 
 #### Family Support
 
-Many Filipinos help support parents, siblings, or extended family. The 20% allocation helps you create sustainability so you can continue helping long-term. If your family obligations exceed this amount, you may need to adjust other categories or work on gradually increasing your income.
+Many Filipinos help support parents or siblings. The 20% allocation helps you create sustainability so you can continue helping long-term. If your family obligations exceed this amount, you may need to adjust other categories or work on gradually increasing your income.
 
 #### Insurance Premiums: ₱500-1,000
 
@@ -81,19 +81,27 @@ This is where budgeting gets real. Fifteen thousand pesos needs to cover rent, f
 
 #### Housing: ₱6,000-8,000
 
-Rent, dorm fees, or your contribution to family expenses. In Metro Manila and other cities, finding affordable housing is challenging. If you're spending more, consider sharing space with roommates or looking at areas with longer commutes. Safety and reasonable commuting distance matter though, so balance the numbers with your actual well-being.
+Rent, dorm fees, or your contribution to family expenses. In Metro Manila, a bedspace can cost ₱5,000-8,000, while sharing an apartment might run ₱4,000-6,000 per person.
+
+If you're spending more, consider sharing space with roommates or looking at areas with longer commutes but lower rent. Safety and reasonable commuting distance matter though, so balance the numbers with your actual well-being.
 
 #### Food: ₱4,000-5,000
 
-Meal prepping and bringing packed lunch saves money, but we know this isn't always possible with long commutes, lack of kitchen access, or exhaustion after work. Even cooking a few times a week helps. Shop at public markets instead of malls and plan meals around what's on sale.
+Meal prepping and bringing packed lunch saves money, but we know this isn't always possible with long commutes, lack of kitchen access, or exhaustion after work. Even cooking a few times a week helps.
+
+Shop at public markets instead of supermarkets. Eating at local carinderias costs ₱50-80 per meal versus ₱150-200 at fast food chains.
 
 #### Transportation: ₱1,500-2,500
 
-Commute costs add up quickly. Consider carpooling with colleagues or using transport apps during promotions.
+Commute costs add up quickly. If you're taking public transport daily, budget around ₱1,500-2,000 monthly. Ride-hailing apps for occasional rides can push this higher.
+
+Consider carpooling with colleagues or timing your commute to avoid peak hours when possible.
 
 #### Utilities and Bills: ₱1,500-2,000
 
-Internet, phone load, electricity, water. Look into bundling services where possible.
+Internet (if you're splitting with roommates), phone load, electricity, water. Budget around ₱300-500 for mobile load and ₱500-800 for your share of utilities if you're sharing.
+
+Look into bundling services where possible. Some providers offer better rates for annual plans.
 
 #### Personal Expenses: ₱1,000-2,000
 
