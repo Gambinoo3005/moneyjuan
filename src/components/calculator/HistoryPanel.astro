@@ -22,6 +22,31 @@
     </div>
 </div>
 
+<div id="history-confirm-overlay" class="history-confirm-overlay hidden" aria-hidden="true">
+    <div
+        id="history-confirm-dialog"
+        class="history-confirm-dialog"
+        role="dialog"
+        aria-modal="true"
+        aria-labelledby="history-confirm-title"
+        aria-describedby="history-confirm-message"
+        tabindex="-1"
+    >
+        <h4 id="history-confirm-title">Clear History?</h4>
+        <p id="history-confirm-message">
+            This will permanently remove all saved calculator history.
+        </p>
+        <div class="history-confirm-actions">
+            <button id="history-confirm-cancel" type="button" class="history-confirm-btn history-confirm-btn-cancel">
+                Keep History
+            </button>
+            <button id="history-confirm-accept" type="button" class="history-confirm-btn history-confirm-btn-accept">
+                Clear All
+            </button>
+        </div>
+    </div>
+</div>
+
 <style>
     .history-container {
         background: #fff;
@@ -120,6 +145,87 @@
         color: var(--color-primary);
         font-family: var(--font-display);
     }
+
+    .history-confirm-overlay {
+        position: fixed;
+        inset: 0;
+        background: rgba(15, 23, 42, 0.45);
+        z-index: 1400;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        padding: 1rem;
+    }
+
+    .history-confirm-overlay.hidden {
+        display: none;
+    }
+
+    .history-confirm-dialog {
+        width: min(420px, 100%);
+        background: #FFFFFF;
+        border: 1px solid var(--color-border);
+        border-radius: 14px;
+        box-shadow: 0 20px 40px rgba(15, 23, 42, 0.2);
+        padding: 1.1rem;
+    }
+
+    .history-confirm-dialog h4 {
+        font-family: var(--font-display);
+        font-size: 1.15rem;
+        font-weight: 800;
+        margin: 0 0 0.5rem;
+        color: var(--color-text-main);
+    }
+
+    .history-confirm-dialog p {
+        margin: 0 0 0.95rem;
+        color: var(--color-text-muted);
+        font-size: 0.95rem;
+        line-height: 1.45;
+        max-width: none;
+    }
+
+    .history-confirm-actions {
+        display: flex;
+        justify-content: flex-end;
+        gap: 0.55rem;
+    }
+
+    .history-confirm-btn {
+        border-radius: 8px;
+        border: 1px solid var(--color-border);
+        padding: 0.6rem 0.85rem;
+        font-family: var(--font-display);
+        font-size: 0.9rem;
+        font-weight: 700;
+        cursor: pointer;
+        transition: background-color 0.2s ease, color 0.2s ease, border-color 0.2s ease;
+    }
+
+    .history-confirm-btn-cancel {
+        background: #FFFFFF;
+        color: var(--color-text-main);
+    }
+
+    .history-confirm-btn-cancel:hover {
+        background: var(--color-surface);
+    }
+
+    .history-confirm-btn-accept {
+        background: #DC2626;
+        border-color: #DC2626;
+        color: #FFFFFF;
+    }
+
+    .history-confirm-btn-accept:hover {
+        background: #B91C1C;
+        border-color: #B91C1C;
+    }
+
+    :global(body.history-confirm-open) {
+        overflow: hidden;
+    }
 </style>
 
 <script>
@@ -128,6 +234,12 @@
     const container = document.getElementById("history-container");
     const list = document.getElementById("history-list");
     const clearBtn = document.getElementById("clear-history-btn");
+    const confirmOverlay = document.getElementById("history-confirm-overlay");
+    const confirmDialog = document.getElementById("history-confirm-dialog");
+    const confirmCancel = document.getElementById("history-confirm-cancel");
+    const confirmAccept = document.getElementById("history-confirm-accept");
+    let confirmResolver = null;
+    let previousFocused = null;
 
     const renderHistory = () => {
         const history = getHistory();
@@ -197,10 +309,52 @@
     });
 
     // Clear handler
-    clearBtn?.addEventListener("click", () => {
-        if (
-            confirm("Are you sure you want to clear your calculation history?")
-        ) {
+    const closeConfirmDialog = (confirmed) => {
+        if (!confirmOverlay) return;
+        confirmOverlay.classList.add("hidden");
+        confirmOverlay.setAttribute("aria-hidden", "true");
+        document.body.classList.remove("history-confirm-open");
+        if (confirmResolver) {
+            confirmResolver(Boolean(confirmed));
+            confirmResolver = null;
+        }
+        if (previousFocused instanceof HTMLElement) {
+            previousFocused.focus();
+        }
+    };
+
+    const openConfirmDialog = () =>
+        new Promise((resolve) => {
+            if (!confirmOverlay || !confirmDialog) {
+                resolve(false);
+                return;
+            }
+            confirmResolver = resolve;
+            previousFocused = document.activeElement;
+            confirmOverlay.classList.remove("hidden");
+            confirmOverlay.setAttribute("aria-hidden", "false");
+            document.body.classList.add("history-confirm-open");
+            confirmDialog.focus();
+        });
+
+    confirmCancel?.addEventListener("click", () => closeConfirmDialog(false));
+    confirmAccept?.addEventListener("click", () => closeConfirmDialog(true));
+
+    confirmOverlay?.addEventListener("click", (event) => {
+        if (event.target === confirmOverlay) {
+            closeConfirmDialog(false);
+        }
+    });
+
+    document.addEventListener("keydown", (event) => {
+        if (event.key === "Escape" && confirmOverlay && !confirmOverlay.classList.contains("hidden")) {
+            closeConfirmDialog(false);
+        }
+    });
+
+    clearBtn?.addEventListener("click", async () => {
+        const confirmed = await openConfirmDialog();
+        if (confirmed) {
             clearHistory();
         }
     });

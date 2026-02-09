@@ -1,9 +1,16 @@
 const menuToggle = document.querySelector('.menu-toggle');
 const nav = document.getElementById('primary-nav');
+const header = document.querySelector('header');
 const searchOverlay = document.getElementById('header-search-overlay');
 const searchOverlayForm = searchOverlay?.querySelector('.search-overlay-form');
 const searchInput = document.getElementById('header-search-input');
 const searchOpenButtons = document.querySelectorAll('[data-search-open]');
+
+const syncMobileNavTop = () => {
+	if (!header) return;
+	const height = Math.round(header.getBoundingClientRect().height);
+	document.documentElement.style.setProperty('--mobile-nav-top', `${height}px`);
+};
 
 const closeMenu = () => {
 	if (!menuToggle || !nav) return;
@@ -41,6 +48,7 @@ if (searchOverlay) {
 
 if (menuToggle && nav) {
 	menuToggle.addEventListener('click', () => {
+		syncMobileNavTop();
 		const isOpen = nav.classList.toggle('is-open');
 		menuToggle.setAttribute('aria-expanded', String(isOpen));
 	});
@@ -54,6 +62,7 @@ if (menuToggle && nav) {
 	});
 
 	window.addEventListener('resize', () => {
+		syncMobileNavTop();
 		if (window.innerWidth > 900) {
 			closeMenu();
 		}
@@ -68,4 +77,13 @@ if (menuToggle && nav) {
 			}
 		}
 	});
+}
+
+syncMobileNavTop();
+
+if (header && 'ResizeObserver' in window) {
+	const resizeObserver = new ResizeObserver(() => {
+		syncMobileNavTop();
+	});
+	resizeObserver.observe(header);
 }
