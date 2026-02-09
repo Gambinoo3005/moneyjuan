@@ -1,0 +1,214 @@
+---
+import Layout from '../layouts/Layout.astro';
+---
+
+<Layout
+	title="Editorial & Fact-Checking Policy | MoneyJuan"
+	description="MoneyJuan's editorial and fact-checking standards for accurate, transparent financial content."
+>
+	<div class="container page-content">
+		<h1 class="page-title">Editorial &amp; Fact-Checking Policy</h1>
+
+		<div class="content-wrapper">
+			<section class="policy-section">
+				<h2>Our Commitment to Accuracy</h2>
+				<p>
+					MoneyJuan provides financial information that Filipinos use to make real decisions about their money. We take that responsibility seriously. Every article goes through research, writing, fact-checking, and review before publication.
+				</p>
+			</section>
+
+			<section class="policy-section">
+				<h2>Research Standards</h2>
+				<h3>Primary Sources First</h3>
+				<p>We prioritize information directly from official sources:</p>
+				<ul>
+					<li>Bangko Sentral ng Pilipinas (BSP) announcements and regulations</li>
+					<li>Philippine Deposit Insurance Corporation (PDIC) guidelines</li>
+					<li>Bank websites and official rate pages</li>
+					<li>Government agency publications (SSS, Pag-IBIG, BIR)</li>
+					<li>Company investor relations and press releases</li>
+				</ul>
+
+				<h3>Rate Verification</h3>
+				<p>
+					Interest rates, fees, and product features are verified from the financial institution&apos;s official website or app. We note the date of verification in articles. When rates change, we update the content.
+				</p>
+
+				<h3>Multiple Source Confirmation</h3>
+				<p>
+					For significant claims, especially about policies or regulations, we confirm information across at least two independent sources before publishing.
+				</p>
+			</section>
+
+			<section class="policy-section">
+				<h2>Writing Process</h2>
+				<h3>Plain Language Requirement</h3>
+				<p>
+					Our writers translate financial jargon into clear Filipino English. If a technical term is necessary, we define it. Complex concepts get broken down into understandable parts.
+				</p>
+
+				<h3>Realistic Examples</h3>
+				<p>
+					All peso amounts, salary examples, and scenarios reflect actual Filipino financial situations. We don&apos;t use theoretical examples that don&apos;t apply to our readers&apos; lives.
+				</p>
+
+				<h3>Date Stamping</h3>
+				<p>
+					Every article includes publication and last update dates. Financial information changes, and readers deserve to know how current the content is.
+				</p>
+			</section>
+
+			<section class="policy-section">
+				<h2>Fact-Checking Process</h2>
+				<h3>Before Publication</h3>
+				<ul>
+					<li>All numbers (interest rates, fees, limits) are verified against official sources</li>
+					<li>Links to sources are checked and functional</li>
+					<li>Product features are confirmed as currently available</li>
+					<li>Regulatory information is cross-referenced with BSP or relevant agencies</li>
+				</ul>
+
+				<h3>Regular Reviews</h3>
+				<p>
+					We review published content quarterly to ensure rates, policies, and information remain accurate. When changes are detected, articles are updated and marked with the new date.
+				</p>
+
+				<h3>Corrections</h3>
+				<p>
+					When we make mistakes, we correct them promptly and transparently. Significant corrections are noted at the top of the article with the date of correction.
+				</p>
+			</section>
+
+			<section class="policy-section">
+				<h2>What We Don&apos;t Do</h2>
+				<h3>No Financial Advice</h3>
+				<p>
+					We provide information and education, not personalized financial advice. We&apos;re not licensed financial advisors, and our content should not be treated as professional financial planning.
+				</p>
+
+				<h3>No Guarantees</h3>
+				<p>
+					Financial products, interest rates, and policies can change. We provide accurate information as of our publication date, but we cannot guarantee that institutions won&apos;t change their terms.
+				</p>
+
+				<h3>No Legal or Tax Advice</h3>
+				<p>
+					When content touches on legal or tax matters, we present general information only. We always recommend consulting licensed professionals for specific situations.
+				</p>
+			</section>
+
+			<section class="policy-section">
+				<h2>Affiliate Disclosure</h2>
+				<p>When we earn commissions from affiliate partnerships or sponsorships:</p>
+				<ul>
+					<li>We clearly disclose the relationship</li>
+					<li>The partnership does not influence our factual reporting</li>
+					<li>We only partner with legitimate, helpful products</li>
+					<li>Reviews remain honest regardless of affiliate status</li>
+				</ul>
+			</section>
+
+			<section class="policy-section">
+				<h2>Source Citations</h2>
+				<p>
+					We link to official sources wherever possible. For rates and policies, we provide direct links to the bank or institution&apos;s page so readers can verify information themselves.
+				</p>
+			</section>
+
+			<section class="policy-section">
+				<h2>Contact for Corrections</h2>
+				<p>
+					Found an error? Contact us at <a href="mailto:contact@moneyjuan.com">contact@moneyjuan.com</a>. We review all correction requests and update content when errors are confirmed.
+				</p>
+			</section>
+
+			<section class="policy-section">
+				<h2>Independence</h2>
+				<p>
+					Our editorial decisions are made independently. Partners and advertisers do not review content before publication or influence our coverage. We choose what to write about based on what helps our readers, not what benefits partners.
+				</p>
+			</section>
+
+			<section class="policy-section">
+				<h2>Updates to This Policy</h2>
+				<p>
+					This policy may be updated as MoneyJuan grows. We&apos;ll note the date of any significant changes. Last updated: February 2026.
+				</p>
+			</section>
+		</div>
+	</div>
+</Layout>
+
+<style>
+	.page-content {
+		padding: var(--space-lg) var(--space-sm);
+		max-width: 860px;
+	}
+
+	.page-title {
+		text-align: center;
+		margin-bottom: var(--space-lg);
+	}
+
+	.content-wrapper {
+		display: flex;
+		flex-direction: column;
+		gap: var(--space-md);
+	}
+
+	.policy-section h2 {
+		font-size: clamp(1.35rem, 2.7vw, 1.75rem);
+		margin-bottom: var(--space-xs);
+	}
+
+	.policy-section h3 {
+		font-size: clamp(1.05rem, 2.2vw, 1.2rem);
+		margin-top: var(--space-sm);
+		margin-bottom: var(--space-xs);
+		color: var(--color-text-main);
+	}
+
+	.policy-section p {
+		font-size: 1.02rem;
+		line-height: 1.72;
+		color: var(--color-text-muted);
+		margin-bottom: var(--space-sm);
+	}
+
+	.policy-section ul {
+		padding-left: 1.2rem;
+		margin-bottom: var(--space-sm);
+	}
+
+	.policy-section li {
+		margin-bottom: 0.45rem;
+		color: var(--color-text-muted);
+		line-height: 1.65;
+	}
+
+	.policy-section a {
+		color: var(--color-primary);
+		text-decoration: underline;
+		text-underline-offset: 2px;
+	}
+
+	.policy-section p:last-child,
+	.policy-section ul:last-child {
+		margin-bottom: 0;
+	}
+
+	@media (max-width: 600px) {
+		.page-content {
+			padding: var(--space-md) var(--space-sm);
+		}
+
+		.page-title {
+			margin-bottom: var(--space-md);
+		}
+
+		.policy-section p,
+		.policy-section li {
+			font-size: 0.98rem;
+		}
+	}
+</style>

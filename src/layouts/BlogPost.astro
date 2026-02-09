@@ -4,15 +4,74 @@ import Layout from './Layout.astro';
 import FormattedDate from '../components/FormattedDate.astro';
 import { Image } from 'astro:assets';
 import { getAuthorByName } from '../data/authors';
+import { SITE_TITLE } from '../consts';
 
 type Props = CollectionEntry<'blog'>['data'];
 
-const { title, description, pubDate, updatedDate, category, author } = Astro.props;
+const { title, description, pubDate, updatedDate, category, author, heroImage } = Astro.props;
 const displayAuthor = author || 'MoneyJuan Team';
 const authorProfile = getAuthorByName(displayAuthor);
+
+const toTitleCase = (value: string) =>
+	value
+		.split('-')
+		.map((part) => part.charAt(0).toUpperCase() + part.slice(1))
+		.join(' ');
+
+const pageUrl = Astro.url.href;
+const canonicalSiteUrl = new URL('/', Astro.site).toString();
+const authorUrl = authorProfile ? new URL(`/author/${authorProfile.slug}/`, Astro.site).toString() : null;
+const authorSameAs = authorProfile
+	? [authorProfile.links?.linkedin, authorProfile.links?.website].filter(
+			(link): link is string => Boolean(link),
+		)
+	: [];
+const categoryTitle = category ? toTitleCase(category) : undefined;
+const articleImage = heroImage ? new URL(heroImage.src, Astro.site).toString() : undefined;
+
+const blogPostingStructuredData = JSON.parse(
+	JSON.stringify({
+		'@context': 'https://schema.org',
+		'@type': 'BlogPosting',
+		mainEntityOfPage: {
+			'@type': 'WebPage',
+			'@id': pageUrl,
+		},
+		headline: title,
+		description,
+		url: pageUrl,
+		datePublished: pubDate.toISOString(),
+		dateModified: (updatedDate || pubDate).toISOString(),
+		inLanguage: 'en-PH',
+		articleSection: categoryTitle,
+		keywords: categoryTitle ? [categoryTitle] : undefined,
+		image: articleImage ? [articleImage] : undefined,
+		author: authorProfile
+			? {
+					'@type': 'Person',
+					'@id': `${authorUrl}#author`,
+					name: displayAuthor,
+					url: authorUrl,
+					sameAs: authorSameAs.length > 0 ? authorSameAs : undefined,
+				}
+			: {
+					'@type': 'Person',
+					name: displayAuthor,
+				},
+		publisher: {
+			'@type': 'Organization',
+			name: SITE_TITLE,
+			url: canonicalSiteUrl,
+			logo: {
+				'@type': 'ImageObject',
+				url: new URL('/favicons/android-chrome-512x512.png', Astro.site).toString(),
+			},
+		},
+	}),
+);
 ---
 
-<Layout title={title} description={description}>
+<Layout title={title} description={description} structuredData={blogPostingStructuredData}>
 	<article class="container blog-post">
 		<div class="header-grid">
 			<div class="header-meta">
@@ -249,6 +308,8 @@ const authorProfile = getAuthorByName(displayAuthor);
 	.sidebar {
 		position: sticky;
 		top: 100px;
+		align-self: start;
+		max-height: calc(100vh - 120px);
 	}
 
 	.toc-container {
@@ -260,6 +321,10 @@ const authorProfile = getAuthorByName(displayAuthor);
 		border: 1px solid var(--color-border);
 		position: relative;
 		overflow: hidden;
+		display: flex;
+		flex-direction: column;
+		height: calc(100vh - 120px);
+		max-height: calc(100vh - 120px);
 	}
 
 	.progress-bar-container {
@@ -290,6 +355,21 @@ const authorProfile = getAuthorByName(displayAuthor);
 		list-style: none;
 		padding: 0;
 		margin: 0;
+	}
+
+	.toc {
+		flex: 1 1 auto;
+		min-height: 0;
+		overflow-y: auto;
+		padding-right: 0.35rem;
+		scrollbar-gutter: stable;
+		-ms-overflow-style: none;
+		scrollbar-width: none;
+	}
+
+	.toc::-webkit-scrollbar {
+		width: 0;
+		height: 0;
 	}
 
 	.toc-item {
@@ -358,7 +438,6 @@ const authorProfile = getAuthorByName(displayAuthor);
 	}
 
 	.post-card:hover {
-		transform: translateY(-3px);
 		box-shadow: var(--shadow-md);
 		border-color: var(--color-primary);
 	}
@@ -371,15 +450,15 @@ const authorProfile = getAuthorByName(displayAuthor);
 		border-bottom: 1px solid var(--color-border);
 	}
 
+	.post-card:hover .image-container {
+		border-bottom-color: var(--color-primary);
+	}
+
 	.image-container img {
 		width: 100%;
 		height: 100%;
 		object-fit: cover;
 		transition: transform 0.3s ease;
-	}
-
-	.post-card:hover .image-container img {
-		transform: scale(1.05);
 	}
 
 	.post-content {
@@ -601,90 +680,4 @@ const authorProfile = getAuthorByName(displayAuthor);
 	}
 </style>
 
-<script>
-	const copyButton = document.querySelector('.copy-link');
-	
-	if (copyButton) {
-		copyButton.addEventListener('click', async () => {
-			try {
-				await navigator.clipboard.writeText(window.location.href);
-				
-				// Visual feedback
-				const originalIcon = copyButton.innerHTML;
-				copyButton.innerHTML = `<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg>`;
-				copyButton.style.color = 'var(--color-primary)';
-				copyButton.style.borderColor = 'var(--color-primary)';
-				
-				setTimeout(() => {
-					copyButton.innerHTML = originalIcon;
-					copyButton.style.color = '';
-					copyButton.style.borderColor = '';
-				}, 2000);
-			} catch (err) {
-				console.error('Failed to copy link:', err);
-			}
-		});
-	}
-
-	// Progress Bar & TOC Highlighting
-	const progressBar = document.getElementById('reading-progress');
-	const tocLinks = document.querySelectorAll('.toc-item a');
-	const headings = Array.from(document.querySelectorAll('.prose h2, .prose h3'));
-	const prose = document.querySelector('.prose');
-
-	function updateProgress() {
-		if (!progressBar || !prose) return;
-
-		const scrollTop = window.scrollY;
-		const viewportHeight = window.innerHeight;
-		const proseRect = prose.getBoundingClientRect();
-		const proseTop = proseRect.top + scrollTop;
-		const proseHeight = proseRect.height;
-		
-		// Calculate progress based on how much of the prose has been scrolled past
-		// We start counting when the top of the prose enters the viewport (or slightly after)
-		// We end when the bottom of the prose is visible
-		
-		const start = proseTop - viewportHeight * 0.2; // Start slightly before
-		const end = proseTop + proseHeight - viewportHeight * 0.5; // End when mostly done
-		
-		let progress = 0;
-		if (scrollTop > start) {
-			progress = ((scrollTop - start) / (end - start)) * 100;
-		}
-		
-		// Clamp between 0 and 100
-		progress = Math.max(0, Math.min(100, progress));
-		
-		progressBar.style.width = `${progress}%`;
-	}
-
-	function updateActiveToc() {
-		let currentHeadingId = '';
-
-		// Find the current heading
-		for (const heading of headings) {
-			const headingTop = heading.offsetTop;
-			if (window.scrollY >= headingTop - 150) { // Offset for sticky header/padding
-				currentHeadingId = heading.getAttribute('id');
-			}
-		}
-
-		// Update active class
-		tocLinks.forEach(link => {
-			link.classList.remove('active');
-			if (link.getAttribute('href') === `#${currentHeadingId}`) {
-				link.classList.add('active');
-			}
-		});
-	}
-
-	window.addEventListener('scroll', () => {
-		updateProgress();
-		updateActiveToc();
-	});
-
-	// Initial call
-	updateProgress();
-	updateActiveToc();
-</script>
+<script type="module" src="/scripts/blog-post-enhancements.js"></script>

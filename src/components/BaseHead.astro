@@ -2,7 +2,7 @@
 import '../styles/global.css';
 import type { ImageMetadata } from 'astro';
 import FallbackImage from '../assets/blog-placeholder-1.jpg';
-import { SITE_TITLE } from '../consts';
+import { GA_MEASUREMENT_ID, SITE_TITLE } from '../consts';
 
 interface Props {
 	title: string;
@@ -11,13 +11,19 @@ interface Props {
 }
 
 const canonicalURL = new URL(Astro.url.pathname, Astro.site);
+const hasGaMeasurementId = GA_MEASUREMENT_ID.trim().length > 0;
 
 const { title, description, image = FallbackImage } = Astro.props;
 ---
 
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width,initial-scale=1" />
-<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+<link rel="apple-touch-icon" sizes="180x180" href="/favicons/apple-touch-icon.png" />
+<link rel="icon" type="image/png" sizes="32x32" href="/favicons/favicon-32x32.png" />
+<link rel="icon" type="image/png" sizes="16x16" href="/favicons/favicon-16x16.png" />
+<link rel="icon" href="/favicons/favicon.ico" sizes="any" />
+<link rel="manifest" href="/favicons/site.webmanifest" />
+<meta name="theme-color" content="#059669" />
 <link rel="sitemap" href="/sitemap-index.xml" />
 <link
 	rel="alternate"
@@ -25,6 +31,14 @@ const { title, description, image = FallbackImage } = Astro.props;
 	title={SITE_TITLE}
 	href={new URL('rss.xml', Astro.site)}
 />
+{
+	hasGaMeasurementId && (
+		<>
+			<script src={`/scripts/ga4-init.js?id=${encodeURIComponent(GA_MEASUREMENT_ID)}`}></script>
+			<script async src={`https://www.googletagmanager.com/gtag/js?id=${encodeURIComponent(GA_MEASUREMENT_ID)}`}></script>
+		</>
+	)
+}
 <meta name="generator" content={Astro.generator} />
 
 <link rel="canonical" href={canonicalURL} />

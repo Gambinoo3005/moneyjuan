@@ -242,46 +242,4 @@ const description =
   }
 </style>
 
-<script>
-  const tabs = document.querySelectorAll(".tab-btn");
-  const modules = document.querySelectorAll(".calculator-module");
-
-  tabs.forEach((tab) => {
-    tab.addEventListener("click", () => {
-      // Remove active class from all tabs
-      tabs.forEach((t) => t.classList.remove("active"));
-      // Add active class to clicked tab
-      tab.classList.add("active");
-
-      // Hide all modules
-      modules.forEach((m) => m.classList.add("hidden"));
-
-      // Show target module
-      const targetId = tab.getAttribute("data-target");
-      if (targetId) {
-        document.getElementById(targetId)?.classList.remove("hidden");
-      }
-    });
-  });
-
-  // Handle automatic tab switching on restore
-  window.addEventListener("restore-calc", (e: any) => {
-    const typeToId: Record<string, string> = {
-      Employee: "employee-calculator",
-      Freelancer: "freelancer-calculator",
-      Business: "business-calculator",
-      Bonus: "bonus-calculator",
-      Reverse: "reverse-calculator",
-    };
-
-    const targetId = typeToId[e.detail.type];
-    if (targetId) {
-      const tabBtn = document.querySelector(
-        `.tab-btn[data-target="${targetId}"]`,
-      ) as HTMLButtonElement;
-      if (tabBtn && !tabBtn.classList.contains("active")) {
-        tabBtn.click();
-      }
-    }
-  });
-</script>
+<script type="module" src="/scripts/calculator-tabs.js"></script>

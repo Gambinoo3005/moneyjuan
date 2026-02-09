@@ -535,15 +535,10 @@
   }
 </script>
 
-<!-- Export Libraries -->
-<script
-  src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"
-></script>
-<script
-  src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"
-></script>
-
 <script>
+  import html2canvas from "html2canvas";
+  import { jsPDF } from "jspdf";
+
   // Export functionality
   document.addEventListener("DOMContentLoaded", () => {
     const saveImageBtn = document.getElementById("free-save-image-btn");
@@ -569,7 +564,6 @@
           resultSection.style.setProperty("--color-border", border);
           resultSection.style.setProperty("--color-surface", surface);
 
-          // @ts-ignore - html2canvas is loaded via CDN
           const canvas = await html2canvas(resultSection, {
             backgroundColor: "#ffffff",
             scale: 2,
@@ -621,7 +615,6 @@
           resultSection.style.setProperty("--color-border", border);
           resultSection.style.setProperty("--color-surface", surface);
 
-          // @ts-ignore - html2canvas and jsPDF are loaded via CDN
           const canvas = await html2canvas(resultSection, {
             backgroundColor: "#ffffff",
             scale: 2,
@@ -639,8 +632,6 @@
 
           const imgData = canvas.toDataURL("image/png");
 
-          // @ts-ignore
-          const { jsPDF } = window.jspdf;
           const pdf = new jsPDF({
             orientation: "portrait",
             unit: "mm",

@@ -1,0 +1,6 @@
+Contact: mailto:contact@moneyjuan.com
+Canonical: https://moneyjuan.com/.well-known/security.txt
+Policy: https://moneyjuan.com/privacy/
+Acknowledgments: https://moneyjuan.com/editorial-policy/
+Expires: 2027-02-09T00:00:00.000Z
+Preferred-Languages: en

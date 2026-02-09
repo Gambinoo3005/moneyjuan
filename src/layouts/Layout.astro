@@ -7,15 +7,18 @@ import { SITE_TITLE, SITE_DESCRIPTION } from '../consts';
 interface Props {
 	title?: string;
 	description?: string;
+	structuredData?: Record<string, unknown> | Array<Record<string, unknown>>;
 }
 
-const { title = SITE_TITLE, description = SITE_DESCRIPTION } = Astro.props;
+const { title = SITE_TITLE, description = SITE_DESCRIPTION, structuredData } = Astro.props;
+const structuredDataJson = structuredData ? JSON.stringify(structuredData) : '';
 ---
 
 <!doctype html>
 <html lang="en">
 	<head>
 		<BaseHead title={title} description={description} />
+		{structuredDataJson && <script type="application/ld+json" set:html={structuredDataJson}></script>}
 	</head>
 	<body>
 		<Header />

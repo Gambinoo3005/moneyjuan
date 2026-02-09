@@ -330,16 +330,10 @@
     }
 </style>
 
-<!-- Export Libraries -->
-<script
-    src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"
-></script>
-<script
-    src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"
-></script>
-
 <script>
     import { addToHistory } from "../../utils/historyManager";
+    import html2canvas from "html2canvas";
+    import { jsPDF } from "jspdf";
 
     const calcBtn = document.getElementById("calc-bonus-btn");
     const saveImageBtn = document.getElementById("bonus-save-image-btn");
@@ -494,7 +488,6 @@
                 rootStyles.getPropertyValue("--color-text-muted"),
             );
 
-            // @ts-ignore
             const canvas = await html2canvas(resultSection, {
                 backgroundColor: "#ffffff",
                 scale: 2,
@@ -521,8 +514,6 @@
                 });
             } else {
                 const imgData = canvas.toDataURL("image/png");
-                // @ts-ignore
-                const { jsPDF } = window.jspdf;
                 const pdf = new jsPDF({
                     orientation: "portrait",
                     unit: "mm",

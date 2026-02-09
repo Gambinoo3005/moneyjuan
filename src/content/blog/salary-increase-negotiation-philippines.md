@@ -1,10 +1,10 @@
 ---
 title: 'How to Negotiate a Salary Increase in the Philippines: A Professional Guide'
-description: 'A practical, step-by-step guide for Filipino professionals on asking for a raise with confidence and strategy.'
+description: 'How to negotiate a salary increase in the Philippines with confidence using market research, timing tips, scripts, and follow-up strategies.'
 pubDate: '2026-02-08'
 category: 'earning'
 heroImage: '../../assets/blog/salary_negotiation.webp'
-author: 'Bryan Jacinto'
+author: 'Jhaeyd Qynfei Buere'
 ---
 
 Asking for a raise feels uncomfortable for most people. For many Filipinos, it feels even worse because we're taught not to be demanding or appear ungrateful. You might worry about seeming entitled, damaging your relationship with your boss, or getting a negative reputation among colleagues.

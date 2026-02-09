@@ -9,26 +9,15 @@ import HeaderLink from './HeaderLink.astro';
 			<div class="header-actions">
 				<button
 					type="button"
-					class="search-toggle search-toggle-mobile"
-					aria-label="Open search"
-					data-search-open
+					class="menu-toggle"
+					aria-label="Toggle navigation"
+					aria-controls="primary-nav"
+					aria-expanded="false"
 				>
-					<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" aria-hidden="true">
-						<circle cx="11" cy="11" r="7"></circle>
-						<line x1="16.65" y1="16.65" x2="21" y2="21"></line>
-					</svg>
+					<span></span>
+					<span></span>
+					<span></span>
 				</button>
-			<button
-				type="button"
-				class="menu-toggle"
-				aria-label="Toggle navigation"
-				aria-controls="primary-nav"
-				aria-expanded="false"
-			>
-				<span></span>
-				<span></span>
-				<span></span>
-			</button>
 			</div>
 		</div>
 		<nav id="primary-nav" class="primary-nav">
@@ -41,9 +30,17 @@ import HeaderLink from './HeaderLink.astro';
 			<div class="dropdown">
 				<a href="/tools/calculator" class="dropdown-trigger">Tools</a>
 				<div class="dropdown-menu">
-					<a href="/tools/calculator" class="dropdown-item">Calculator</a>
+					<a href="/tools/calculator" class="dropdown-item">Finance Calculator</a>
 				</div>
 			</div>
+			<button
+				type="button"
+				class="mobile-search-trigger"
+				aria-label="Open search"
+				data-search-open
+			>
+				Search
+			</button>
 			<button
 				type="button"
 				class="search-toggle search-toggle-desktop"
@@ -168,19 +165,16 @@ import HeaderLink from './HeaderLink.astro';
 		padding: 0;
 	}
 
-	.search-toggle-mobile {
-		display: none;
-	}
-
 	.menu-toggle {
 		display: none;
 		background: transparent;
-		border: 1px solid var(--color-border);
-		border-radius: 8px;
-		width: 42px;
-		height: 42px;
-		padding: 9px 8px;
+		border: none;
+		width: 24px;
+		height: 22px;
+		padding: 0;
 		cursor: pointer;
+		appearance: none;
+		-webkit-appearance: none;
 	}
 
 	.menu-toggle span {
@@ -193,11 +187,11 @@ import HeaderLink from './HeaderLink.astro';
 	}
 
 	.menu-toggle span + span {
-		margin-top: 6px;
+		margin-top: 5px;
 	}
 
 	.menu-toggle[aria-expanded='true'] span:nth-child(1) {
-		transform: translateY(8px) rotate(45deg);
+		transform: translateY(7px) rotate(45deg);
 	}
 
 	.menu-toggle[aria-expanded='true'] span:nth-child(2) {
@@ -205,7 +199,7 @@ import HeaderLink from './HeaderLink.astro';
 	}
 
 	.menu-toggle[aria-expanded='true'] span:nth-child(3) {
-		transform: translateY(-8px) rotate(-45deg);
+		transform: translateY(-7px) rotate(-45deg);
 	}
 
 	nav {
@@ -235,6 +229,28 @@ import HeaderLink from './HeaderLink.astro';
 
 	nav > :global(a:hover),
 	nav > :global(a.active) {
+		color: var(--color-secondary);
+		background: rgba(5, 150, 105, 0.05);
+	}
+
+	.mobile-search-trigger {
+		display: none;
+		padding: 0.5rem 0.75rem;
+		color: var(--color-primary);
+		font-family: var(--font-display);
+		font-weight: 700;
+		font-size: 0.85rem;
+		text-transform: uppercase;
+		letter-spacing: 0.05em;
+		transition: all 0.3s ease;
+		border-radius: 4px;
+		background: transparent;
+		border: none;
+		cursor: pointer;
+		text-align: left;
+	}
+
+	.mobile-search-trigger:hover {
 		color: var(--color-secondary);
 		background: rgba(5, 150, 105, 0.05);
 	}
@@ -453,21 +469,10 @@ import HeaderLink from './HeaderLink.astro';
 
 		.header-actions {
 			position: absolute;
-			right: 0.3rem;
+			right: 0.75rem;
 			top: 50%;
 			transform: translateY(-50%);
 			gap: 0.45rem;
-		}
-
-		.search-toggle-mobile {
-			display: inline-flex;
-			width: 38px;
-			height: 38px;
-			padding: 0;
-		}
-
-		.search-toggle-mobile span {
-			display: none;
 		}
 
 		.search-toggle-desktop {
@@ -477,9 +482,9 @@ import HeaderLink from './HeaderLink.astro';
 		.menu-toggle {
 			display: inline-block;
 			position: static;
-			width: 38px;
-			height: 38px;
-			padding: 8px 7px;
+			width: 24px;
+			height: 22px;
+			padding: 0;
 		}
 
 		.primary-nav {
@@ -498,12 +503,14 @@ import HeaderLink from './HeaderLink.astro';
 		}
 
 		nav > :global(a),
-		.dropdown {
+		.dropdown,
+		.mobile-search-trigger {
 			width: 100%;
 		}
 
 		nav > :global(a),
-		.dropdown-trigger {
+		.dropdown-trigger,
+		.mobile-search-trigger {
 			display: block;
 			width: 100%;
 			padding: 0.65rem 0.75rem;
@@ -518,6 +525,10 @@ import HeaderLink from './HeaderLink.astro';
 
 		.dropdown-trigger::after {
 			display: none;
+		}
+
+		.mobile-search-trigger {
+			display: block;
 		}
 
 		.search-overlay-form {
@@ -538,77 +549,4 @@ import HeaderLink from './HeaderLink.astro';
 	}
 </style>
 
-<script>
-	const menuToggle = document.querySelector('.menu-toggle');
-	const nav = document.getElementById('primary-nav');
-	const searchOverlay = document.getElementById('header-search-overlay');
-	const searchOverlayForm = searchOverlay ? searchOverlay.querySelector('.search-overlay-form') : null;
-	const searchInput = document.getElementById('header-search-input');
-	const searchOpenButtons = document.querySelectorAll('[data-search-open]');
-
-	const closeMenu = () => {
-		if (!menuToggle || !nav) return;
-		nav.classList.remove('is-open');
-		menuToggle.setAttribute('aria-expanded', 'false');
-	};
-
-	const openSearch = () => {
-		if (!searchOverlay) return;
-		searchOverlay.classList.add('is-open');
-		searchOverlay.setAttribute('aria-hidden', 'false');
-		if (searchInput) {
-			searchInput.focus();
-		}
-	};
-
-	const closeSearch = () => {
-		if (!searchOverlay) return;
-		searchOverlay.classList.remove('is-open');
-		searchOverlay.setAttribute('aria-hidden', 'true');
-	};
-
-	searchOpenButtons.forEach((button) => {
-		button.addEventListener('click', openSearch);
-	});
-
-	if (searchOverlay) {
-		searchOverlay.addEventListener('click', (event) => {
-			const target = event.target;
-			if (!(target instanceof Element)) return;
-			if (target.closest('[data-search-open]')) return;
-			if (searchOverlayForm && searchOverlayForm.contains(target)) return;
-			closeSearch();
-		});
-	}
-
-	if (menuToggle && nav) {
-		menuToggle.addEventListener('click', () => {
-			const isOpen = nav.classList.toggle('is-open');
-			menuToggle.setAttribute('aria-expanded', String(isOpen));
-		});
-
-		nav.querySelectorAll('a').forEach((link) => {
-			link.addEventListener('click', () => {
-				if (window.matchMedia('(max-width: 900px)').matches) {
-					closeMenu();
-				}
-			});
-		});
-
-		window.addEventListener('resize', () => {
-			if (window.innerWidth > 900) {
-				closeMenu();
-			}
-		});
-
-		document.addEventListener('keydown', (event) => {
-			if (event.key === 'Escape') {
-				if (searchOverlay && searchOverlay.classList.contains('is-open')) {
-					closeSearch();
-				} else {
-					closeMenu();
-				}
-			}
-		});
-	}
-</script>
+<script type="module" src="/scripts/header.js"></script>

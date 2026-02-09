@@ -131,6 +131,9 @@
 
     const renderHistory = () => {
         const history = getHistory();
+        if (!list) return;
+
+        list.textContent = "";
 
         if (history.length === 0) {
             container?.classList.add("hidden");
@@ -138,21 +141,35 @@
         }
 
         container?.classList.remove("hidden");
-        if (list) {
-            list.innerHTML = history
-                .map(
-                    (item) => `
-        <div class="history-item" data-id="${item.id}">
-          <div class="history-info">
-            <span class="history-type">${item.type}</span>
-            <span class="history-summary">${item.summary}</span>
-          </div>
-          <span class="history-result">${item.result}</span>
-        </div>
-      `,
-                )
-                .join("");
+
+        const fragment = document.createDocumentFragment();
+
+        for (const item of history) {
+            const itemEl = document.createElement("div");
+            itemEl.className = "history-item";
+            itemEl.dataset.id = item.id;
+
+            const infoEl = document.createElement("div");
+            infoEl.className = "history-info";
+
+            const typeEl = document.createElement("span");
+            typeEl.className = "history-type";
+            typeEl.textContent = item.type;
+
+            const summaryEl = document.createElement("span");
+            summaryEl.className = "history-summary";
+            summaryEl.textContent = item.summary;
+
+            const resultEl = document.createElement("span");
+            resultEl.className = "history-result";
+            resultEl.textContent = item.result;
+
+            infoEl.append(typeEl, summaryEl);
+            itemEl.append(infoEl, resultEl);
+            fragment.appendChild(itemEl);
         }
+
+        list.appendChild(fragment);
     };
 
     // Initial render
@@ -163,7 +180,9 @@
 
     // Handle Item Click (Restore)
     list?.addEventListener("click", (e) => {
-        const target = e.target as Element;
+        const target = e.target;
+        if (!(target instanceof Element)) return;
+
         const itemEl = target.closest(".history-item");
         if (itemEl) {
             const id = itemEl.getAttribute("data-id");

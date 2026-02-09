@@ -11,8 +11,9 @@
   "dependencies": {
     "@astrojs/mdx": "^4.3.12",
     "@astrojs/rss": "^4.0.14",
-    "@astrojs/sitemap": "^3.6.0",
     "astro": "^5.16.0",
+    "html2canvas": "^1.4.1",
+    "jspdf": "^4.1.0",
     "sharp": "^0.34.3"
   }
 }

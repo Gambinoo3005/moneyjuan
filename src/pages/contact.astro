@@ -1,0 +1,101 @@
+---
+import Layout from '../layouts/Layout.astro';
+---
+
+<Layout
+	title="Contact MoneyJuan"
+	description="Contact MoneyJuan for questions, corrections, topic suggestions, and business inquiries."
+>
+	<div class="container page-content">
+		<h1 class="page-title">Contact MoneyJuan</h1>
+		<p class="intro">
+			Have a question, found an error, or want to suggest a topic? We&apos;d love to hear from you.
+		</p>
+
+		<div class="content-wrapper">
+			<section class="contact-section">
+				<h2>Get In Touch</h2>
+				<p>
+					Email: <a href="mailto:contact@moneyjuan.com">contact@moneyjuan.com</a>
+				</p>
+				<p>
+					We read every email and respond to as many as we can. Please allow 2-3 business days for a response.
+				</p>
+			</section>
+
+			<section class="contact-section">
+				<h2>Business Inquiries</h2>
+				<p>
+					For partnership opportunities, advertising inquiries, or media requests, please use the same email address (<a href="mailto:contact@moneyjuan.com">contact@moneyjuan.com</a>) with "Business Inquiry" in the subject line.
+				</p>
+				<p>
+					We&apos;re selective about partnerships to maintain editorial independence and only work with legitimate, helpful financial products and services.
+				</p>
+			</section>
+		</div>
+	</div>
+</Layout>
+
+<style>
+	.page-content {
+		padding: var(--space-lg) var(--space-sm);
+		max-width: 860px;
+	}
+
+	.page-title {
+		text-align: center;
+		margin-bottom: var(--space-xs);
+	}
+
+	.intro {
+		text-align: center;
+		color: var(--color-text-muted);
+		max-width: 62ch;
+		margin: 0 auto var(--space-lg);
+		font-size: 1.05rem;
+		line-height: 1.72;
+	}
+
+	.content-wrapper {
+		display: flex;
+		flex-direction: column;
+		gap: var(--space-md);
+	}
+
+	.contact-section h2 {
+		font-size: clamp(1.35rem, 2.7vw, 1.75rem);
+		margin-bottom: var(--space-xs);
+	}
+
+	.contact-section p {
+		font-size: 1.02rem;
+		line-height: 1.72;
+		color: var(--color-text-muted);
+		margin-bottom: var(--space-sm);
+	}
+
+	.contact-section a {
+		color: var(--color-primary);
+		text-decoration: underline;
+		text-underline-offset: 2px;
+	}
+
+	.contact-section p:last-child {
+		margin-bottom: 0;
+	}
+
+	@media (max-width: 600px) {
+		.page-content {
+			padding: var(--space-md) var(--space-sm);
+		}
+
+		.intro {
+			font-size: 1rem;
+			margin-bottom: var(--space-md);
+		}
+
+		.contact-section p {
+			font-size: 0.98rem;
+		}
+	}
+</style>

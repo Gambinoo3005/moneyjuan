@@ -49,10 +49,10 @@ const today = new Date();
 			<!-- Newsletter/Legal Column -->
 			<div class="footer-col">
 				<h4 class="footer-heading">Stay Updated</h4>
-				<p class="footer-text">Join our newsletter for weekly money tips.</p>
-				<form class="newsletter-form" onsubmit="event.preventDefault();">
-					<input type="email" placeholder="Enter your email" class="newsletter-input" />
-					<button type="submit" class="newsletter-btn" aria-label="Subscribe">
+				<p class="footer-text">Newsletter signups are coming soon.</p>
+				<form class="newsletter-form">
+					<input type="email" placeholder="Coming soon" class="newsletter-input" disabled readonly />
+					<button type="button" class="newsletter-btn" aria-label="Coming soon" disabled>
 						<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="22" y1="2" x2="11" y2="13"></line><polygon points="22 2 15 22 11 13 2 9 22 2"></polygon></svg>
 					</button>
 				</form>
@@ -66,6 +66,8 @@ const today = new Date();
 			<div class="legal-links">
 				<a href="/privacy">Privacy Policy</a>
 				<a href="/terms">Terms of Service</a>
+				<a href="/financial-disclaimer">Financial Disclaimer</a>
+				<a href="/editorial-policy">Editorial Policy</a>
 			</div>
 		</div>
 	</div>
@@ -193,6 +195,21 @@ const today = new Date();
 
 	.newsletter-btn:hover {
 		background: var(--color-secondary);
+	}
+
+	.newsletter-input:disabled {
+		opacity: 0.65;
+		cursor: not-allowed;
+	}
+
+	.newsletter-btn:disabled {
+		background: #4B5563;
+		cursor: not-allowed;
+		opacity: 0.8;
+	}
+
+	.newsletter-btn:disabled:hover {
+		background: #4B5563;
 	}
 
 	.footer-bottom {

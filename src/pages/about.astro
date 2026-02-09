@@ -7,39 +7,45 @@ import Layout from '../layouts/Layout.astro';
 		<h1 class="page-title">About MoneyJuan</h1>
 		
 		<div class="content-wrapper">
-			<section class="mission">
-				<h2>Our Mission</h2>
+			<section class="about-section">
+				<h2>The Mission</h2>
 				<p>
-					MoneyJuan is a personal finance blog for people in the Philippines who want simple, practical, judgment-free money advice that actually fits real life.
+					We help Filipinos build financial security through practical, honest advice that actually works on a Filipino salary.
 				</p>
 				<p>
-					We believe that financial literacy shouldn't be reserved for the wealthy. Whether you're a salary earner, a freelancer, or an OFW, you deserve to understand how to manage your money and build a secure future.
+					Most financial advice assumes you're earning big money with no family obligations. That's not reality. We create content for people earning 25,000 to 50,000 pesos monthly who are supporting family, managing debt, and trying to build a better future.
+				</p>
+				<p>
+					Financial literacy shouldn't be a privilege. Every Filipino deserves clear information about saving, budgeting, and managing money without the jargon or sales pitches.
 				</p>
 			</section>
 
-			<section class="values">
-				<h2>What We Stand For</h2>
-				<div class="grid values-grid">
-					<div class="value-item">
-						<h3>Simple</h3>
-						<p>No jargon without explanation. We speak plain English.</p>
-					</div>
-					<div class="value-item">
-						<h3>Practical</h3>
-						<p>Examples use Philippine prices, systems, and realities.</p>
-					</div>
-					<div class="value-item">
-						<h3>Encouraging</h3>
-						<p>No shaming. We focus on small wins and progress.</p>
-					</div>
-				</div>
+			<section class="about-section">
+				<h2>What We Do</h2>
+				<p>
+					We research, compare, and explain financial products and strategies in plain language. Digital banks, budgeting methods, debt payoff strategies, investment options - we break it all down so you can make informed decisions.
+				</p>
+				<p>
+					We may partner with financial brands and earn from affiliate relationships, but only with products we genuinely believe are effective and helpful. If we're earning from a recommendation, we'll tell you. Our reviews stay honest regardless of partnerships.
+				</p>
 			</section>
 
-			<section class="disclaimer">
-				<h3>Disclaimer</h3>
+			<section class="about-section">
+				<h2>What We Believe</h2>
 				<p>
-					Content on MoneyJuan is for educational purposes only and does not constitute professional financial, legal, or tax advice. Please consult with a licensed professional for your specific situation.
+					Money isn't everything, but financial stress affects everything. Smart decisions matter more than big paychecks. Family obligations are real and valid. And you're capable of building financial security, even on a modest salary.
 				</p>
+			</section>
+
+			<section class="about-section">
+				<h2>Our Promise</h2>
+				<p>
+					We stay current with rates and policies. We use realistic Filipino examples and peso amounts. We admit when we don't know something. And we respect your intelligence enough to give you facts without pushing you toward any particular choice.
+				</p>
+				<p>
+					Your financial future starts with the choices you make today. We're here to help you make those choices with confidence.
+				</p>
+				<p>Welcome to MoneyJuan.</p>
 			</section>
 		</div>
 	</div>
@@ -59,54 +65,22 @@ import Layout from '../layouts/Layout.astro';
 	.content-wrapper {
 		display: flex;
 		flex-direction: column;
-		gap: var(--space-lg);
-	}
-
-	.mission p {
-		font-size: 1.1rem;
-		line-height: 1.8;
-		color: var(--color-text-muted);
-	}
-
-	.values-grid {
-		grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
 		gap: var(--space-md);
-		margin-top: var(--space-md);
 	}
 
-	.value-item {
-		background: var(--color-surface);
-		padding: var(--space-md);
-		border-radius: 8px;
-		border: 1px solid var(--color-border);
-	}
-
-	.value-item h3 {
-		color: var(--color-primary);
-		font-size: 1.2rem;
+	.about-section h2 {
+		font-size: clamp(1.35rem, 2.7vw, 1.75rem);
 		margin-bottom: var(--space-xs);
 	}
 
-	.value-item p {
-		font-size: 0.9rem;
-		margin-bottom: 0;
+	.about-section p {
+		font-size: 1.05rem;
+		line-height: 1.75;
+		color: var(--color-text-muted);
+		margin-bottom: var(--space-sm);
 	}
 
-	.disclaimer {
-		margin-top: var(--space-md);
-		padding: var(--space-md);
-		background: rgba(239, 71, 111, 0.1);
-		border-left: 4px solid var(--color-accent);
-		border-radius: 4px;
-	}
-
-	.disclaimer h3 {
-		font-size: 1.1rem;
-		color: var(--color-accent);
-	}
-
-	.disclaimer p {
-		font-size: 0.9rem;
+	.about-section p:last-child {
 		margin-bottom: 0;
 	}
 
@@ -119,13 +93,8 @@ import Layout from '../layouts/Layout.astro';
 			margin-bottom: var(--space-md);
 		}
 
-		.mission p {
+		.about-section p {
 			font-size: 1rem;
-		}
-
-		.value-item,
-		.disclaimer {
-			padding: var(--space-sm);
 		}
 	}
 </style>

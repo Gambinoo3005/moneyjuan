@@ -1,7 +1,7 @@
 ---
 title: 'The Snowball Method: A Step-by-Step Debt Payoff Guide for Filipinos'
-description: 'A practical Filipino-focused guide to using the debt snowball method to pay off multiple debts with momentum and consistency.'
-pubDate: '2026-02-08'
+description: 'Use the debt snowball method in the Philippines to pay off credit cards, loans, and installments step by step with a practical, momentum-based plan.'
+pubDate: '2026-02-02'
 category: 'debt'
 heroImage: '../../assets/blog/snowball_debt.webp'
 author: 'Bryan Jacinto'

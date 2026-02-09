@@ -1,7 +1,7 @@
 ---
 title: 'The 20-20-60 Budget Rule That Works on a 25K Monthly Salary'
-description: 'A practical Filipino budget framework for a 25,000 peso monthly salary: 20% savings, 20% obligations, and 60% living expenses.'
-pubDate: '2026-02-08'
+description: 'Learn the 20-20-60 budget rule for a 25,000 PHP salary in the Philippines, with a practical monthly breakdown for savings, debt, and living costs.'
+pubDate: '2025-11-28'
 heroImage: '../../assets/blog/25ksalary_budget.webp'
 category: 'saving'
 author: 'Bryan Jacinto'
