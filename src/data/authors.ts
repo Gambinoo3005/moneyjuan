@@ -26,10 +26,10 @@ export const AUTHORS: AuthorProfile[] = [
 	},
 	{
 		slug: 'jhaeyd-qynfei-buere',
-		name: 'Jhaeyd Qynfei Buere',
+		name: 'Jhaeyd Buere',
 		role: 'Contributor',
 		image: '/author/jhaeyd_author.webp',
-		bio: 'Jhaeyd Qynfei Buere is an SEO content writer with a track record of driving digital growth for international brands. From refining AI-driven strategies to boosting e-commerce visibility, she specializes in making information both searchable and impactful. At MoneyJuan, she blends her technical expertise with clear storytelling to help Filipinos master their finances.',
+		bio: 'Jhaeyd Buere is an SEO content writer with a track record of driving digital growth for international brands. From refining AI-driven strategies to boosting e-commerce visibility, she specializes in making information both searchable and impactful. At MoneyJuan, she blends her technical expertise with clear storytelling to help Filipinos master their finances.',
 		links: {
 			linkedin: 'https://www.linkedin.com/in/jhaeyd-qynfei-buere-6a4698313/',
 			email: 'jhaeydqyn@gmail.com',

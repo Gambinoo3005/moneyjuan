@@ -4,7 +4,7 @@ description: 'How to talk about money before marriage in the Philippines: cover 
 pubDate: '2026-01-05'
 heroImage: '../../assets/blog/money_marriage.webp'
 category: 'family'
-author: 'Jhaeyd Qynfei Buere'
+author: 'Jhaeyd Buere'
 ---
 
 Money is one of the top reasons marriages fail, but most Filipino couples avoid talking about it until after the wedding. It feels awkward to bring up salaries, debts, or spending habits when you're in love. You might worry about seeming materialistic or ruining the romance.

@@ -4,7 +4,7 @@ description: 'How to negotiate a salary increase in the Philippines with confide
 pubDate: '2026-02-08'
 category: 'earning'
 heroImage: '../../assets/blog/salary_negotiation.webp'
-author: 'Jhaeyd Qynfei Buere'
+author: 'Jhaeyd Buere'
 ---
 
 Asking for a raise feels uncomfortable for most people. For many Filipinos, it feels even worse because we're taught not to be demanding or appear ungrateful. You might worry about seeming entitled, damaging your relationship with your boss, or getting a negative reputation among colleagues.

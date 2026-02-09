@@ -53,7 +53,8 @@ const today = new Date();
 				<form class="newsletter-form">
 					<input type="email" placeholder="Coming soon" class="newsletter-input" disabled readonly />
 					<button type="button" class="newsletter-btn" aria-label="Coming soon" disabled>
-						<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="22" y1="2" x2="11" y2="13"></line><polygon points="22 2 15 22 11 13 2 9 22 2"></polygon></svg>
+						<svg class="newsletter-btn-icon" xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="22" y1="2" x2="11" y2="13"></line><polygon points="22 2 15 22 11 13 2 9 22 2"></polygon></svg>
+						<span class="newsletter-btn-label">Coming Soon</span>
 					</button>
 				</form>
 			</div>
@@ -197,6 +198,16 @@ const today = new Date();
 		background: var(--color-secondary);
 	}
 
+	.newsletter-btn-icon {
+		display: block;
+	}
+
+	.newsletter-btn-label {
+		display: none;
+		font-weight: 700;
+		letter-spacing: 0.01em;
+	}
+
 	.newsletter-input:disabled {
 		opacity: 0.65;
 		cursor: not-allowed;
@@ -253,19 +264,40 @@ const today = new Date();
 		.footer-grid {
 			grid-template-columns: 1fr;
 			gap: var(--space-md);
+			margin-bottom: var(--space-sm);
 		}
 
 		.newsletter-form {
 			flex-direction: column;
+			gap: 0.6rem;
+		}
+
+		.newsletter-input {
+			padding: 0.82rem 0.9rem;
+			border-radius: 10px;
+			font-size: 0.92rem;
 		}
 
 		.newsletter-btn {
-			padding: 0.75rem;
+			min-height: 44px;
+			padding: 0.75rem 0.9rem;
+			border-radius: 10px;
+			font-size: 0.95rem;
+			font-weight: 700;
+		}
+
+		.newsletter-btn-icon {
+			display: none;
+		}
+
+		.newsletter-btn-label {
+			display: inline;
 		}
 
 		.footer-bottom {
 			flex-direction: column;
 			text-align: center;
+			padding-top: var(--space-sm);
 		}
 
 		.legal-links {

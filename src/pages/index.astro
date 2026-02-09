@@ -592,11 +592,12 @@ const financialEvents = allPosts
 		.feature-story::before {
 			content: "Featured Article";
 			font-family: var(--font-display);
-			font-size: 1rem;
+			font-size: 1.2rem;
+			font-weight: 700;
 			text-transform: uppercase;
 			letter-spacing: 0.1em;
 			color: var(--color-primary);
-			margin-bottom: var(--space-sm);
+			margin-bottom: var(--space-md);
 			padding-bottom: var(--space-xs);
 			border-bottom: 2px solid var(--color-primary);
 			display: inline-block;
@@ -615,20 +616,75 @@ const financialEvents = allPosts
 		}
 
 		.newsletter-cta {
-			border-radius: 16px;
-			padding: var(--space-md);
+			border-radius: 20px;
+			padding: clamp(1rem, 4vw, 1.25rem);
+		}
+
+		.newsletter-content {
+			gap: 1rem;
+			text-align: left;
+			align-items: stretch;
 		}
 
 		.newsletter-title {
-			font-size: clamp(1.9rem, 10vw, 2.4rem);
+			font-size: clamp(1.75rem, 9vw, 2.2rem);
+			line-height: 1.08;
+			margin-bottom: 0.5rem;
 		}
 
 		.newsletter-desc {
-			font-size: 1rem;
+			font-size: 0.98rem;
+			margin: 0 0 0.85rem;
+			max-width: none;
+			color: #E6FFF6;
+		}
+
+		.newsletter-features {
+			display: grid;
+			grid-template-columns: 1fr;
+			gap: 0.55rem;
+			justify-content: stretch;
 		}
 
 		.feature-item {
+			font-size: 0.92rem;
+			font-weight: 700;
+			background: rgba(255, 255, 255, 0.14);
+			padding: 0.5rem 0.7rem;
+			border-radius: 999px;
+			width: fit-content;
+		}
+
+		.check-icon {
+			width: 20px;
+			height: 20px;
+			font-size: 0.72rem;
+		}
+
+		.newsletter-form-container {
+			padding: 0.9rem;
+			border-radius: 14px;
+			box-shadow: 0 10px 24px rgba(0, 0, 0, 0.16);
+		}
+
+		.cta-form {
+			gap: 0.65rem;
+		}
+
+		.cta-input,
+		.cta-btn {
+			min-height: 44px;
+			padding: 0.78rem 0.9rem;
 			font-size: 0.95rem;
+		}
+
+		.cta-btn {
+			font-size: 1rem;
+		}
+
+		.cta-subtext {
+			font-size: 0.8rem;
+			margin-top: 0.5rem;
 		}
 
 		.articles-grid {
@@ -649,6 +705,11 @@ const financialEvents = allPosts
 
 		.side-title {
 			font-size: 1.05rem;
+		}
+
+		.feature-item {
+			width: 100%;
+			border-radius: 10px;
 		}
 	}
 </style>

@@ -91,7 +91,7 @@ import HeaderLink from './HeaderLink.astro';
 		display: flex;
 		align-items: center;
 		justify-content: space-between;
-		padding: 1rem 0;
+		padding: 0.9rem 0;
 		gap: 2rem;
 	}
 
@@ -131,11 +131,12 @@ import HeaderLink from './HeaderLink.astro';
 		align-items: center;
 		justify-content: center;
 		gap: 0.4rem;
-		height: 2.25rem;
-		padding: 0 0.8rem;
+		height: 2.1rem;
+		padding: 0 0.72rem;
 		font-family: var(--font-display);
-		font-size: 0.78rem;
-		font-weight: 700;
+		font-size: var(--fs-ui);
+		line-height: var(--lh-ui);
+		font-weight: 600;
 		text-transform: uppercase;
 		letter-spacing: 0.05em;
 		cursor: pointer;
@@ -161,7 +162,7 @@ import HeaderLink from './HeaderLink.astro';
 
 	.search-toggle-desktop {
 		margin-left: 0.2rem;
-		width: 2.25rem;
+		width: 2.1rem;
 		padding: 0;
 	}
 
@@ -204,8 +205,8 @@ import HeaderLink from './HeaderLink.astro';
 
 	nav {
 		display: flex;
-		flex-wrap: wrap;
-		gap: 0.5rem;
+		flex-wrap: nowrap;
+		gap: 0.35rem;
 		align-items: center;
 		min-width: 0;
 	}
@@ -215,16 +216,18 @@ import HeaderLink from './HeaderLink.astro';
 	}
 
 	nav > :global(a) {
-		padding: 0.5rem 0.75rem;
+		padding: 0.5rem 0.62rem;
 		color: var(--color-primary);
 		text-decoration: none;
 		font-family: var(--font-display);
-		font-weight: 700;
-		font-size: 0.85rem;
+		font-weight: 600;
+		font-size: 0.92rem;
+		line-height: var(--lh-ui);
 		text-transform: uppercase;
-		letter-spacing: 0.05em;
+		letter-spacing: 0.04em;
 		transition: all 0.3s ease;
 		border-radius: 4px;
+		white-space: nowrap;
 	}
 
 	nav > :global(a:hover),
@@ -238,8 +241,9 @@ import HeaderLink from './HeaderLink.astro';
 		padding: 0.5rem 0.75rem;
 		color: var(--color-primary);
 		font-family: var(--font-display);
-		font-weight: 700;
-		font-size: 0.85rem;
+		font-weight: 600;
+		font-size: var(--fs-ui);
+		line-height: var(--lh-ui);
 		text-transform: uppercase;
 		letter-spacing: 0.05em;
 		transition: all 0.3s ease;
@@ -262,13 +266,14 @@ import HeaderLink from './HeaderLink.astro';
 	}
 
 	.dropdown-trigger {
-		padding: 0.5rem 0.75rem;
+		padding: 0.5rem 0.62rem;
 		color: var(--color-primary);
 		font-family: var(--font-display);
-		font-weight: 700;
-		font-size: 0.85rem;
+		font-weight: 600;
+		font-size: 0.92rem;
+		line-height: var(--lh-ui);
 		text-transform: uppercase;
-		letter-spacing: 0.05em;
+		letter-spacing: 0.04em;
 		cursor: pointer;
 		border-radius: 4px;
 		transition: all 0.3s ease;
@@ -331,11 +336,11 @@ import HeaderLink from './HeaderLink.astro';
 		color: var(--color-text-main);
 		text-decoration: none;
 		font-family: var(--font-display);
-		font-weight: 700;
-		font-size: 0.78rem;
+		font-weight: 600;
+		font-size: var(--fs-ui);
 		text-transform: none;
 		letter-spacing: 0.02em;
-		line-height: 1.25;
+		line-height: var(--lh-ui);
 		white-space: nowrap;
 		transition: background-color 0.2s ease, color 0.2s ease;
 		border-radius: 6px;
@@ -514,7 +519,8 @@ import HeaderLink from './HeaderLink.astro';
 			display: block;
 			width: 100%;
 			padding: 0.65rem 0.75rem;
-			font-size: 0.78rem;
+			font-size: var(--fs-ui);
+			line-height: var(--lh-ui);
 			text-align: left;
 			white-space: normal;
 		}
