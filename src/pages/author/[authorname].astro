@@ -1,34 +1,22 @@
 ---
-import { getCollection } from 'astro:content';
-import { Image } from 'astro:assets';
 import FormattedDate from '../../components/FormattedDate.astro';
 import Layout from '../../layouts/Layout.astro';
+import SanityImage from '../../components/SanityImage.astro';
 import { SITE_TITLE } from '../../consts';
-import { AUTHORS, getAuthorBySlug } from '../../data/authors';
+import { getAuthorBySlug, getPostsByAuthorSlug } from '../../lib/sanity/api';
+import { formatCategoryLabel, toTitleCase } from '../../lib/sanity/categories';
+import { getSanityImageUrl } from '../../lib/sanity/image';
 
-export async function getStaticPaths() {
-	return AUTHORS.map((author) => ({
-		params: { authorname: author.slug },
-		props: { authorSlug: author.slug },
-	}));
-}
+export const prerender = false;
 
-const { authorSlug } = Astro.props as { authorSlug: string };
-const author = getAuthorBySlug(authorSlug);
+const authorSlug = Astro.params.authorname ?? '';
+const author = authorSlug ? await getAuthorBySlug(authorSlug) : null;
 
 if (!author) {
-	throw new Error(`Author not found for slug: ${authorSlug}`);
+	return Astro.redirect('/404');
 }
 
-const authorPosts = (await getCollection('blog'))
-	.filter((post) => (post.data.author || '').trim().toLowerCase() === author.name.toLowerCase())
-	.sort((a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf());
-
-const toTitleCase = (value: string) =>
-	value
-		.split('-')
-		.map((part) => part.charAt(0).toUpperCase() + part.slice(1))
-		.join(' ');
+const authorPosts = await getPostsByAuthorSlug(author.slug);
 
 const authorUrl = new URL(`/author/${author.slug}/`, Astro.site).toString();
 const sameAs = [author.links?.linkedin, author.links?.website].filter(
@@ -37,11 +25,12 @@ const sameAs = [author.links?.linkedin, author.links?.website].filter(
 const knowsAbout = Array.from(
 	new Set(
 		authorPosts
-			.map((post) => post.data.category)
+			.map((post) => post.category)
 			.filter((category): category is string => Boolean(category))
 			.map((category) => toTitleCase(category)),
 	),
 );
+const authorImageUrl = getSanityImageUrl(author.image, { width: 900, height: 900 });
 
 const authorStructuredData = JSON.parse(
 	JSON.stringify({
@@ -56,7 +45,7 @@ const authorStructuredData = JSON.parse(
 			name: author.name,
 			description: author.bio,
 			url: authorUrl,
-			image: new URL(author.image, Astro.site).toString(),
+			image: authorImageUrl,
 			jobTitle: author.role,
 			email: author.links?.email ? `mailto:${author.links.email}` : undefined,
 			sameAs: sameAs.length > 0 ? sameAs : undefined,
@@ -71,11 +60,17 @@ const authorStructuredData = JSON.parse(
 );
 ---
 
-<Layout title={`${author.name} | MoneyJuan`} description={author.bio} structuredData={authorStructuredData}>
+<Layout title={`${author.name} | MoneyJuan`} description={author.bio || ''} structuredData={authorStructuredData}>
 	<div class="container author-page">
 		<section class="profile-card">
 			<div class="profile-image-wrap">
-				<img src={author.image} alt={author.name} class="profile-image" loading="eager" />
+				{
+					author.image ? (
+						<SanityImage source={author.image} alt={author.name} class="profile-image" loading="eager" width={440} height={440} />
+					) : (
+						<div class="profile-image profile-image-fallback" aria-hidden="true"></div>
+					)
+				}
 			</div>
 			<div class="profile-content">
 				<p class="profile-eyebrow">Author</p>
@@ -140,13 +135,13 @@ const authorStructuredData = JSON.parse(
 					{authorPosts.map((post) => (
 						<a href={`/blog/${post.id}/`} class="card post-card">
 							<div class="image-container">
-								{post.data.heroImage && <Image width={720} height={360} src={post.data.heroImage} alt="" />}
+								{post.heroImage && <SanityImage source={post.heroImage} width={720} height={360} alt={post.title} />}
 							</div>
 							<div class="post-content">
-								<div class="category-small">{post.data.category ? post.data.category.replace('-', ' ') : 'Article'}</div>
-								<h3 class="title">{post.data.title}</h3>
+								<div class="category-small">{formatCategoryLabel(post.category)}</div>
+								<h3 class="title">{post.title}</h3>
 								<div class="meta-small">
-									<FormattedDate date={post.data.pubDate} />
+									<FormattedDate date={post.pubDate} />
 								</div>
 							</div>
 						</a>
@@ -180,6 +175,10 @@ const authorStructuredData = JSON.parse(
 		object-fit: cover;
 		border-radius: 14px;
 		border: 1px solid var(--color-border);
+	}
+
+	.profile-image-fallback {
+		background: var(--color-surface);
 	}
 
 	.profile-eyebrow {

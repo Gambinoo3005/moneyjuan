@@ -1,0 +1,21 @@
+---
+import { PortableText as PortableTextInternal } from 'astro-portabletext';
+import BodyImage from './portable-text/BodyImage.astro';
+import HeadingBlock from './portable-text/HeadingBlock.astro';
+
+const { value } = Astro.props as { value: unknown[] };
+
+const components = {
+	block: {
+		h1: HeadingBlock,
+		h2: HeadingBlock,
+		h3: HeadingBlock,
+		h4: HeadingBlock,
+	},
+	type: {
+		image: BodyImage,
+	},
+};
+---
+
+<PortableTextInternal value={value} components={components} />

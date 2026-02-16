@@ -1,64 +1,84 @@
 ---
 import Layout from '../layouts/Layout.astro';
-import { getCollection } from 'astro:content';
 import FormattedDate from '../components/FormattedDate.astro';
-import { Image } from 'astro:assets';
+import SanityImage from '../components/SanityImage.astro';
+import { getAllPosts } from '../lib/sanity/api';
+import { formatCategoryLabel } from '../lib/sanity/categories';
 
-const allPosts = (await getCollection('blog')).sort(
-	(a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf()
-);
+export const prerender = false;
+
+const allPosts = await getAllPosts();
 
 const featurePost = allPosts[0];
 const sidePosts = allPosts.slice(1, 4);
 const latestArticles = allPosts.slice(0, 6);
 const financialEvents = allPosts
-	.filter((post) => post.data.category === 'events')
+	.filter((post) => post.category === 'events')
 	.slice(0, 6);
 ---
 
 <Layout>
 	<div class="verge-wrapper container">
-		<section class="hero-grid">
-			<div class="feature-story">
-				<a href={`/blog/${featurePost.id}/`} class="feature-link">
-					<div class="feature-image">
-						{featurePost.data.heroImage && <Image width={1200} height={800} src={featurePost.data.heroImage} alt="" />}
-					</div>
-					<div class="feature-content">
-						<div class="category-badge">{featurePost.data.category ? featurePost.data.category.replace('-', ' ') : 'Feature'}</div>
-						<h1 class="feature-title">{featurePost.data.title}</h1>
-						<p class="feature-excerpt">{featurePost.data.description}</p>
-						<div class="meta">
-							<span class="author">By {featurePost.data.author || 'MoneyJuan Team'}</span>
-							<span class="separator">•</span>
-							<FormattedDate date={featurePost.data.pubDate} />
+		{featurePost ? (
+			<section class="hero-grid">
+				<div class="feature-story">
+					<a href={`/blog/${featurePost.id}/`} class="feature-link">
+						<div class="feature-image">
+							{
+								featurePost.heroImage && (
+									<SanityImage source={featurePost.heroImage} width={1200} alt={featurePost.title} />
+								)
+							}
 						</div>
-					</div>
-				</a>
-			</div>
-
-			<div class="side-stories">
-				<h2 class="side-heading">Top Stories</h2>
-				<div class="side-list">
-					{sidePosts.map((post) => (
-						<a href={`/blog/${post.id}/`} class="side-item">
-							<div class="side-content">
-								<div class="category-small">{post.data.category ? post.data.category.replace('-', ' ') : 'Article'}</div>
-								<h3 class="side-title">{post.data.title}</h3>
-								<div class="meta-small">
-									<span class="author-small">By {post.data.author || 'MoneyJuan Team'}</span>
-									<span class="separator-small">•</span>
-									<FormattedDate date={post.data.pubDate} />
-								</div>
+						<div class="feature-content">
+							<div class="category-badge">{formatCategoryLabel(featurePost.category)}</div>
+							<h1 class="feature-title">{featurePost.title}</h1>
+							<p class="feature-excerpt">{featurePost.description}</p>
+							<div class="meta">
+								<span class="author">By {featurePost.author?.name || 'MoneyJuan Team'}</span>
+								<span class="separator">•</span>
+								<FormattedDate date={featurePost.pubDate} />
 							</div>
-							<div class="side-image">
-								{post.data.heroImage && <Image width={640} height={360} src={post.data.heroImage} alt="" />}
-							</div>
-						</a>
-					))}
+						</div>
+					</a>
 				</div>
-			</div>
-		</section>
+
+				<div class="side-stories">
+					<h2 class="side-heading">Top Stories</h2>
+					<div class="side-list">
+						{sidePosts.map((post) => (
+							<a href={`/blog/${post.id}/`} class="side-item">
+								<div class="side-content">
+									<div class="category-small">{formatCategoryLabel(post.category)}</div>
+									<h3 class="side-title">{post.title}</h3>
+									<div class="meta-small">
+										<span class="author-small">By {post.author?.name || 'MoneyJuan Team'}</span>
+										<span class="separator-small">•</span>
+										<FormattedDate date={post.pubDate} />
+									</div>
+								</div>
+								<div class="side-image">
+									{
+										post.heroImage && (
+											<SanityImage
+												source={post.heroImage}
+												width={640}
+												alt={post.title}
+												class="side-image-media"
+											/>
+										)
+									}
+								</div>
+							</a>
+						))}
+					</div>
+				</div>
+			</section>
+		) : (
+			<section class="hero-grid">
+				<p class="no-posts">No published articles yet.</p>
+			</section>
+		)}
 
 		<hr class="section-divider" />
 
@@ -69,15 +89,15 @@ const financialEvents = allPosts
 					{latestArticles.map((post) => (
 						<a href={`/blog/${post.id}/`} class="article-card">
 							<div class="article-image">
-								{post.data.heroImage && <Image width={400} height={250} src={post.data.heroImage} alt="" />}
+								{post.heroImage && <SanityImage source={post.heroImage} width={400} height={250} alt={post.title} />}
 							</div>
 							<div class="article-content">
-								<div class="category-small">{post.data.category ? post.data.category.replace('-', ' ') : 'Article'}</div>
-								<h3 class="article-title">{post.data.title}</h3>
+								<div class="category-small">{formatCategoryLabel(post.category)}</div>
+								<h3 class="article-title">{post.title}</h3>
 								<div class="meta-small">
-									<span class="author-small">By {post.data.author || 'MoneyJuan Team'}</span>
+									<span class="author-small">By {post.author?.name || 'MoneyJuan Team'}</span>
 									<span class="separator-small">•</span>
-									<FormattedDate date={post.data.pubDate} />
+									<FormattedDate date={post.pubDate} />
 								</div>
 							</div>
 						</a>
@@ -95,15 +115,15 @@ const financialEvents = allPosts
 					{financialEvents.map((post) => (
 						<a href={`/blog/${post.id}/`} class="article-card">
 							<div class="article-image">
-								{post.data.heroImage && <Image width={400} height={250} src={post.data.heroImage} alt="" />}
+								{post.heroImage && <SanityImage source={post.heroImage} width={400} height={250} alt={post.title} />}
 							</div>
 							<div class="article-content">
-								<div class="category-small">{post.data.category ? post.data.category.replace('-', ' ') : 'Event'}</div>
-								<h3 class="article-title">{post.data.title}</h3>
+								<div class="category-small">{formatCategoryLabel(post.category)}</div>
+								<h3 class="article-title">{post.title}</h3>
 								<div class="meta-small">
-									<span class="author-small">By {post.data.author || 'MoneyJuan Team'}</span>
+									<span class="author-small">By {post.author?.name || 'MoneyJuan Team'}</span>
 									<span class="separator-small">•</span>
-									<FormattedDate date={post.data.pubDate} />
+									<FormattedDate date={post.pubDate} />
 								</div>
 							</div>
 						</a>
@@ -155,6 +175,11 @@ const financialEvents = allPosts
 		margin-bottom: var(--space-lg);
 	}
 
+	.no-posts {
+		font-size: 1rem;
+		color: var(--color-text-muted);
+	}
+
 	.feature-story {
 		position: relative;
 	}
@@ -181,6 +206,7 @@ const financialEvents = allPosts
 		width: 100%;
 		height: 100%;
 		object-fit: cover;
+		object-position: center 62%;
 		transition: transform 0.5s var(--ease-out-expo);
 	}
 
@@ -325,10 +351,12 @@ const financialEvents = allPosts
 		border: 1px solid var(--color-border);
 	}
 
-	.side-image img {
+	.side-image :global(.side-image-media) {
 		width: 100%;
 		height: 100%;
 		object-fit: cover;
+		object-position: center;
+		display: block;
 	}
 
 	.section-divider {

@@ -1,33 +1,45 @@
 ---
-import type { CollectionEntry } from 'astro:content';
 import Layout from './Layout.astro';
 import FormattedDate from '../components/FormattedDate.astro';
-import { Image } from 'astro:assets';
-import { getAuthorByName } from '../data/authors';
+import PortableText from '../components/PortableText.astro';
+import SanityImage from '../components/SanityImage.astro';
+import { formatCategoryLabel, toTitleCase } from '../lib/sanity/categories';
+import { getSanityImageUrl } from '../lib/sanity/image';
+import type { BlogPost, TocHeading } from '../lib/sanity/types';
 import { SITE_TITLE } from '../consts';
 
-type Props = CollectionEntry<'blog'>['data'];
+interface Props extends BlogPost {
+	headings?: TocHeading[];
+	relatedPosts?: BlogPost[];
+}
 
-const { title, description, pubDate, updatedDate, category, author, heroImage } = Astro.props;
-const displayAuthor = author || 'MoneyJuan Team';
-const authorProfile = getAuthorByName(displayAuthor);
+const {
+	title,
+	description,
+	pubDate,
+	updatedDate,
+	category,
+	author,
+	heroImage,
+	body,
+	headings = [],
+	relatedPosts = [],
+} = Astro.props as Props;
 
-const toTitleCase = (value: string) =>
-	value
-		.split('-')
-		.map((part) => part.charAt(0).toUpperCase() + part.slice(1))
-		.join(' ');
+const displayAuthor = author?.name || 'MoneyJuan Team';
+const authorUrl = author?.slug ? new URL(`/author/${author.slug}/`, Astro.site).toString() : null;
+const authorAvatar = getSanityImageUrl(author?.image, { width: 96, height: 96 });
+const pageSocialImage = getSanityImageUrl(heroImage, { width: 1200, height: 630 });
 
 const pageUrl = Astro.url.href;
 const canonicalSiteUrl = new URL('/', Astro.site).toString();
-const authorUrl = authorProfile ? new URL(`/author/${authorProfile.slug}/`, Astro.site).toString() : null;
-const authorSameAs = authorProfile
-	? [authorProfile.links?.linkedin, authorProfile.links?.website].filter(
+const authorSameAs = author
+	? [author.links?.linkedin, author.links?.website].filter(
 			(link): link is string => Boolean(link),
 		)
 	: [];
 const categoryTitle = category ? toTitleCase(category) : undefined;
-const articleImage = heroImage ? new URL(heroImage.src, Astro.site).toString() : undefined;
+const articleImage = getSanityImageUrl(heroImage, { width: 1600 }) ?? undefined;
 
 const blogPostingStructuredData = JSON.parse(
 	JSON.stringify({
@@ -46,7 +58,7 @@ const blogPostingStructuredData = JSON.parse(
 		articleSection: categoryTitle,
 		keywords: categoryTitle ? [categoryTitle] : undefined,
 		image: articleImage ? [articleImage] : undefined,
-		author: authorProfile
+		author: author
 			? {
 					'@type': 'Person',
 					'@id': `${authorUrl}#author`,
@@ -71,15 +83,20 @@ const blogPostingStructuredData = JSON.parse(
 );
 ---
 
-<Layout title={title} description={description} structuredData={blogPostingStructuredData}>
+<Layout
+	title={title}
+	description={description}
+	structuredData={blogPostingStructuredData}
+	image={pageSocialImage ?? undefined}
+>
 	<article class="container blog-post">
 		<div class="header-grid">
 			<div class="header-meta">
 				<div class="author-meta-group">
 					{
-						authorProfile?.image && (
-							<a href={`/author/${authorProfile.slug}/`} class="author-avatar-link" aria-label={`View ${displayAuthor} profile`}>
-								<img class="author-avatar" src={authorProfile.image} alt={displayAuthor} loading="eager" decoding="async" />
+						authorAvatar && author?.slug && (
+							<a href={`/author/${author.slug}/`} class="author-avatar-link" aria-label={`View ${displayAuthor} profile`}>
+								<img class="author-avatar" src={authorAvatar} alt={displayAuthor} loading="eager" decoding="async" />
 							</a>
 						)
 					}
@@ -87,8 +104,8 @@ const blogPostingStructuredData = JSON.parse(
 						<div class="author-block">
 							<span class="by-text">by</span>
 							{
-								authorProfile ? (
-									<a href={`/author/${authorProfile.slug}/`} class="author-name author-link">{displayAuthor}</a>
+								author?.slug ? (
+									<a href={`/author/${author.slug}/`} class="author-name author-link">{displayAuthor}</a>
 								) : (
 									<span class="author-name">{displayAuthor}</span>
 								)
@@ -118,7 +135,7 @@ const blogPostingStructuredData = JSON.parse(
 			</div>
 			
 			<div class="header-content">
-				{category && <div class="category-label">{category.replace('-', ' ')}</div>}
+				{category && <div class="category-label">{formatCategoryLabel(category)}</div>}
 				<h1 class="main-title">{title}</h1>
 				{description && <p class="subtitle">{description}</p>}
 			</div>
@@ -126,7 +143,7 @@ const blogPostingStructuredData = JSON.parse(
 		
 		<div class="post-grid">
 			<div class="prose">
-				<slot />
+				{body.length > 0 ? <PortableText value={body} /> : <slot />}
 			</div>
 
 			<aside class="sidebar">
@@ -137,7 +154,7 @@ const blogPostingStructuredData = JSON.parse(
 					</div>
 					<nav class="toc">
 						<ul>
-							{Astro.props.headings?.map((heading: any) => (
+							{headings.map((heading) => (
 								<li class={`toc-item depth-${heading.depth}`}>
 									<a href={`#${heading.slug}`}>{heading.text}</a>
 								</li>
@@ -149,23 +166,23 @@ const blogPostingStructuredData = JSON.parse(
 		</div>
 	</article>
 
-	{Astro.props.relatedPosts?.length > 0 && (
+	{relatedPosts.length > 0 && (
 		<section class="container related-section">
 			<hr class="section-divider" />
 			<h2 class="section-title">Related Articles</h2>
 			<div class="grid posts-grid">
-				{Astro.props.relatedPosts.map((post: any) => (
+				{relatedPosts.map((post) => (
 					<a href={`/blog/${post.id}/`} class="card post-card">
 						<div class="image-container">
-							{post.data.heroImage && <Image width={720} height={360} src={post.data.heroImage} alt="" />}
+							{post.heroImage && <SanityImage source={post.heroImage} width={720} height={360} alt={post.title} />}
 						</div>
 						<div class="post-content">
-							<div class="category-small">{post.data.category ? post.data.category.replace('-', ' ') : 'Article'}</div>
-							<h3 class="title">{post.data.title}</h3>
+							<div class="category-small">{formatCategoryLabel(post.category)}</div>
+							<h3 class="title">{post.title}</h3>
 							<div class="meta-small">
-								<span class="author-small">By {post.data.author || 'MoneyJuan Team'}</span>
+								<span class="author-small">By {post.author?.name || 'MoneyJuan Team'}</span>
 								<span class="separator-small">•</span>
-								<FormattedDate date={post.data.pubDate} />
+								<FormattedDate date={post.pubDate} />
 							</div>
 						</div>
 					</a>

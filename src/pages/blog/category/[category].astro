@@ -1,32 +1,27 @@
 ---
 import Layout from '../../../layouts/Layout.astro';
-import { getCollection } from 'astro:content';
 import FormattedDate from '../../../components/FormattedDate.astro';
-import { Image } from 'astro:assets';
+import SanityImage from '../../../components/SanityImage.astro';
+import { getPostsByCategory } from '../../../lib/sanity/api';
+import {
+	CATEGORY_LABELS,
+	formatCategoryLabel,
+	isBlogCategory,
+	type BlogCategory,
+} from '../../../lib/sanity/categories';
 
-export async function getStaticPaths() {
-	const categories = ['saving', 'earning', 'debt', 'investing', 'family', 'resources'];
-	return categories.map((category) => ({
-		params: { category },
-		props: { category },
-	}));
+export const prerender = false;
+
+const categoryParam = Astro.params.category ?? '';
+const isValidCategory = isBlogCategory(categoryParam);
+const category = isValidCategory ? (categoryParam as BlogCategory) : null;
+
+if (!category) {
+	Astro.response.status = 404;
 }
 
-const { category } = Astro.props;
-const posts = (await getCollection('blog'))
-	.filter((post) => post.data.category === category)
-	.sort((a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf());
-
-const categoryNames = {
-	saving: 'Saving & Budgeting',
-	earning: 'Earning More',
-	debt: 'Debt & Credit',
-	investing: 'Investing',
-	family: 'Family & Life Goals',
-	resources: 'Resources',
-};
-
-const title = categoryNames[category as keyof typeof categoryNames];
+const posts = category ? await getPostsByCategory(category) : [];
+const title = category ? CATEGORY_LABELS[category] : 'Category';
 ---
 
 <Layout title={`${title} | MoneyJuan`} description={`Articles about ${title}`}>
@@ -41,15 +36,15 @@ const title = categoryNames[category as keyof typeof categoryNames];
 					posts.map((post) => (
 						<a href={`/blog/${post.id}/`} class="card post-card">
 							<div class="image-container">
-								{post.data.heroImage && <Image width={720} height={360} src={post.data.heroImage} alt="" />}
+								{post.heroImage && <SanityImage source={post.heroImage} width={720} height={360} alt={post.title} />}
 							</div>
 							<div class="post-content">
-								<div class="category-small">{post.data.category ? post.data.category.replace('-', ' ') : 'Article'}</div>
-								<h2 class="title">{post.data.title}</h2>
+								<div class="category-small">{formatCategoryLabel(post.category)}</div>
+								<h2 class="title">{post.title}</h2>
 								<div class="meta-small">
-									<span class="author-small">By {post.data.author || 'MoneyJuan Team'}</span>
+									<span class="author-small">By {post.author?.name || 'MoneyJuan Team'}</span>
 									<span class="separator-small">•</span>
-									<FormattedDate date={post.data.pubDate} />
+									<FormattedDate date={post.pubDate} />
 								</div>
 							</div>
 						</a>

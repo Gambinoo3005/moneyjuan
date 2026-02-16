@@ -1,0 +1,21 @@
+---
+import type { BlockProps } from 'astro-portabletext/types';
+import { portableTextToPlainText, slugify } from '../../lib/sanity/portableText';
+
+const { node } = Astro.props as BlockProps;
+const text = portableTextToPlainText(node.children);
+const id = text ? slugify(text) : undefined;
+const tag = ['h1', 'h2', 'h3', 'h4'].includes(node.style) ? node.style : 'h2';
+---
+
+{
+	tag === 'h1' ? (
+		<h1 id={id}><slot /></h1>
+	) : tag === 'h2' ? (
+		<h2 id={id}><slot /></h2>
+	) : tag === 'h3' ? (
+		<h3 id={id}><slot /></h3>
+	) : (
+		<h4 id={id}><slot /></h4>
+	)
+}

@@ -10,6 +10,8 @@ const escapeXml = (value: string) =>
 		.replace(/"/g, '&quot;')
 		.replace(/'/g, '&apos;');
 
+export const prerender = false;
+
 export async function GET({ site }: { site?: URL }) {
 	const baseUrl = site ?? new URL(FALLBACK_SITE_URL);
 	const sitemapLoc = new URL('/sitemap-0.xml', baseUrl).toString();

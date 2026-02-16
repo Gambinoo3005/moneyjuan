@@ -27,3 +27,7 @@ pnpm-debug.log*
 
 commit.md
 concept.md
+
+# local deployment and debug artifacts
+.vercel/
+.dev-studio.log

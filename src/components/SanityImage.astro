@@ -1,0 +1,42 @@
+---
+import { getSanityImageUrl } from '../lib/sanity/image';
+
+interface Props {
+	source?: unknown;
+	alt?: string;
+	width?: number;
+	height?: number;
+	class?: string;
+	loading?: 'lazy' | 'eager';
+	decoding?: 'sync' | 'async' | 'auto';
+	sizes?: string;
+}
+
+const {
+	source,
+	alt = '',
+	width,
+	height,
+	class: className,
+	loading = 'lazy',
+	decoding = 'async',
+	sizes,
+} = Astro.props;
+
+const src = getSanityImageUrl(source, { width, height });
+---
+
+{
+	src && (
+		<img
+			src={src}
+			alt={alt}
+			width={width}
+			height={height}
+			class={className}
+			loading={loading}
+			decoding={decoding}
+			sizes={sizes}
+		/>
+	)
+}

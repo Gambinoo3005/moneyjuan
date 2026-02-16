@@ -1,12 +1,13 @@
 ---
 import Layout from '../../layouts/Layout.astro';
-import { getCollection } from 'astro:content';
 import FormattedDate from '../../components/FormattedDate.astro';
-import { Image } from 'astro:assets';
+import SanityImage from '../../components/SanityImage.astro';
+import { getAllPosts } from '../../lib/sanity/api';
+import { formatCategoryLabel } from '../../lib/sanity/categories';
 
-const posts = (await getCollection('blog')).sort(
-	(a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf()
-);
+export const prerender = false;
+
+const posts = await getAllPosts();
 ---
 
 <Layout title="Articles | MoneyJuan" description="All articles on saving, investing, and building wealth.">
@@ -20,18 +21,18 @@ const posts = (await getCollection('blog')).sort(
 					<a
 						href={`/blog/${post.id}/`}
 						class="card post-card"
-						data-search={`${post.data.title} ${post.data.description || ''} ${post.data.category ? post.data.category.replace('-', ' ') : 'Article'} ${post.data.author || 'MoneyJuan Team'}`.toLowerCase()}
+						data-search={`${post.title} ${post.description || ''} ${formatCategoryLabel(post.category)} ${post.author?.name || 'MoneyJuan Team'}`.toLowerCase()}
 					>
 						<div class="image-container">
-							{post.data.heroImage && <Image width={720} height={360} src={post.data.heroImage} alt="" />}
+							{post.heroImage && <SanityImage source={post.heroImage} width={720} height={360} alt={post.title} />}
 						</div>
 						<div class="post-content">
-							<div class="category-small">{post.data.category ? post.data.category.replace('-', ' ') : 'Article'}</div>
-							<h2 class="title">{post.data.title}</h2>
+							<div class="category-small">{formatCategoryLabel(post.category)}</div>
+							<h2 class="title">{post.title}</h2>
 							<div class="meta-small">
-								<span class="author-small">By {post.data.author || 'MoneyJuan Team'}</span>
+								<span class="author-small">By {post.author?.name || 'MoneyJuan Team'}</span>
 								<span class="separator-small">•</span>
-								<FormattedDate date={post.data.pubDate} />
+								<FormattedDate date={post.pubDate} />
 							</div>
 						</div>
 					</a>

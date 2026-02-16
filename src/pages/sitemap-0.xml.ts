@@ -1,7 +1,7 @@
-import { getCollection } from 'astro:content';
 import { stat } from 'node:fs/promises';
 import path from 'node:path';
-import { AUTHORS } from '../data/authors';
+import { getAllAuthors, getAllPosts } from '../lib/sanity/api';
+import { BLOG_CATEGORIES } from '../lib/sanity/categories';
 
 type SitemapEntry = {
 	pathname: string;
@@ -9,7 +9,6 @@ type SitemapEntry = {
 	priority: string;
 };
 
-const BLOG_CATEGORIES = ['saving', 'earning', 'debt', 'investing', 'family', 'resources'] as const;
 const TOP_GUIDE_PRIORITIES: Record<string, string> = {
 	'20-20-60-budget-rule-25k-salary': '0.9',
 };
@@ -42,11 +41,13 @@ const getSourceLastModified = async (relativePath: string) => {
 
 const buildLoc = (pathname: string, baseUrl: URL) => new URL(pathname, baseUrl).toString();
 
+export const prerender = false;
+
 export async function GET({ site }: { site?: URL }) {
 	const baseUrl = site ?? new URL(FALLBACK_SITE_URL);
-	const posts = await getCollection('blog');
+	const [posts, authors] = await Promise.all([getAllPosts(), getAllAuthors()]);
 
-	const postLastModifiedDates = posts.map((post) => post.data.updatedDate ?? post.data.pubDate);
+	const postLastModifiedDates = posts.map((post) => post.updatedDate ?? post.pubDate);
 	const blogIndexLastModified = getMaxDate(
 		postLastModifiedDates,
 		await getSourceLastModified('src/pages/blog/index.astro'),
@@ -107,9 +108,9 @@ export async function GET({ site }: { site?: URL }) {
 	];
 
 	for (const category of BLOG_CATEGORIES) {
-		const categoryPosts = posts.filter((post) => post.data.category === category);
+		const categoryPosts = posts.filter((post) => post.category === category);
 		const categoryLastModified = getMaxDate(
-			categoryPosts.map((post) => post.data.updatedDate ?? post.data.pubDate),
+			categoryPosts.map((post) => post.updatedDate ?? post.pubDate),
 			categoryPageLastModified,
 		);
 
@@ -120,10 +121,10 @@ export async function GET({ site }: { site?: URL }) {
 		});
 	}
 
-	for (const author of AUTHORS) {
-		const authorPosts = posts.filter((post) => post.data.author.toLowerCase() === author.name.toLowerCase());
+	for (const author of authors) {
+		const authorPosts = posts.filter((post) => post.author?.slug === author.slug);
 		const authorLastModified = getMaxDate(
-			authorPosts.map((post) => post.data.updatedDate ?? post.data.pubDate),
+			authorPosts.map((post) => post.updatedDate ?? post.pubDate),
 			authorPageLastModified,
 		);
 
@@ -137,7 +138,7 @@ export async function GET({ site }: { site?: URL }) {
 	for (const post of posts) {
 		entries.push({
 			pathname: `/blog/${post.id}/`,
-			lastmod: post.data.updatedDate ?? post.data.pubDate,
+			lastmod: post.updatedDate ?? post.pubDate,
 			priority: TOP_GUIDE_PRIORITIES[post.id] ?? '0.8',
 		});
 	}

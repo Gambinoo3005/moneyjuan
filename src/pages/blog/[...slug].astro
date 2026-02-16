@@ -1,26 +1,25 @@
 ---
-import { type CollectionEntry, getCollection, render } from 'astro:content';
 import BlogPost from '../../layouts/BlogPost.astro';
+import { getPostBySlug, getRelatedPosts } from '../../lib/sanity/api';
+import { getPortableTextHeadings } from '../../lib/sanity/portableText';
 
-export async function getStaticPaths() {
-	const posts = await getCollection('blog');
-	return posts.map((post) => ({
-		params: { slug: post.id },
-		props: post,
-	}));
+export const prerender = false;
+
+const slugParam = Astro.params.slug;
+const slug = Array.isArray(slugParam) ? slugParam.join('/') : slugParam;
+
+if (!slug) {
+	return Astro.redirect('/blog/');
 }
-type Props = CollectionEntry<'blog'>;
 
-const post = Astro.props;
-const { Content, headings } = await render(post);
+const post = await getPostBySlug(slug);
 
-const allPosts = await getCollection('blog');
-const relatedPosts = allPosts
-	.filter((p) => p.id !== post.id && p.data.category === post.data.category)
-	.sort((a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf())
-	.slice(0, 3);
+if (!post) {
+	return Astro.redirect('/404');
+}
+
+const relatedPosts = post.category ? await getRelatedPosts(post.category, post.id) : [];
+const headings = getPortableTextHeadings(post.body);
 ---
 
-<BlogPost {...post.data} headings={headings} relatedPosts={relatedPosts}>
-	<Content />
-</BlogPost>
+<BlogPost {...post} headings={headings} relatedPosts={relatedPosts} />
